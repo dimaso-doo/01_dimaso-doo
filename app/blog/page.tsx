@@ -1,0 +1,36 @@
+import Link from "next/link";
+import { Newsletter } from "@/components/forms";
+import { BlogCards, SectionHead } from "@/components/sections";
+import { posts } from "@/content/data";
+import { metadata as meta } from "@/lib/site";
+
+const perPage=9;
+const totalPages=Math.ceil(posts.length/perPage);
+
+export const metadata=meta("Website insights","Practical website support, development, QA, design, and technical SEO insights from Dimaso.","/blog");
+
+export default function Page(){
+  return <main>
+    <section className="grid-bg" style={{padding:"130px 0 90px"}}>
+      <div className="shell">
+        <span className="eyebrow">Insights</span>
+        <h1 style={{fontSize:"clamp(52px,9vw,100px)",margin:"20px 0"}}>Better website decisions start here.</h1>
+        <p className="lede">Clear thinking about maintenance, development, design, QA, and technical SEO.</p>
+      </div>
+    </section>
+    <section className="section">
+      <div className="shell">
+        <SectionHead eyebrow="Latest" title="Practical, technical, useful."/>
+        <div style={{marginTop:50}}><BlogCards page={1} perPage={perPage}/></div>
+        <nav className="blog-pagination" aria-label="Blog pagination">
+          {Array.from({length:totalPages}).map((_,i)=>{
+            const page=i+1;
+            return <Link key={page} href={page===1?"/blog":`/blog/page/${page}`} className={page===1?"is-active":""}>{page}</Link>;
+          })}
+          {totalPages>1&&<Link href="/blog/page/2" className="blog-pagination-next">Next</Link>}
+        </nav>
+        <div className="card" style={{maxWidth:650,marginTop:50}}><Newsletter/></div>
+      </div>
+    </section>
+  </main>;
+}

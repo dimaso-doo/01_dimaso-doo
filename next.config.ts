@@ -1,0 +1,9 @@
+import type { NextConfig } from "next";
+
+const nextConfig: NextConfig = {
+  poweredByHeader: false,
+  allowedDevOrigins: ["127.0.0.1"],
+  experimental: { optimizePackageImports: ["framer-motion"] },
+};
+
+export default nextConfig;

@@ -1,0 +1,22 @@
+export const caseStudy = {
+  name: "caseStudy",
+  title: "Case Study",
+  type: "document",
+  fields: [
+    { name: "name", title: "Client name", type: "string", validation: "required" },
+    { name: "slug", title: "Slug", type: "slug", options: { source: "name" }, validation: "required" },
+    { name: "category", title: "Category", type: "string" },
+    { name: "website", title: "Website URL", type: "url" },
+    { name: "image", title: "Main image", type: "image", options: { hotspot: true } },
+    { name: "summary", title: "Summary", type: "text", rows: 3 },
+    { name: "overview", title: "Project overview", type: "text", rows: 6 },
+    { name: "problem", title: "Challenge", type: "text", rows: 6 },
+    { name: "solution", title: "Solution", type: "text", rows: 6 },
+    { name: "result", title: "Results", type: "text", rows: 6 },
+    { name: "work", title: "Work items", type: "array", of: [{ type: "string" }] },
+    { name: "serviceTags", title: "Service tags", type: "array", of: [{ type: "string" }] },
+    { name: "technologies", title: "Technologies", type: "array", of: [{ type: "string" }] },
+    { name: "metrics", title: "Metrics", type: "array", of: [{ type: "object", fields: [{ name: "value", type: "string" }, { name: "label", type: "string" }] }] },
+    { name: "orderRank", title: "Sort order", type: "number" },
+  ],
+};
