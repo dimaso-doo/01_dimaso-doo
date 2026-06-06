@@ -8,7 +8,7 @@ import { ContactForm, Newsletter } from "./forms";
 
 const links = [["Home","/"],["Web Maintenance","/website-maintenance"],["Web Development","/web-development"],["Web Design","/web-design"],["Case Studies","/case-studies"],["Blog","/blog"],["Contact","/contact"]];
 const mobileLinks = [["Home","/"],["Maintenance","/website-maintenance"],["Development","/web-development"],["Design","/web-design"],["Case Studies","/case-studies"],["Blog","/blog"],["Contact","/contact"]];
-const linkedinUrl = "https://www.linkedin.com/company/dimaso/";
+const linkedinUrl = "https://www.linkedin.com/company/dimaso.co/";
 
 export function Logo() {
   return <Link href="/" aria-label="Dimaso home" style={{display:"inline-flex",alignItems:"center",flexShrink:0}}>
