@@ -3,6 +3,7 @@ import { IBM_Plex_Sans, Sora } from "next/font/google";
 import "./globals.css";
 import { Header, Footer } from "@/components/site";
 import { site } from "@/lib/site";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const inter = IBM_Plex_Sans({ subsets: ["latin"], weight: ["300", "400"], variable: "--font-inter", display: "swap" });
 const sora = Sora({ subsets: ["latin"], variable: "--font-sora", display: "swap" });
@@ -14,5 +15,5 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="en" data-scroll-behavior="smooth"><body className={`${inter.variable} ${sora.variable}`}><Header />{children}<Footer /></body></html>;
+  return <html lang="en" data-scroll-behavior="smooth"><body className={`${inter.variable} ${sora.variable}`}><Header />{children}<Footer /><SpeedInsights /></body></html>;
 }
