@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
 import { createPortal } from "react-dom";
 import { motion, useScroll } from "framer-motion";
 import { ContactForm, Newsletter } from "./forms";
@@ -9,6 +10,12 @@ import { ContactForm, Newsletter } from "./forms";
 const links = [["Home","/"],["Web Maintenance","/website-maintenance"],["Web Development","/web-development"],["Web Design","/web-design"],["Case Studies","/case-studies"],["Blog","/blog"],["Contact","/contact"]];
 const mobileLinks = [["Home","/"],["Maintenance","/website-maintenance"],["Development","/web-development"],["Design","/web-design"],["Case Studies","/case-studies"],["Blog","/blog"],["Contact","/contact"]];
 const linkedinUrl = "https://www.linkedin.com/company/dimaso.co/";
+const formContextByPath:Record<string,{source:string;subject:string;defaultService?:string}>={
+  "/website-maintenance":{source:"Website Maintenance",subject:"New RFP Request - Website Maintenance - dimaso.co",defaultService:"Website Maintenance"},
+  "/web-development":{source:"Web Development",subject:"New RFP Request - Web Development - dimaso.co",defaultService:"Web Development"},
+  "/web-design":{source:"Web Design",subject:"New RFP Request - Web Design - dimaso.co",defaultService:"Web Design"},
+  "/contact":{source:"Contact Page",subject:"New Contact / RFP Request - Contact Page - dimaso.co"},
+};
 
 export function Logo() {
   return <Link href="/" aria-label="Dimaso home" style={{display:"inline-flex",alignItems:"center",flexShrink:0}}>
@@ -43,6 +50,8 @@ export function Header() {
 }
 
 export function Footer() {
+  const pathname=usePathname();
+  const formContext=formContextByPath[pathname]||{source:"Home/Footer",subject:"New RFP Request - Home/Footer - dimaso.co"};
   return <footer id="rfp" className="section site-footer">
     <div className="shell">
       <div style={{display:"grid",gridTemplateColumns:"minmax(0,1fr) minmax(0,1.3fr)",gap:60}} className="footer-grid">
@@ -51,7 +60,7 @@ export function Footer() {
           <div className="footer-contact-list"><a className="footer-contact-link email" href="mailto:office@dimaso.co">office@dimaso.co</a><a className="footer-contact-link phone" href="tel:+381611375150">+381 61 137 5150</a><a className="footer-contact-link linkedin" href={linkedinUrl} target="_blank" rel="noopener noreferrer">LinkedIn</a></div>
           <div style={{marginTop:42}}><Newsletter /></div>
         </div>
-        <div className="footer-rfp-column"><div className="footer-rfp-head"><span className="eyebrow">Start a conversation</span><h2>Send your RFP or project brief.</h2><p>Share the context, goals, constraints, and files you already have. A senior member of the team will review it directly.</p></div><ContactForm source="Home/Footer" subject="New RFP Request - Home/Footer - dimaso.co"/></div>
+        <div className="footer-rfp-column"><div className="footer-rfp-head"><span className="eyebrow">Start a conversation</span><h2>Send your RFP or project brief.</h2><p>Share the context, goals, constraints, and files you already have. A senior member of the team will review it directly.</p></div><ContactForm {...formContext}/></div>
       </div>
       <div className="rule" style={{margin:"65px 0 25px"}}/><div className="footer-bottom"><span>© {new Date().getFullYear()} Dimaso. All rights reserved.</span><span>Websites maintained, developed, and improved with care since 2008.</span></div>
     </div>
