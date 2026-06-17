@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { IBM_Plex_Sans, Sora } from "next/font/google";
 import "./globals.css";
 import { Header, Footer } from "@/components/site";
+import { RouteTransition } from "@/components/route-transition";
 import { site } from "@/lib/site";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/next";
@@ -16,5 +17,5 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="en" data-scroll-behavior="smooth"><body className={`${inter.variable} ${sora.variable}`}><Header />{children}<Footer /><SpeedInsights /><Analytics /></body></html>;
+  return <html lang="en" data-scroll-behavior="smooth"><body className={`${inter.variable} ${sora.variable}`}><Header /><RouteTransition>{children}</RouteTransition><Footer /><SpeedInsights /><Analytics /></body></html>;
 }

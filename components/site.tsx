@@ -26,9 +26,11 @@ export function Logo() {
 export function Header() {
   const [open,setOpen]=useState(false);
   const [mounted,setMounted]=useState(false);
+  const pathname=usePathname();
   const menuButton=useRef<HTMLButtonElement>(null);
   const firstMobileLink=useRef<HTMLAnchorElement>(null);
   const {scrollYProgress}=useScroll();
+  const isActive=(href:string)=>href==="/" ? pathname==="/" : pathname===href||pathname.startsWith(`${href}/`);
   useEffect(()=>setMounted(true),[]);
   useEffect(()=>{document.body.style.overflow=open?"hidden":"";return()=>{document.body.style.overflow=""}},[open]);
   useEffect(()=>{
@@ -40,12 +42,12 @@ export function Header() {
   },[open]);
   return <header style={{position:"sticky",top:0,zIndex:10000,background:"rgba(23,23,25,.86)",backdropFilter:"blur(18px)",borderBottom:"1px solid rgba(255,255,255,.055)"}}>
     <div style={{minHeight:84,width:"100%",padding:"10px clamp(20px,3vw,55px)",display:"flex",alignItems:"center",justifyContent:"space-between",gap:22}}>
-      <Logo/><nav className="hide-mobile" style={{display:"flex",alignItems:"center",gap:25}}>{links.map(([l,h])=><Link key={h} href={h} className="nav-link">{l}</Link>)}</nav>
+      <Logo/><nav className="hide-mobile" style={{display:"flex",alignItems:"center",gap:25}}>{links.map(([l,h])=><Link key={h} href={h} className={`nav-link ${isActive(h)?"is-active":""}`} aria-current={isActive(h)?"page":undefined}>{l}</Link>)}</nav>
       <Link href="/contact" className="btn hide-mobile" style={{"--btn-h":"44px"} as React.CSSProperties}>Request for proposal</Link>
       <button ref={menuButton} aria-label={open?"Close menu":"Open menu"} aria-expanded={open} onClick={()=>setOpen(!open)} className={`menu-button ${open?"is-open":""}`} style={{display:"none"}}><span/><span/><span/></button>
     </div>
     <motion.div className="scroll-progress" style={{scaleX:scrollYProgress}}/>
-    {mounted&&open&&createPortal(<nav className="mobile-nav" aria-label="Mobile navigation">{mobileLinks.map(([l,h],i)=><Link key={h} href={h} ref={i===0?firstMobileLink:undefined} onClick={()=>setOpen(false)} className="nav-link">{l}</Link>)}<div className="mobile-nav-contact"><a href="mailto:office@dimaso.co">office@dimaso.co</a><a href="tel:+381611375150">+381 61 137 5150</a><a href={linkedinUrl} target="_blank" rel="noopener noreferrer">LinkedIn</a></div><div className="mobile-nav-meta">Dimaso RS · Novi Sad, Serbia<br/>Dimaso US · New York, USA</div></nav>,document.body)}
+    {mounted&&open&&createPortal(<nav className="mobile-nav" aria-label="Mobile navigation">{mobileLinks.map(([l,h],i)=><Link key={h} href={h} ref={i===0?firstMobileLink:undefined} onClick={()=>setOpen(false)} className={`nav-link ${isActive(h)?"is-active":""}`} aria-current={isActive(h)?"page":undefined}>{l}</Link>)}<div className="mobile-nav-contact"><a href="mailto:office@dimaso.co">office@dimaso.co</a><a href="tel:+381611375150">+381 61 137 5150</a><a href={linkedinUrl} target="_blank" rel="noopener noreferrer">LinkedIn</a></div><div className="mobile-nav-meta">Dimaso RS · Novi Sad, Serbia<br/>Dimaso US · New York, USA</div></nav>,document.body)}
   </header>;
 }
 
@@ -62,7 +64,7 @@ export function Footer() {
         </div>
         <div className="footer-rfp-column"><div className="footer-rfp-head"><span className="eyebrow">Start a conversation</span><h2>Send your RFP or project brief.</h2><p>Share the context, goals, constraints, and files you already have. A senior member of the team will review it directly.</p></div><ContactForm {...formContext}/></div>
       </div>
-      <div className="rule" style={{margin:"65px 0 25px"}}/><div className="footer-bottom"><span>© {new Date().getFullYear()} Dimaso. All rights reserved.</span><span>Websites maintained, developed, and improved with care since 2008.</span></div>
+      <div className="rule" style={{margin:"65px 0 25px"}}/><div className="footer-bottom"><span>© {new Date().getFullYear()} Dimaso. All rights reserved.</span><div className="footer-legal-row"><span>Websites maintained, developed, and improved with care since 2008.</span><nav aria-label="Legal links"><Link href="/privacy-policy">Privacy Policy</Link><Link href="/terms-and-conditions">Terms and Conditions</Link></nav></div></div>
     </div>
   </footer>;
 }
