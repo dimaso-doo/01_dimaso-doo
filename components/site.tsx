@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { createPortal } from "react-dom";
 import { motion, useScroll } from "framer-motion";
 import { ContactForm, Newsletter } from "./forms";
+import { TrackedLink } from "./tracked-link";
 
 const links = [["Home","/"],["Web Maintenance","/website-maintenance"],["Web Development","/web-development"],["Web Design","/web-design"],["Case Studies","/case-studies"],["Blog","/blog"],["Contact","/contact"]];
 const mobileLinks = [["Home","/"],["Maintenance","/website-maintenance"],["Development","/web-development"],["Design","/web-design"],["Case Studies","/case-studies"],["Blog","/blog"],["Contact","/contact"]];
@@ -47,7 +48,7 @@ export function Header() {
       <button ref={menuButton} aria-label={open?"Close menu":"Open menu"} aria-expanded={open} onClick={()=>setOpen(!open)} className={`menu-button ${open?"is-open":""}`} style={{display:"none"}}><span/><span/><span/></button>
     </div>
     <motion.div className="scroll-progress" style={{scaleX:scrollYProgress}}/>
-    {mounted&&open&&createPortal(<nav className="mobile-nav" aria-label="Mobile navigation">{mobileLinks.map(([l,h],i)=><Link key={h} href={h} ref={i===0?firstMobileLink:undefined} onClick={()=>setOpen(false)} className={`nav-link ${isActive(h)?"is-active":""}`} aria-current={isActive(h)?"page":undefined}>{l}</Link>)}<div className="mobile-nav-contact"><a href="mailto:office@dimaso.co">office@dimaso.co</a><a href="tel:+381611375150">+381 61 137 5150</a><a href={linkedinUrl} target="_blank" rel="noopener noreferrer">LinkedIn</a></div><div className="mobile-nav-meta">Dimaso RS · Novi Sad, Serbia<br/>Dimaso US · New York, USA</div></nav>,document.body)}
+    {mounted&&open&&createPortal(<nav className="mobile-nav" aria-label="Mobile navigation">{mobileLinks.map(([l,h],i)=><Link key={h} href={h} ref={i===0?firstMobileLink:undefined} onClick={()=>setOpen(false)} className={`nav-link ${isActive(h)?"is-active":""}`} aria-current={isActive(h)?"page":undefined}>{l}</Link>)}<div className="mobile-nav-contact"><TrackedLink tracking="email" trackingLocation="header" href="mailto:office@dimaso.co">office@dimaso.co</TrackedLink><a href="tel:+381611375150">+381 61 137 5150</a><TrackedLink tracking="linkedin" trackingLocation="header" href={linkedinUrl} target="_blank" rel="noopener noreferrer">LinkedIn</TrackedLink></div><div className="mobile-nav-meta">Dimaso RS · Novi Sad, Serbia<br/>Dimaso US · New York, USA</div></nav>,document.body)}
   </header>;
 }
 
@@ -59,7 +60,7 @@ export function Footer() {
       <div style={{display:"grid",gridTemplateColumns:"minmax(0,1fr) minmax(0,1.3fr)",gap:60}} className="footer-grid">
         <div className="footer-info-panel"><div><Logo/><p className="lede" style={{fontSize:16,marginTop:20}}>A senior technical partner for websites that need to stay reliable, evolve, and perform.</p></div>
           <div className="footer-location-grid"><div><span className="eyebrow">Serbia / Europe</span><strong>Dimaso RS</strong><small>Novi Sad, Serbia</small></div><div><span className="eyebrow">United States</span><strong>Dimaso US</strong><small>New York, USA</small></div></div>
-          <div className="footer-contact-list"><a className="footer-contact-link email" href="mailto:office@dimaso.co">office@dimaso.co</a><a className="footer-contact-link phone" href="tel:+381611375150">+381 61 137 5150</a><a className="footer-contact-link linkedin" href={linkedinUrl} target="_blank" rel="noopener noreferrer">LinkedIn</a></div>
+          <div className="footer-contact-list"><TrackedLink tracking="email" trackingLocation="footer" className="footer-contact-link email" href="mailto:office@dimaso.co">office@dimaso.co</TrackedLink><a className="footer-contact-link phone" href="tel:+381611375150">+381 61 137 5150</a><TrackedLink tracking="linkedin" trackingLocation="footer" className="footer-contact-link linkedin" href={linkedinUrl} target="_blank" rel="noopener noreferrer">LinkedIn</TrackedLink></div>
           <div style={{marginTop:42}}><Newsletter /></div>
         </div>
         <div className="footer-rfp-column"><div className="footer-rfp-head"><span className="eyebrow">Start a conversation</span><h2>Send your RFP or project brief.</h2><p>Share the context, goals, constraints, and files you already have. A senior member of the team will review it directly.</p></div><ContactForm {...formContext}/></div>

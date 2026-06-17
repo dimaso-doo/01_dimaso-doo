@@ -2,28 +2,24 @@
 
 import Script from "next/script";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import "@/lib/ga-events";
 
 const measurementId="G-1DW9FWSVL5";
-
-declare global {
-  interface Window {
-    dataLayer: unknown[];
-    gtag: (...args: unknown[])=>void;
-  }
-}
 
 export function GoogleAnalytics(){
   const pathname=usePathname();
   const [ready,setReady]=useState(false);
+  const lastTrackedPath=useRef<string | null>(null);
 
   useEffect(()=>{
-    if(!ready||typeof window.gtag!=="function")return;
+    if(!ready||typeof window.gtag!=="function"||lastTrackedPath.current===pathname)return;
     window.gtag("event","page_view",{
       page_path:pathname,
       page_location:window.location.href,
       page_title:document.title,
     });
+    lastTrackedPath.current=pathname;
   },[pathname,ready]);
 
   return <>

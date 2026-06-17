@@ -1,9 +1,13 @@
 "use client";
 
-import { ChangeEvent, FormEvent, useRef, useState } from "react";
+import { ChangeEvent, FormEvent, KeyboardEvent as ReactKeyboardEvent, useEffect, useId, useRef, useState } from "react";
+import { trackEvent, trackLead } from "@/lib/ga-events";
 
 const successText="Thank you. Your request has been received. We will review the details and get back to you shortly.";
 const services=["Website Maintenance","Web Development","Web Design"] as const;
+const generalInquiry="General Inquiry / Not Sure Yet" as const;
+const serviceOptions=[...services,generalInquiry] as const;
+type ServiceOption=(typeof serviceOptions)[number];
 const allowedFileExtensions=["pdf","doc","docx","txt","zip"];
 const maxFileSize=10*1024*1024;
 
@@ -22,7 +26,51 @@ export function ContactForm({source,subject,defaultService=""}:{source:string;su
   const [serviceError,setServiceError]=useState("");
   const [fileError,setFileError]=useState("");
   const [fileInfo,setFileInfo]=useState<{name:string;size:number;nonce:number}|null>(null);
+  const [selectedServices,setSelectedServices]=useState<ServiceOption[]>(defaultService&&services.includes(defaultService as (typeof services)[number])?[defaultService as ServiceOption]:[]);
+  const [servicesOpen,setServicesOpen]=useState(false);
   const fileInput=useRef<HTMLInputElement>(null);
+  const servicesField=useRef<HTMLDivElement>(null);
+  const servicesPanel=useRef<HTMLDivElement>(null);
+  const servicesId=useId();
+
+  useEffect(()=>{
+    if(!servicesOpen)return;
+    const closeOnOutsideClick=(event:PointerEvent)=>{
+      if(!servicesField.current?.contains(event.target as Node))setServicesOpen(false);
+    };
+    document.addEventListener("pointerdown",closeOnOutsideClick);
+    return()=>document.removeEventListener("pointerdown",closeOnOutsideClick);
+  },[servicesOpen]);
+
+  function serviceSummary(){
+    if(!selectedServices.length)return "Services *";
+    if(selectedServices[0]===generalInquiry)return "General Inquiry";
+    if(selectedServices.length<=2)return selectedServices.join(" + ");
+    return `${selectedServices.length} services selected`;
+  }
+
+  function toggleService(service:ServiceOption){
+    setSelectedServices(current=>{
+      if(service===generalInquiry)return current.includes(generalInquiry)?[]:[generalInquiry];
+      const concrete=current.filter(item=>item!==generalInquiry);
+      return concrete.includes(service)?concrete.filter(item=>item!==service):[...concrete,service];
+    });
+    setServiceError("");
+  }
+
+  function handleServicesKeyDown(event:ReactKeyboardEvent){
+    if(event.key==="Escape"){
+      setServicesOpen(false);
+      (servicesField.current?.querySelector("button") as HTMLButtonElement|null)?.focus();
+    }
+  }
+
+  function openServicesWithKeyboard(event:ReactKeyboardEvent<HTMLButtonElement>){
+    if(event.key!=="ArrowDown")return;
+    event.preventDefault();
+    setServicesOpen(true);
+    requestAnimationFrame(()=>servicesPanel.current?.querySelector<HTMLInputElement>("input")?.focus());
+  }
 
   function updateFile(event:ChangeEvent<HTMLInputElement>){
     const file=event.currentTarget.files?.[0];
@@ -54,9 +102,8 @@ export function ContactForm({source,subject,defaultService=""}:{source:string;su
     e.preventDefault();
     const form=e.currentTarget;
     const email=String(new FormData(form).get("email")||"").trim();
-    const service=String(new FormData(form).get("service")||"").trim();
     const nextEmailError=!email?"Email is required.":!validateEmail(email)?"Please enter a valid email address.":"";
-    const nextServiceError=!service?"Please select a service.":"";
+    const nextServiceError=!selectedServices.length?"Please select at least one service.":"";
     setEmailError(nextEmailError);
     setServiceError(nextServiceError);
     if(nextEmailError||nextServiceError){setStatus("idle");return;}
@@ -70,7 +117,17 @@ export function ContactForm({source,subject,defaultService=""}:{source:string;su
     try{
       const res=await fetch("/api/contact",{method:"POST",body:data});
       setStatus(res.ok?"success":"error");
-      if(res.ok){form.reset();setFileInfo(null);setFileError("");setEmailError("");setServiceError("");}
+      if(res.ok){
+        if(source==="Contact Page"){
+          trackEvent("contact_form_submit",{form_name:"contact"});
+          trackLead("contact");
+        }else{
+          const leadParams={selected_service:selectedServices.length?selectedServices.join(", "):undefined,file_attached:fileInfo!==null};
+          trackEvent("rfp_form_submit",{form_name:"rfp",...leadParams});
+          trackLead("rfp",leadParams);
+        }
+        form.reset();setSelectedServices(defaultService?[defaultService as ServiceOption]:[]);setFileInfo(null);setFileError("");setEmailError("");setServiceError("");
+      }
     }catch{
       setStatus("error");
     }
@@ -79,11 +136,17 @@ export function ContactForm({source,subject,defaultService=""}:{source:string;su
     <input className="field" required name="name" placeholder="Name *" aria-label="Name"/>
     <div className="field-wrap"><input className="field" required type="email" name="email" placeholder="Email *" aria-label="Email" aria-invalid={emailError?true:undefined} onChange={()=>emailError&&setEmailError("")}/>{emailError&&<small className="form-error">{emailError}</small>}</div>
     <input className="field" name="company" placeholder="Company" aria-label="Company"/>
-    <div className="field-wrap"><select className="field service-select" required name="service" aria-label="Service" defaultValue={defaultService}>
-      <option value="" disabled>Service *</option>
-      {services.map((service)=><option key={service} value={service}>{service}</option>)}
-    </select>
-    {serviceError&&<small className="form-error">{serviceError}</small>}</div>
+    <div ref={servicesField} className={`services-field ${servicesOpen?"is-open":""}`} onKeyDown={handleServicesKeyDown}>
+      <button type="button" className="field services-trigger" aria-label={`Services: ${serviceSummary()}`} aria-haspopup="true" aria-expanded={servicesOpen} aria-controls={servicesId} aria-invalid={serviceError?true:undefined} onClick={()=>setServicesOpen(open=>!open)} onKeyDown={openServicesWithKeyboard}>
+        <span>{serviceSummary()}</span><span className="services-arrow" aria-hidden="true">⌄</span>
+      </button>
+      <div ref={servicesPanel} id={servicesId} className="services-panel" role="group" aria-label="Select one or more services" hidden={!servicesOpen} onPointerDown={event=>event.stopPropagation()}>
+        {serviceOptions.map(service=><label key={service} className={`service-option ${service===generalInquiry?"is-general":""}`}>
+          <input type="checkbox" name="services" value={service} checked={selectedServices.includes(service)} onChange={()=>toggleService(service)}/><span>{service}</span>
+        </label>)}
+      </div>
+      {serviceError&&<small className="form-error">{serviceError}</small>}
+    </div>
     <textarea className="field" required name="message" placeholder="Tell us about the project *" aria-label="Message" rows={5} style={{gridColumn:"1 / -1"}}/>
     <div className="upload-field">
       <label className={`upload-dropzone ${fileInfo?"has-file":""}`}><input ref={fileInput} type="file" name="file" accept=".pdf,.doc,.docx,.txt,.zip" onChange={updateFile}/><span className="upload-icon">{fileInfo?"✓":"↑"}</span><span><strong>{fileInfo?"Change attached file":"Click to upload or drag a project brief here"}</strong><small>{fileInfo?"PDF, DOC, DOCX, TXT or ZIP · maximum 10MB":"PDF, DOC, DOCX, TXT or ZIP · maximum 10MB"}</small></span></label>
@@ -119,7 +182,11 @@ export function Newsletter() {
     try{
       const res=await fetch("/api/contact",{method:"POST",body:data});
       setStatus(res.ok?"success":"error");
-      if(res.ok){form.reset();setEmailError("");}
+      if(res.ok){
+        trackEvent("newsletter_subscribe",{form_name:"newsletter"});
+        trackLead("newsletter");
+        form.reset();setEmailError("");
+      }
     }catch{
       setStatus("error");
     }

@@ -1,4 +1,5 @@
 import { JsonLd } from "@/components/site";
+import { TrackedLink } from "@/components/tracked-link";
 import { metadata as meta,site } from "@/lib/site";
 
 export const metadata=meta("Contact Dimaso","Send Dimaso your website maintenance, development, or design RFP and talk with a senior technical team.","/contact");
@@ -23,9 +24,9 @@ export default function Page(){
             <div className="card location-card"><span className="eyebrow">United States</span><h3>Dimaso US</h3><p className="muted">New York, USA</p></div>
           </div>
           <div className="card contact-direct-card" style={{marginTop:14,display:"grid",gap:14}}>
-            <a className="footer-contact-link email" href="mailto:office@dimaso.co">office@dimaso.co</a>
+            <TrackedLink tracking="email" trackingLocation="contact_page" className="footer-contact-link email" href="mailto:office@dimaso.co">office@dimaso.co</TrackedLink>
             <a className="footer-contact-link phone" href="tel:+381611375150">+381 61 137 5150</a>
-            <a className="footer-contact-link linkedin" href="https://www.linkedin.com/company/dimaso/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+            <TrackedLink tracking="linkedin" trackingLocation="contact_page" className="footer-contact-link linkedin" href="https://www.linkedin.com/company/dimaso/" target="_blank" rel="noopener noreferrer">LinkedIn</TrackedLink>
           </div>
         </div>
       </div>

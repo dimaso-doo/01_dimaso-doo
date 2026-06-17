@@ -1,4 +1,5 @@
 import { metadata as meta, site } from "@/lib/site";
+import { TrackedLink } from "@/components/tracked-link";
 
 export const metadata=meta("Privacy Policy","How Dimaso collects, uses, and protects visitor information submitted through dimaso.co.","/privacy-policy");
 
@@ -29,7 +30,7 @@ export default function PrivacyPolicy(){
         <aside className="legal-aside">
           <span className="eyebrow">Dimaso</span>
           <p>Website Maintenance | Web Development | Web Design</p>
-          <a className="text-link" href="mailto:office@dimaso.co">office@dimaso.co</a>
+          <TrackedLink tracking="email" trackingLocation="privacy_policy" className="text-link" href="mailto:office@dimaso.co">office@dimaso.co</TrackedLink>
         </aside>
         <div className="legal-content">
           {sections.map(([title,copy])=><section key={title} className="legal-block">

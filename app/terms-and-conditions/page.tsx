@@ -1,4 +1,5 @@
 import { metadata as meta, site } from "@/lib/site";
+import { TrackedLink } from "@/components/tracked-link";
 
 export const metadata=meta("Terms and Conditions","Terms for using the Dimaso website and submitting inquiries through dimaso.co.","/terms-and-conditions");
 
@@ -29,7 +30,7 @@ export default function TermsAndConditions(){
         <aside className="legal-aside">
           <span className="eyebrow">Dimaso</span>
           <p>Clear terms for website visitors, form submissions, and project inquiries.</p>
-          <a className="text-link" href="mailto:office@dimaso.co">office@dimaso.co</a>
+          <TrackedLink tracking="email" trackingLocation="terms_and_conditions" className="text-link" href="mailto:office@dimaso.co">office@dimaso.co</TrackedLink>
         </aside>
         <div className="legal-content">
           {sections.map(([title,copy])=><section key={title} className="legal-block">
