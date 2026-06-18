@@ -2,10 +2,9 @@ import Link from "next/link";
 import { BlogCards, Cases, ClientLogos, FAQSection, ProcessStack, SectionHead, ServiceCards, Team, Testimonials } from "@/components/sections";
 import { FeatureCTA, JsonLd } from "@/components/site";
 import { TechVisual } from "@/components/tech-visual";
-import { metadata as meta, site } from "@/lib/site";
+import { site } from "@/lib/site";
 import { homeFaq } from "@/content/data";
 
-export const metadata=meta("Web maintenance, development & design partner","Dimaso is a senior web development, website maintenance, and web design partner for US and international businesses.");
 export default function Home(){return <main>
  <JsonLd data={{"@context":"https://schema.org","@graph":[{"@type":"Organization",name:"Dimaso",url:site.url,email:site.email,telephone:site.phone,areaServed:["US","International"]},{"@type":"FAQPage",mainEntity:homeFaq.map(([q,a])=>({"@type":"Question",name:q,acceptedAnswer:{"@type":"Answer",text:a}}))}]}}/>
  <section className="grid-bg" style={{minHeight:"calc(100vh - 72px)",display:"grid",alignItems:"center",position:"relative",overflow:"hidden",padding:"96px 0 110px"}}><TechVisual/><span className="hero-plus p1">+</span><span className="hero-plus p2">+</span><span className="hero-plus p3">+</span><span className="hero-plus p4">+</span><div className="shell" style={{position:"relative",zIndex:2}}><span className="eyebrow">Senior technical team · US & international</span><h1 style={{fontSize:"clamp(52px,8.2vw,100px)",lineHeight:.98,maxWidth:1060,margin:"24px 0 32px"}}>Websites maintained, developed, and improved.</h1><p className="lede">Dimaso helps businesses keep their websites stable, fast, secure, and ready to grow through ongoing maintenance, custom development, design improvements, integrations, QA, and technical support.</p><div style={{display:"flex",gap:12,marginTop:42,flexWrap:"wrap"}}><Link className="btn" href="#rfp">Send us your RFP</Link><Link className="btn ghost" href="/case-studies">View case studies</Link></div></div></section>

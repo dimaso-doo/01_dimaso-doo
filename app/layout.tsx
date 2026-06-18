@@ -4,7 +4,7 @@ import "./globals.css";
 import { Header, Footer } from "@/components/site";
 import { RouteTransition } from "@/components/route-transition";
 import { GoogleAnalytics } from "@/components/google-analytics";
-import { site } from "@/lib/site";
+import { site, social } from "@/lib/site";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/next";
 
@@ -13,8 +13,23 @@ const sora = Sora({ subsets: ["latin"], variable: "--font-sora", display: "swap"
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
-  title: { default: "Dimaso | Senior web partner", template: "%s | Dimaso" },
-  description: site.description,
+  title: { default: social.title, template: "%s | Dimaso" },
+  description: social.description,
+  alternates:{canonical:"https://dimaso.co/"},
+  openGraph:{
+    title:social.title,
+    description:social.description,
+    url:"https://dimaso.co/",
+    type:"website",
+    siteName:site.name,
+    images:[{url:social.image,secureUrl:social.image,type:"image/png",width:1200,height:630,alt:social.imageAlt}],
+  },
+  twitter:{
+    card:"summary_large_image",
+    title:social.title,
+    description:social.description,
+    images:[{url:social.image,alt:social.imageAlt}],
+  },
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
