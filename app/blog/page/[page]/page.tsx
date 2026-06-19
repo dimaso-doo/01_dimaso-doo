@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { Newsletter } from "@/components/forms";
 import { BlogCards, SectionHead } from "@/components/sections";
 import { posts } from "@/content/data";
-import { site } from "@/lib/site";
+import { site, social } from "@/lib/site";
 
 const perPage=9;
 const totalPages=Math.ceil(posts.length/perPage);
@@ -14,7 +14,10 @@ export function generateStaticParams(){
 
 export async function generateMetadata({params}:{params:Promise<{page:string}>}){
   const {page}=await params;
-  return {title:`Website insights - page ${page}`,description:"Practical website support, development, QA, design, and technical SEO insights from Dimaso.",alternates:{canonical:`${site.url}/blog/page/${page}`}};
+  const title=`Website insights - page ${page}`;
+  const description="Practical website support, development, QA, design, and technical SEO insights from Dimaso.";
+  const url=`${site.url}/blog/page/${page}`;
+  return {title,description,alternates:{canonical:url},openGraph:{title,description,url,siteName:site.name,type:"website",images:[{url:social.image,alt:social.imageAlt}]},twitter:{card:"summary_large_image",title,description,images:[social.image]}};
 }
 
 export default async function Page({params}:{params:Promise<{page:string}>}){

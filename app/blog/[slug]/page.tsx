@@ -2,7 +2,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { JsonLd } from "@/components/site";
 import { posts } from "@/content/data";
-import { site } from "@/lib/site";
+import { blogContent, BlogInline } from "@/content/blog-content";
+import { organizationId, site, social, websiteId } from "@/lib/site";
 
 export function generateStaticParams(){return posts.map(p=>({slug:p.slug}))}
 
@@ -10,7 +11,8 @@ export async function generateMetadata({params}:{params:Promise<{slug:string}>})
   const {slug}=await params;
   const p=posts.find(x=>x.slug===slug);
   if(!p)return{};
-  return{title:p.title,description:p.excerpt,alternates:{canonical:`${site.url}/blog/${p.slug}`}};
+  const url=`${site.url}/blog/${p.slug}`;
+  return{title:p.title,description:p.excerpt,alternates:{canonical:url},openGraph:{title:p.title,description:p.excerpt,url,siteName:site.name,type:"article",publishedTime:p.date,modifiedTime:p.date,images:[{url:social.image,alt:social.imageAlt}]},twitter:{card:"summary_large_image",title:p.title,description:p.excerpt,images:[social.image]}};
 }
 
 export default async function Page({params}:{params:Promise<{slug:string}>}){
@@ -20,8 +22,10 @@ export default async function Page({params}:{params:Promise<{slug:string}>}){
   if(!p)notFound();
   const previous=postIndex>0?posts[postIndex-1]:null;
   const next=postIndex<posts.length-1?posts[postIndex+1]:null;
+  const content=blogContent[p.slug];
+  const url=`${site.url}/blog/${p.slug}`;
   return <main>
-    <JsonLd data={{"@context":"https://schema.org","@type":"Article",headline:p.title,datePublished:p.date,description:p.excerpt,author:{"@type":"Organization",name:"Dimaso"}}}/>
+    <JsonLd data={{"@context":"https://schema.org","@graph":[{"@type":"Article","@id":`${url}#article`,headline:p.title,description:p.excerpt,url,mainEntityOfPage:{"@type":"WebPage","@id":url},image:social.image,datePublished:p.date,dateModified:p.date,author:{"@id":organizationId},publisher:{"@id":organizationId},isPartOf:{"@id":websiteId}},{"@type":"BreadcrumbList","@id":`${url}#breadcrumb`,itemListElement:[{"@type":"ListItem",position:1,name:"Home",item:`${site.url}/`},{"@type":"ListItem",position:2,name:"Blog",item:`${site.url}/blog`},{"@type":"ListItem",position:3,name:p.title,item:url}]}]}}/>
     <article>
       <header className="grid-bg blog-hero">
         <div className="shell blog-hero-grid">
@@ -42,15 +46,7 @@ export default async function Page({params}:{params:Promise<{slug:string}>}){
             <p>Written for teams that need the website to keep supporting sales, operations, search visibility, and trust after launch.</p>
           </aside>
           <div className="blog-article-body">
-            <h2>Treat the website as an operating system, not a one-time asset.</h2>
-            <p>Strong websites compound value when ownership, quality assurance, performance, and continuous improvement are part of the operating model. The difficult part is rarely a single update. It is maintaining clarity and technical confidence across hundreds of decisions.</p>
-            <p>A useful website process connects business goals with technical reality: content structure, responsive behavior, forms, integrations, analytics, search visibility, security, and the release rhythm behind every change.</p>
-            <h2>Make risk visible before it becomes urgent.</h2>
-            <p>Small website problems often become expensive because no one sees the full system. A plugin update can affect forms. A redesign can break URLs. A migration can erase search value. A rushed feature can slow down the pages that already convert.</p>
-            <p>That is why maintenance, development, design, and technical SEO should not be isolated conversations. Each decision needs context: what the user needs, what the business measures, what the platform can support, and what needs to stay stable.</p>
-            <h2>Start with a clear baseline.</h2>
-            <p>Before the next redesign, feature, or support plan, establish what is working now. Review critical URLs, forms, mobile layouts, performance, analytics, content hierarchy, CMS editing paths, and the areas where the team is already losing time.</p>
-            <p>From there, prioritize the work that lowers risk and creates momentum. The right roadmap does not try to do everything at once. It gives the team a dependable sequence: stabilize, improve, measure, and keep learning.</p>
+            {content.map((block,index)=>block.type==="p"?<p key={index}>{renderInline(block.content)}</p>:block.type==="h2"?<h2 key={index}>{block.text}</h2>:<h3 key={index}>{block.text}</h3>)}
             <Link href={p.service} className="btn">Explore the relevant service</Link>
             <nav className="blog-post-nav" aria-label="Blog post navigation">
               <Link href="/blog" className="blog-back-link">Back to all posts</Link>
@@ -64,4 +60,8 @@ export default async function Page({params}:{params:Promise<{slug:string}>}){
       </section>
     </article>
   </main>;
+}
+
+function renderInline(content:BlogInline[]){
+  return content.map((part,index)=>typeof part==="string"?part:<Link href={part.href} key={index}>{part.text}</Link>);
 }

@@ -2,11 +2,11 @@ import Link from "next/link";
 import { BlogCards, Cases, ClientLogos, FAQSection, ProcessStack, SectionHead, ServiceCards, Team, Testimonials } from "@/components/sections";
 import { FeatureCTA, JsonLd } from "@/components/site";
 import { TechVisual } from "@/components/tech-visual";
-import { site } from "@/lib/site";
+import { organizationId, site, websiteId } from "@/lib/site";
 import { homeFaq } from "@/content/data";
 
 export default function Home(){return <main>
- <JsonLd data={{"@context":"https://schema.org","@graph":[{"@type":"Organization",name:"Dimaso",url:site.url,email:site.email,telephone:site.phone,areaServed:["US","International"]},{"@type":"FAQPage",mainEntity:homeFaq.map(([q,a])=>({"@type":"Question",name:q,acceptedAnswer:{"@type":"Answer",text:a}}))}]}}/>
+ <JsonLd data={{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":organizationId,name:"Dimaso",url:site.url,logo:`${site.url}/dimaso-logo-accent.svg`,email:site.email,telephone:site.phone,areaServed:["US","International"]},{"@type":"WebSite","@id":websiteId,url:`${site.url}/`,name:site.name,description:site.description,publisher:{"@id":organizationId}},{"@type":"FAQPage",mainEntity:homeFaq.map(([q,a])=>({"@type":"Question",name:q,acceptedAnswer:{"@type":"Answer",text:a}}))}]}}/>
  <section className="grid-bg" style={{minHeight:"calc(100vh - 72px)",display:"grid",alignItems:"center",position:"relative",overflow:"hidden",padding:"96px 0 110px"}}><TechVisual/><span className="hero-plus p1">+</span><span className="hero-plus p2">+</span><span className="hero-plus p3">+</span><span className="hero-plus p4">+</span><div className="shell" style={{position:"relative",zIndex:2}}><span className="eyebrow">Senior technical team · US & international</span><h1 style={{fontSize:"clamp(52px,8.2vw,100px)",lineHeight:.98,maxWidth:1060,margin:"24px 0 32px"}}>Websites maintained, developed, and improved.</h1><p className="lede">Dimaso helps businesses keep their websites stable, fast, secure, and ready to grow through ongoing maintenance, custom development, design improvements, integrations, QA, and technical support.</p><div style={{display:"flex",gap:12,marginTop:42,flexWrap:"wrap"}}><Link className="btn" href="#rfp">Send us your RFP</Link><Link className="btn ghost" href="/case-studies">View case studies</Link></div></div></section>
  <ClientLogos/>
  <section id="services" className="section"><div className="shell"><SectionHead eyebrow="Core services" title="One accountable partner across the website lifecycle." copy="Bring us the ongoing support backlog, the custom integration, or the redesign that has to work harder."/><div style={{marginTop:55}}><ServiceCards/></div></div></section>

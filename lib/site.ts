@@ -1,6 +1,11 @@
+export const productionUrl = "https://dimaso.co";
+export const organizationId = `${productionUrl}/#organization`;
+export const websiteId = `${productionUrl}/#website`;
+export const seoContentLastModified = "2026-06-19";
+
 export const site = {
   name: "Dimaso",
-  url: process.env.NEXT_PUBLIC_SITE_URL || "https://dimaso.co",
+  url: productionUrl,
   email: "office@dimaso.co",
   phone: "+381 61 137 5150",
   description:
@@ -10,7 +15,7 @@ export const site = {
 export const social = {
   title: "Dimaso — Website Support, Maintenance & Development",
   description: site.description,
-  image: "https://dimaso.co/og-dimaso.png",
+  image: `${productionUrl}/og-dimaso.png`,
   imageAlt: "Dimaso — Website Support, Maintenance & Development",
 };
 

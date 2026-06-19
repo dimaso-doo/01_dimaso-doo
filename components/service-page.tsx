@@ -2,14 +2,14 @@ import Link from "next/link";
 import { serviceFaqs, services, ServiceKey } from "@/content/data";
 import { Cases, FAQSection, ProcessStack, Reveal, SectionHead, Testimonials } from "./sections";
 import { CTA, JsonLd } from "./site";
-import { site } from "@/lib/site";
+import { organizationId, site, websiteId } from "@/lib/site";
 import { TechVisual } from "./tech-visual";
 
 export function ServicePage({type}:{type:ServiceKey}) {
  const s=services[type];
  const faq=serviceFaqs[type];
  return <main>
-  <JsonLd data={{"@context":"https://schema.org","@graph":[{"@type":"ProfessionalService",name:`Dimaso ${s.label}`,url:`${site.url}/${s.slug}`,description:s.intro,areaServed:["US","International"]},{"@type":"BreadcrumbList",itemListElement:[{"@type":"ListItem",position:1,name:"Home",item:site.url},{"@type":"ListItem",position:2,name:s.label,item:`${site.url}/${s.slug}`}]},{"@type":"FAQPage",mainEntity:faq.map(([q,a])=>({"@type":"Question",name:q,acceptedAnswer:{"@type":"Answer",text:a}}))}]}}/>
+  <JsonLd data={{"@context":"https://schema.org","@graph":[{"@type":"Service","@id":`${site.url}/${s.slug}#service`,name:s.label,url:`${site.url}/${s.slug}`,description:s.intro,provider:{"@id":organizationId},isPartOf:{"@id":websiteId},areaServed:["US","International"]},{"@type":"BreadcrumbList",itemListElement:[{"@type":"ListItem",position:1,name:"Home",item:`${site.url}/`},{"@type":"ListItem",position:2,name:s.label,item:`${site.url}/${s.slug}`}]},{"@type":"FAQPage",mainEntity:faq.map(([q,a])=>({"@type":"Question",name:q,acceptedAnswer:{"@type":"Answer",text:a}}))}]}}/>
   <section className="grid-bg" style={{padding:"140px 0 100px",position:"relative",overflow:"hidden"}}><TechVisual/><div className="shell" style={{position:"relative",zIndex:2}}><span className="eyebrow">{s.eyebrow} · US & international</span><h1 style={{fontSize:"clamp(48px,8vw,92px)",lineHeight:1.02,maxWidth:1000,margin:"22px 0 28px"}}>{s.title}</h1><p className="lede">{s.intro}</p><div style={{display:"flex",gap:12,marginTop:35,flexWrap:"wrap"}}><Link href="#rfp" className="btn">Send us your RFP</Link><Link href="/case-studies" className="btn ghost">View case studies</Link></div></div></section>
   <section className="section service-section service-cover-section ambient-code ambient-left"><div className="shell"><SectionHead eyebrow="What we cover" title={`${s.label} with senior ownership.`} copy="We combine technical depth, delivery discipline, and business context so the work creates value beyond a list of completed tickets."/><div className="maintenance-cover-grid cards-grid">{s.keywords.map((x,i)=><Reveal key={x}><div className={`card maintenance-cover-card cover-card-${i+1}`}><div className="cover-motion"><span/><span/><span/></div><span>0{i+1}</span><h3>{x}</h3></div></Reveal>)}</div></div></section>
   {type==="development"&&<DevelopmentSystems/>}

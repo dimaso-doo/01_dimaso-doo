@@ -15,11 +15,11 @@ export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: { default: social.title, template: "%s | Dimaso" },
   description: social.description,
-  alternates:{canonical:"https://dimaso.co/"},
+  alternates:{canonical:`${site.url}/`},
   openGraph:{
     title:social.title,
     description:social.description,
-    url:"https://dimaso.co/",
+    url:`${site.url}/`,
     type:"website",
     siteName:site.name,
     images:[{url:social.image,secureUrl:social.image,type:"image/png",width:1200,height:630,alt:social.imageAlt}],
