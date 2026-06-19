@@ -3,6 +3,7 @@ export type ServiceKey = "maintenance" | "development" | "design";
 export const services = {
   maintenance: {
     slug: "website-maintenance",
+    serviceType: "Website Maintenance and Support",
     label: "Web Maintenance",
     eyebrow: "Ongoing technical partnership",
     title: "Web maintenance services that keep your platform reliable.",
@@ -14,17 +15,19 @@ export const services = {
   },
   development: {
     slug: "web-development",
+    serviceType: "Custom Web Development",
     label: "Web Development",
     eyebrow: "Custom engineering",
     title: "Web development services built around business-critical workflows.",
     intro: "From custom WordPress and CMS development to API integrations, payment workflows, and complex website features, Dimaso engineers reliable systems that fit the way your business operates.",
-    keywords: ["Custom web development", "WordPress development", "API integrations", "Payment workflows", "CMS development", "Technical SEO"],
+    keywords: ["Custom web development", "WordPress development", "API integrations", "Payment workflows", "CMS development", "Technical SEO implementation"],
     problems: ["Off-the-shelf tools do not fit the workflow", "Integrations fail or lose data", "Legacy code blocks product growth", "Performance and technical SEO limit acquisition"],
     process: ["Technical discovery", "Architecture & delivery plan", "Iterative development & QA", "Launch, documentation & support"],
     subject: "New RFP Request - Web Development - dimaso.co",
   },
   design: {
     slug: "web-design",
+    serviceType: "Web Design and Website Redesign",
     label: "Web Design",
     eyebrow: "Clarity, conversion, systems",
     title: "Web design services for sharper positioning and better conversion.",
@@ -55,6 +58,8 @@ export const serviceFaqs: Record<ServiceKey, readonly (readonly [string, string]
     ["Do you provide monthly reporting?", "Yes. We can provide monthly summaries covering completed work, open risks, performance notes, security or update status, recommendations, and next priorities for the website."],
     ["Is maintenance only for WordPress websites?", "WordPress maintenance is a common part of our work, but we can also support custom websites, CMS platforms, frontend applications, integrations, and technical workflows depending on the stack."],
     ["Can maintenance turn into ongoing improvements?", "Yes. Maintenance often creates the clearest path for continuous improvement because we see recurring issues, user friction, performance gaps, and technical debt before they become larger problems."],
+    ["How does a website maintenance engagement begin?", "We begin with an access review and baseline audit covering the platform, hosting, backups, integrations, critical user journeys, known issues, and update risk. We then define priorities, response expectations, and a practical maintenance plan."],
+    ["How is a maintenance plan priced?", "Pricing depends on the platform, business-critical functionality, response expectations, update frequency, and the amount of ongoing development or content support required. We define the scope after reviewing the current website and support needs."],
   ],
   development: [
     ["What type of web development does Dimaso handle?", "Dimaso handles custom website development, WordPress development, CMS builds, API integrations, payment workflows, technical SEO implementation, performance improvements, and business-specific website features."],
@@ -64,6 +69,8 @@ export const serviceFaqs: Record<ServiceKey, readonly (readonly [string, string]
     ["Can you improve website speed and technical SEO?", "Yes. Performance and technical SEO can be part of development work, including Core Web Vitals, crawlability, metadata, schema, redirects, image handling, frontend performance, and structural cleanup."],
     ["Do you provide documentation after development?", "Yes. For important features and workflows, we provide practical documentation so internal teams understand how the system works, what was changed, and how to manage it safely."],
     ["Can you support the website after launch?", "Yes. Development projects can move into maintenance or ongoing support so fixes, monitoring, QA, and future improvements stay with the team that understands the platform."],
+    ["How long does a custom web development project take?", "Timing depends on discovery, integration complexity, content readiness, and QA requirements. A focused feature may take several weeks, while a larger platform or migration is planned in phases with clear release milestones."],
+    ["Can your team work with our internal developers or marketing team?", "Yes. We can own a defined technical scope or work alongside internal development, product, marketing, and content teams with clear responsibilities, documentation, and release processes."],
   ],
   design: [
     ["What is included in web design services?", "A web design engagement can include website redesign, UX direction, responsive layouts, landing pages, content hierarchy, interface systems, conversion improvements, and design support for development."],
@@ -73,6 +80,8 @@ export const serviceFaqs: Record<ServiceKey, readonly (readonly [string, string]
     ["Can you work with our existing brand?", "Yes. We can refine and extend an existing brand into a stronger web system, or create a more structured visual direction when the current website no longer reflects the business."],
     ["How do you make complex services easier to understand?", "We work on content structure, page hierarchy, interface patterns, visual rhythm, and clearer calls to action so visitors understand the offer faster and move through the site with less friction."],
     ["Can design be connected directly to development?", "Yes. Dimaso can connect design and development in one process, which helps prevent attractive concepts from becoming difficult, fragile, or inconsistent once implemented."],
+    ["What do you need from our team before design starts?", "We need the business goals, priority audiences, current website context, available content and brand assets, relevant analytics, and the stakeholders responsible for feedback and approval."],
+    ["How long does a website redesign usually take?", "Timing depends on the number of page templates, content readiness, stakeholder availability, and whether development is included. We define clear phases for structure, visual direction, responsive design, review, and implementation support."],
   ],
 } as const;
 

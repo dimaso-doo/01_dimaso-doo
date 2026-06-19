@@ -9,11 +9,14 @@ export function ServicePage({type}:{type:ServiceKey}) {
  const s=services[type];
  const faq=serviceFaqs[type];
  return <main>
-  <JsonLd data={{"@context":"https://schema.org","@graph":[{"@type":"Service","@id":`${site.url}/${s.slug}#service`,name:s.label,url:`${site.url}/${s.slug}`,description:s.intro,provider:{"@id":organizationId},isPartOf:{"@id":websiteId},areaServed:["US","International"]},{"@type":"BreadcrumbList",itemListElement:[{"@type":"ListItem",position:1,name:"Home",item:`${site.url}/`},{"@type":"ListItem",position:2,name:s.label,item:`${site.url}/${s.slug}`}]},{"@type":"FAQPage",mainEntity:faq.map(([q,a])=>({"@type":"Question",name:q,acceptedAnswer:{"@type":"Answer",text:a}}))}]}}/>
+  <JsonLd data={{"@context":"https://schema.org","@graph":[{"@type":"Service","@id":`${site.url}/${s.slug}#service`,name:s.label,serviceType:s.serviceType,url:`${site.url}/${s.slug}`,description:s.intro,provider:{"@id":organizationId},isPartOf:{"@id":websiteId},audience:{"@type":"BusinessAudience",audienceType:"Businesses"},areaServed:["US","International"]},{"@type":"BreadcrumbList",itemListElement:[{"@type":"ListItem",position:1,name:"Home",item:`${site.url}/`},{"@type":"ListItem",position:2,name:s.label,item:`${site.url}/${s.slug}`}]},{"@type":"FAQPage",mainEntity:faq.map(([q,a])=>({"@type":"Question",name:q,acceptedAnswer:{"@type":"Answer",text:a}}))}]}}/>
   <section className="grid-bg" style={{padding:"140px 0 100px",position:"relative",overflow:"hidden"}}><TechVisual/><div className="shell" style={{position:"relative",zIndex:2}}><span className="eyebrow">{s.eyebrow} · US & international</span><h1 style={{fontSize:"clamp(48px,8vw,92px)",lineHeight:1.02,maxWidth:1000,margin:"22px 0 28px"}}>{s.title}</h1><p className="lede">{s.intro}</p><div style={{display:"flex",gap:12,marginTop:35,flexWrap:"wrap"}}><Link href="#rfp" className="btn">Send us your RFP</Link><Link href="/case-studies" className="btn ghost">View case studies</Link></div></div></section>
   <section className="section service-section service-cover-section ambient-code ambient-left"><div className="shell"><SectionHead eyebrow="What we cover" title={`${s.label} with senior ownership.`} copy="We combine technical depth, delivery discipline, and business context so the work creates value beyond a list of completed tickets."/><div className="maintenance-cover-grid cards-grid">{s.keywords.map((x,i)=><Reveal key={x}><div className={`card maintenance-cover-card cover-card-${i+1}`}><div className="cover-motion"><span/><span/><span/></div><span>0{i+1}</span><h3>{x}</h3></div></Reveal>)}</div></div></section>
   {type==="development"&&<DevelopmentSystems/>}
   {type==="design"&&<DesignClarity/>}
+  <ServiceQualification type={type}/>
+  {type==="development"&&<CTA title="Have a workflow that standard website tools cannot handle?" label="Discuss your development project"/>}
+  {type==="design"&&<CTA title="Is your website making a strong business look harder to understand?" label="Discuss your redesign"/>}
   {type==="maintenance"&&<MaintenanceRhythm/>}
   {type==="maintenance"&&<MaintenanceSLA/>}
   {type==="maintenance"&&<CTA title="Need a maintenance partner who can protect the details?" label="Send us your RFP"/>}
@@ -23,6 +26,26 @@ export function ServicePage({type}:{type:ServiceKey}) {
   <section className="section service-section ambient-code ambient-left"><div className="shell"><SectionHead eyebrow="Client perspective" title="A technical partner teams can rely on."/><div style={{marginTop:50}}><Testimonials/></div></div></section>
   <FAQSection eyebrow={`FAQ / ${s.label}`} title={`Questions about ${s.label.toLowerCase()}.`} copy="Practical answers about scope, collaboration, quality, and how the service works in real business conditions." items={faq}/>
  </main>;
+}
+
+function ServiceQualification({type}:{type:ServiceKey}) {
+ const content={
+  maintenance:{eyebrow:"Who it is for",title:"Built for teams that cannot leave website reliability to chance.",points:["Active business websites","Recurring updates","Important lead or checkout flows","Teams without dedicated internal technical ownership"]},
+  development:{eyebrow:"Investment fit",title:"When custom web development is the right investment.",points:["Standard plugins cannot support the workflow","Systems need to exchange data reliably","Manual administration is slowing the team down","Legacy implementation blocks performance or growth","The website needs operational product behavior"]},
+  design:{eyebrow:"Engagement deliverables",title:"What a web design engagement can deliver.",points:["Page and navigation structure","Content hierarchy and conversion paths","Responsive page designs","Reusable interface patterns","Landing-page concepts","Developer-ready specifications and implementation support"]},
+ } as const;
+ const item=content[type];
+ return <section className="section service-section ambient-code ambient-left"><div className="shell">
+  <SectionHead eyebrow={item.eyebrow} title={item.title} copy={type==="maintenance"?"Dimaso provides ongoing website maintenance and support for teams that need dependable technical ownership without building a full internal web team.":type==="development"?"Custom development is most valuable when the website must support real business rules, connected systems, and workflows that generic tools cannot handle reliably.":"The engagement connects business context, UX, responsive design, and implementation detail so the resulting website is clear, consistent, and ready to build."}/>
+  <div style={{display:"grid",gridTemplateColumns:"repeat(2,minmax(0,1fr))",gap:14,marginTop:50}} className="cards-grid">{item.points.map((point,index)=><Reveal key={point}><div className="card"><span className="eyebrow">0{index+1}</span><h3 style={{fontSize:25,lineHeight:1.3}}>{point}</h3></div></Reveal>)}</div>
+  <RelatedServiceLinks type={type}/>
+ </div></section>;
+}
+
+function RelatedServiceLinks({type}:{type:ServiceKey}) {
+ if(type==="maintenance")return <div style={{display:"flex",gap:24,flexWrap:"wrap",marginTop:36}}><Link className="text-link" href="/blog/why-ongoing-website-maintenance-matters">Why ongoing maintenance matters →</Link><Link className="text-link" href="/blog/why-qa-matters-after-every-update">Why QA matters after updates →</Link><Link className="text-link" href="/blog/what-good-website-maintenance-reporting-looks-like">Maintenance reporting guide →</Link></div>;
+ if(type==="development")return <div style={{display:"flex",gap:24,flexWrap:"wrap",marginTop:36}}><Link className="text-link" href="/blog/when-custom-web-development-is-worth-it">When custom development is worth it →</Link><Link className="text-link" href="/blog/website-migration-without-losing-seo-value">Website migration guide →</Link><Link className="text-link" href="/website-maintenance">Post-launch website care →</Link></div>;
+ return <div style={{display:"flex",gap:24,flexWrap:"wrap",marginTop:36}}><Link className="text-link" href="/blog/what-to-check-before-redesigning">Website redesign checklist →</Link><Link className="text-link" href="/blog/design-systems-for-growing-websites">Design systems for growing websites →</Link><Link className="text-link" href="/web-development">Development and implementation →</Link><Link className="text-link" href="/website-maintenance">Post-launch website care →</Link></div>;
 }
 
 function DesignClarity() {
