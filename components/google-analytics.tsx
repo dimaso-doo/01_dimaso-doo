@@ -26,6 +26,6 @@ export function GoogleAnalytics(){
     <Script id="google-analytics-init" strategy="afterInteractive">
       {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}window.gtag=gtag;gtag('js',new Date());gtag('config','${measurementId}',{send_page_view:false});`}
     </Script>
-    <Script src={`https://www.googletagmanager.com/gtag/js?id=${measurementId}`} strategy="afterInteractive" onLoad={()=>setReady(true)}/>
+    <Script src={`https://www.googletagmanager.com/gtag/js?id=${measurementId}`} strategy="lazyOnload" onLoad={()=>setReady(true)}/>
   </>;
 }
