@@ -31,7 +31,7 @@ export const testimonials: Testimonial[] = [
     person: "Branislav Rajic",
     role: "Doctor of Medicine / CEO for the Balkan region of the US FLP company",
     category: "Development / Ecommerce Platform",
-    url: "https://foreverliving.rs/",
+    url: "https://foreverliving.com/",
     youtubeId: "nH2YofYi58U",
     alt: "FLP client video testimonial",
     scope: "A short client video about delivery quality, reliability, and collaboration rhythm.",
