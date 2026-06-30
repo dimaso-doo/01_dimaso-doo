@@ -1,6 +1,6 @@
 "use client";
 
-import { ChangeEvent, FormEvent, KeyboardEvent as ReactKeyboardEvent, useEffect, useId, useRef, useState } from "react";
+import { CSSProperties, ChangeEvent, FormEvent, KeyboardEvent as ReactKeyboardEvent, useEffect, useId, useRef, useState } from "react";
 import { trackEvent, trackLead } from "@/lib/ga-events";
 
 const successText="Thank you. Your request has been received. We will review the details and get back to you shortly.";
@@ -12,6 +12,17 @@ type ContactField="name"|"email"|"services"|"message";
 type ContactErrors=Partial<Record<ContactField,string>>;
 const allowedFileExtensions=["pdf","doc","docx","txt","zip"];
 const maxFileSize=10*1024*1024;
+const hiddenLabelStyle:CSSProperties={
+  position:"absolute",
+  width:1,
+  height:1,
+  padding:0,
+  margin:-1,
+  overflow:"hidden",
+  clip:"rect(0, 0, 0, 0)",
+  whiteSpace:"nowrap",
+  border:0,
+};
 
 function formatFileSize(size:number){
   if(size>=1024*1024)return `${(size/(1024*1024)).toFixed(size>=10*1024*1024?0:1)} MB`;
@@ -34,6 +45,13 @@ export function ContactForm({source,subject,defaultService=""}:{source:string;su
   const servicesPanel=useRef<HTMLDivElement>(null);
   const servicesId=useId();
   const formStatusId=useId();
+  const nameId=useId();
+  const emailId=useId();
+  const companyId=useId();
+  const servicesLabelId=useId();
+  const messageId=useId();
+  const fileId=useId();
+  const honeypotId=useId();
 
   useEffect(()=>{
     if(!servicesOpen)return;
@@ -158,12 +176,15 @@ export function ContactForm({source,subject,defaultService=""}:{source:string;su
   }
   const hasFormErrors=Object.keys(formErrors).length>0;
   const formErrorMessage=formErrors.email==="Please enter a valid email address."?"Please complete the highlighted fields and enter a valid email address.":"Please complete the highlighted required fields.";
-  return <form onSubmit={submit} noValidate className="form-grid form-panel" style={{display:"grid",gridTemplateColumns:"repeat(2,minmax(0,1fr))",gap:12}}>
-    <input className="field" required name="name" placeholder="Name *" aria-label="Name" aria-invalid={formErrors.name?true:undefined} aria-describedby={formErrors.name?formStatusId:undefined} onChange={()=>clearFormError("name")}/>
-    <div className="field-wrap"><input className="field" required type="email" name="email" placeholder="Email *" aria-label="Email" aria-invalid={formErrors.email?true:undefined} aria-describedby={formErrors.email?formStatusId:undefined} onChange={()=>clearFormError("email")}/></div>
-    <input className="field" name="company" placeholder="Company" aria-label="Company"/>
+  return <form action="/api/contact" method="post" encType="multipart/form-data" onSubmit={submit} noValidate className="form-grid form-panel" style={{display:"grid",gridTemplateColumns:"repeat(2,minmax(0,1fr))",gap:12}}>
+    <label htmlFor={nameId} style={hiddenLabelStyle}>Name</label>
+    <input id={nameId} className="field" required name="name" placeholder="Name *" aria-label="Name" aria-invalid={formErrors.name?true:undefined} aria-describedby={formErrors.name?formStatusId:undefined} onChange={()=>clearFormError("name")}/>
+    <div className="field-wrap"><label htmlFor={emailId} style={hiddenLabelStyle}>Email</label><input id={emailId} className="field" required type="email" name="email" placeholder="Email *" aria-label="Email" aria-invalid={formErrors.email?true:undefined} aria-describedby={formErrors.email?formStatusId:undefined} onChange={()=>clearFormError("email")}/></div>
+    <label htmlFor={companyId} style={hiddenLabelStyle}>Company</label>
+    <input id={companyId} className="field" name="company" placeholder="Company" aria-label="Company"/>
     <div ref={servicesField} className={`services-field ${servicesOpen?"is-open":""}`} onKeyDown={handleServicesKeyDown}>
-      <button type="button" className="field services-trigger" aria-label={`Services: ${serviceSummary()}`} aria-haspopup="true" aria-expanded={servicesOpen} aria-controls={servicesId} aria-invalid={formErrors.services?true:undefined} aria-describedby={formErrors.services?formStatusId:undefined} onClick={()=>setServicesOpen(open=>!open)} onKeyDown={openServicesWithKeyboard}>
+      <span id={servicesLabelId} style={hiddenLabelStyle}>Services</span>
+      <button type="button" className="field services-trigger" aria-label={`Services: ${serviceSummary()}`} aria-labelledby={servicesLabelId} aria-haspopup="true" aria-expanded={servicesOpen} aria-controls={servicesId} aria-invalid={formErrors.services?true:undefined} aria-describedby={formErrors.services?formStatusId:undefined} onClick={()=>setServicesOpen(open=>!open)} onKeyDown={openServicesWithKeyboard}>
         <span>{serviceSummary()}</span><span className="services-arrow" aria-hidden="true">⌄</span>
       </button>
       <div ref={servicesPanel} id={servicesId} className="services-panel" role="group" aria-label="Select one or more services" hidden={!servicesOpen} onPointerDown={event=>event.stopPropagation()}>
@@ -172,12 +193,14 @@ export function ContactForm({source,subject,defaultService=""}:{source:string;su
         </label>)}
       </div>
     </div>
-    <textarea className="field" required name="message" placeholder="Tell us about the project *" aria-label="Message" aria-invalid={formErrors.message?true:undefined} aria-describedby={formErrors.message?formStatusId:undefined} onChange={()=>clearFormError("message")} rows={5} style={{gridColumn:"1 / -1"}}/>
+    <label htmlFor={messageId} style={hiddenLabelStyle}>Project message</label>
+    <textarea id={messageId} className="field" required name="message" placeholder="Tell us about the project *" aria-label="Message" aria-invalid={formErrors.message?true:undefined} aria-describedby={formErrors.message?formStatusId:undefined} onChange={()=>clearFormError("message")} rows={5} style={{gridColumn:"1 / -1"}}/>
     <div className="upload-field">
-      <label className={`upload-dropzone ${fileInfo?"has-file":""} ${fileError?"has-error":""}`}><input ref={fileInput} type="file" name="file" accept=".pdf,.doc,.docx,.txt,.zip" aria-invalid={fileError?true:undefined} aria-describedby={fileError?formStatusId:undefined} onChange={updateFile}/><span className="upload-icon">{fileInfo?"✓":"↑"}</span><span><strong>{fileInfo?"Change attached file":"Click to upload or drag a project brief here"}</strong><small>{fileInfo?"PDF, DOC, DOCX, TXT or ZIP · maximum 10MB":"PDF, DOC, DOCX, TXT or ZIP · maximum 10MB"}</small></span></label>
+      <label htmlFor={fileId} className={`upload-dropzone ${fileInfo?"has-file":""} ${fileError?"has-error":""}`}><input id={fileId} ref={fileInput} type="file" name="file" accept=".pdf,.doc,.docx,.txt,.zip" aria-invalid={fileError?true:undefined} aria-describedby={fileError?formStatusId:undefined} onChange={updateFile}/><span className="upload-icon">{fileInfo?"✓":"↑"}</span><span><strong>{fileInfo?"Change attached file":"Click to upload or drag a project brief here"}</strong><small>{fileInfo?"PDF, DOC, DOCX, TXT or ZIP · maximum 10MB":"PDF, DOC, DOCX, TXT or ZIP · maximum 10MB"}</small></span></label>
       {fileInfo&&<div key={fileInfo.nonce} className="upload-confirmation"><span><strong>File attached:</strong> {fileInfo.name}</span><small>{formatFileSize(fileInfo.size)}</small><button type="button" onClick={removeFile}>Remove</button></div>}
     </div>
-    <input name="website" tabIndex={-1} autoComplete="off" style={{position:"absolute",left:"-9999px"}} aria-hidden="true"/>
+    <label htmlFor={honeypotId} style={hiddenLabelStyle} aria-hidden="true">Website</label>
+    <input id={honeypotId} name="website" tabIndex={-1} autoComplete="off" style={{position:"absolute",left:"-9999px"}} aria-hidden="true"/>
     <div id={formStatusId} className={`form-status ${hasFormErrors||fileError||status==="error"?"is-error":status==="success"?"is-success":""}`} role={hasFormErrors||fileError||status==="error"?"alert":"status"} aria-live={hasFormErrors||fileError||status==="error"?"assertive":"polite"}>
       {hasFormErrors&&<small>{formErrorMessage}</small>}
       {!hasFormErrors&&fileError&&<small>{fileError}</small>}
@@ -192,6 +215,8 @@ export function Newsletter() {
   const [status,setStatus]=useState<"idle"|"loading"|"success"|"error">("idle");
   const [emailError,setEmailError]=useState("");
   const statusId=useId();
+  const emailId=useId();
+  const honeypotId=useId();
   async function submit(e:FormEvent<HTMLFormElement>){
     e.preventDefault();
     const form=e.currentTarget;
@@ -217,5 +242,5 @@ export function Newsletter() {
       setStatus("error");
     }
   }
-  return <form onSubmit={submit} noValidate className="newsletter-form"><label style={{display:"block",fontSize:13,color:"#b7c1b9",marginBottom:10}}>Get practical website support, development, and technical SEO insights.</label><div className="newsletter-row"><span className="newsletter-email-field"><input required type="email" name="email" className="field" placeholder="Email address" aria-label="Email address" aria-invalid={emailError?true:undefined} aria-describedby={emailError?statusId:undefined} onChange={()=>emailError&&setEmailError("")}/></span><button className="btn newsletter-submit" disabled={status==="loading"}>{status==="loading"?"Sending...":"Subscribe"}</button></div><input name="website" tabIndex={-1} autoComplete="off" style={{position:"absolute",left:"-9999px"}} aria-hidden="true"/><div id={statusId} className={`form-status newsletter-status ${emailError||status==="error"?"is-error":status==="success"?"is-success":""}`} role={emailError||status==="error"?"alert":"status"} aria-live={emailError||status==="error"?"assertive":"polite"}>{emailError&&<small>{emailError==="Email is required."?"Enter your email address to subscribe.":"Enter a valid email address to subscribe."}</small>}{!emailError&&status==="success"&&<small>You are subscribed.</small>}{!emailError&&status==="error"&&<small>Please try again or email office@dimaso.co.</small>}</div></form>;
+  return <form action="/api/contact" method="post" onSubmit={submit} noValidate className="newsletter-form"><label htmlFor={emailId} style={{display:"block",fontSize:13,color:"#b7c1b9",marginBottom:10}}>Get practical website support, development, and technical SEO insights.</label><div className="newsletter-row"><span className="newsletter-email-field"><input id={emailId} required type="email" name="email" className="field" placeholder="Email address" aria-label="Email address" aria-invalid={emailError?true:undefined} aria-describedby={emailError?statusId:undefined} onChange={()=>emailError&&setEmailError("")}/></span><button className="btn newsletter-submit" disabled={status==="loading"}>{status==="loading"?"Sending...":"Subscribe"}</button></div><label htmlFor={honeypotId} style={hiddenLabelStyle} aria-hidden="true">Website</label><input id={honeypotId} name="website" tabIndex={-1} autoComplete="off" style={{position:"absolute",left:"-9999px"}} aria-hidden="true"/><div id={statusId} className={`form-status newsletter-status ${emailError||status==="error"?"is-error":status==="success"?"is-success":""}`} role={emailError||status==="error"?"alert":"status"} aria-live={emailError||status==="error"?"assertive":"polite"}>{emailError&&<small>{emailError==="Email is required."?"Enter your email address to subscribe.":"Enter a valid email address to subscribe."}</small>}{!emailError&&status==="success"&&<small>You are subscribed.</small>}{!emailError&&status==="error"&&<small>Please try again or email office@dimaso.co.</small>}</div></form>;
 }

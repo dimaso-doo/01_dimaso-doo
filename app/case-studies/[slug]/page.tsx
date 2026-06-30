@@ -44,7 +44,7 @@ export default async function CaseStudyPage({ params }: Props) {
           <p className="lede">{study.summary}</p>
           <div className="case-study-actions"><a className="btn" href={study.website} target="_blank" rel="noopener noreferrer">Visit website</a><Link className="btn ghost" href={study.href}>{study.cta}</Link></div>
         </div>
-        <div className="case-study-hero-media"><Image src={study.image} alt={`${study.name} case study visual`} width={1200} height={700} priority sizes="(max-width: 900px) 100vw, 50vw"/><span>{study.services}</span></div>
+        <div className="case-study-hero-media"><Image src={study.image} alt={study.imageAlt} width={1200} height={700} priority sizes="(max-width: 900px) 100vw, 50vw"/><span>{study.services}</span></div>
       </div>
     </section>
     <section className="section">
