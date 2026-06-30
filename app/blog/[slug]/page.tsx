@@ -12,7 +12,7 @@ export async function generateMetadata({params}:{params:Promise<{slug:string}>})
   const p=posts.find(x=>x.slug===slug);
   if(!p)return{};
   const url=`${site.url}/blog/${p.slug}`;
-  return{title:p.title,description:p.excerpt,alternates:{canonical:url},openGraph:{title:p.title,description:p.excerpt,url,siteName:site.name,type:"article",publishedTime:p.date,modifiedTime:p.date,images:[{url:social.image,alt:social.imageAlt}]},twitter:{card:"summary_large_image",title:p.title,description:p.excerpt,images:[social.image]}};
+  return{title:p.title,description:p.description,alternates:{canonical:url},openGraph:{title:p.title,description:p.description,url,siteName:site.name,type:"article",publishedTime:p.date,modifiedTime:p.date,images:[{url:social.image,alt:social.imageAlt}]},twitter:{card:"summary_large_image",title:p.title,description:p.description,images:[social.image]}};
 }
 
 export default async function Page({params}:{params:Promise<{slug:string}>}){
@@ -25,7 +25,7 @@ export default async function Page({params}:{params:Promise<{slug:string}>}){
   const content=blogContent[p.slug];
   const url=`${site.url}/blog/${p.slug}`;
   return <main>
-    <JsonLd data={{"@context":"https://schema.org","@graph":[{"@type":"Article","@id":`${url}#article`,headline:p.title,description:p.excerpt,url,mainEntityOfPage:{"@type":"WebPage","@id":url},image:social.image,datePublished:p.date,dateModified:p.date,author:{"@id":organizationId},publisher:{"@id":organizationId},isPartOf:{"@id":websiteId}},{"@type":"BreadcrumbList","@id":`${url}#breadcrumb`,itemListElement:[{"@type":"ListItem",position:1,name:"Home",item:`${site.url}/`},{"@type":"ListItem",position:2,name:"Blog",item:`${site.url}/blog`},{"@type":"ListItem",position:3,name:p.title,item:url}]}]}}/>
+    <JsonLd data={{"@context":"https://schema.org","@graph":[{"@type":"Article","@id":`${url}#article`,headline:p.title,description:p.description,url,mainEntityOfPage:{"@type":"WebPage","@id":url},image:social.image,datePublished:p.date,dateModified:p.date,author:{"@id":organizationId},publisher:{"@id":organizationId},isPartOf:{"@id":websiteId}},{"@type":"BreadcrumbList","@id":`${url}#breadcrumb`,itemListElement:[{"@type":"ListItem",position:1,name:"Home",item:`${site.url}/`},{"@type":"ListItem",position:2,name:"Blog",item:`${site.url}/blog`},{"@type":"ListItem",position:3,name:p.title,item:url}]}]}}/>
     <article>
       <header className="grid-bg blog-hero">
         <div className="shell blog-hero-grid">

@@ -24,8 +24,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title,
     description,
     alternates: { canonical: url },
-    openGraph: { title, description, url, siteName: site.name, type: "article", images: [{ url: study.image, alt: `${study.name} case study visual` }] },
-    twitter: { card: "summary_large_image", title, description },
+    openGraph: { title, description, url, siteName: site.name, type: "article", images: [{ url: `${site.url}${study.image}`, alt: study.imageAlt }] },
+    twitter: { card: "summary_large_image", title, description, images:[`${site.url}${study.image}`] },
   };
 }
 
@@ -34,7 +34,7 @@ export default async function CaseStudyPage({ params }: Props) {
   const study = caseStudies.find((item) => item.slug === slug);
   if (!study) notFound();
   return <main>
-    <JsonLd data={{"@context":"https://schema.org","@graph":[{"@type":"BreadcrumbList",itemListElement:[{"@type":"ListItem",position:1,name:"Home",item:site.url},{"@type":"ListItem",position:2,name:"Case Studies",item:`${site.url}/case-studies`},{"@type":"ListItem",position:3,name:study.name,item:`${site.url}/case-studies/${study.slug}`}]},{"@type":"CreativeWork",name:study.name,url:`${site.url}/case-studies/${study.slug}`,description:study.summary,image:`${site.url}${study.image}`} ]}}/>
+    <JsonLd data={{"@context":"https://schema.org","@graph":[{"@type":"BreadcrumbList",itemListElement:[{"@type":"ListItem",position:1,name:"Home",item:site.url},{"@type":"ListItem",position:2,name:"Case Studies",item:`${site.url}/case-studies`},{"@type":"ListItem",position:3,name:study.name,item:`${site.url}/case-studies/${study.slug}`}]},{"@type":"CreativeWork",name:study.name,url:`${site.url}/case-studies/${study.slug}`,description:study.summary,image:`${site.url}${study.image}`,about:study.serviceTags,genre:study.category,provider:{"@type":"Organization","name":"Dimaso","url":site.url}}]}}/>
     <section className="case-study-hero grid-bg">
       <div className="shell case-study-hero-grid">
         <div>
@@ -55,10 +55,10 @@ export default async function CaseStudyPage({ params }: Props) {
     <section className="section case-study-body-section">
       <div className="shell case-study-body">
         <div className="case-study-main">
-          <article className="case-study-panel"><span className="eyebrow">Project overview</span><h2>Why the work mattered.</h2><p>{study.overview}</p></article>
-          <article className="case-study-panel"><span className="eyebrow">Challenge</span><h2>What needed to be solved.</h2><p>{study.problem}</p></article>
-          <article className="case-study-panel"><span className="eyebrow">Solution</span><h2>How Dimaso approached it.</h2><p>{study.solution}</p></article>
-          <article className="case-study-panel"><span className="eyebrow">Results</span><h2>What changed for the project.</h2><p>{study.result}</p></article>
+          <article className="case-study-panel"><span className="eyebrow">Project overview</span><h2>Why {study.name} needed a stronger digital foundation.</h2><p>{study.overview}</p></article>
+          <article className="case-study-panel"><span className="eyebrow">Challenge</span><h2>What needed to be solved for {study.category.toLowerCase()}.</h2><p>{study.problem}</p></article>
+          <article className="case-study-panel"><span className="eyebrow">Solution</span><h2>How Dimaso approached {study.services.toLowerCase()}.</h2><p>{study.solution}</p></article>
+          <article className="case-study-panel"><span className="eyebrow">Results</span><h2>What changed for {study.name} after the work.</h2><p>{study.result}</p></article>
         </div>
         <aside className="case-study-side">
           <div className="case-study-panel"><span className="eyebrow">What Dimaso worked on</span><p>{study.workSummary}</p><ul>{study.work.map((item)=><li key={item}>{item}</li>)}</ul></div>

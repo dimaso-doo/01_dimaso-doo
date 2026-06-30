@@ -1,8 +1,9 @@
 import Link from "next/link";
 import { Newsletter } from "@/components/forms";
 import { BlogCards, SectionHead } from "@/components/sections";
+import { JsonLd } from "@/components/site";
 import { posts } from "@/content/data";
-import { metadata as meta } from "@/lib/site";
+import { metadata as meta, site, websiteId } from "@/lib/site";
 
 const perPage=9;
 const totalPages=Math.ceil(posts.length/perPage);
@@ -10,7 +11,10 @@ const totalPages=Math.ceil(posts.length/perPage);
 export const metadata=meta("Website insights","Practical website support, development, QA, design, and technical SEO insights from Dimaso.","/blog");
 
 export default function Page(){
+  const url=`${site.url}/blog`;
+  const pagePosts=posts.slice(0,perPage);
   return <main>
+    <JsonLd data={{"@context":"https://schema.org","@graph":[{"@type":"Blog","@id":`${url}#blog`,url,name:"Website insights",description:"Practical website support, development, QA, design, and technical SEO insights from Dimaso.",isPartOf:{"@id":websiteId}},{"@type":"ItemList","@id":`${url}#itemlist`,itemListElement:pagePosts.map((post,index)=>({"@type":"ListItem",position:index+1,url:`${site.url}/blog/${post.slug}`,name:post.title}))}]}}/>
     <section className="grid-bg" style={{padding:"130px 0 90px"}}>
       <div className="shell">
         <span className="eyebrow">Insights</span>
