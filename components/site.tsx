@@ -126,14 +126,15 @@ export function Footer() {
   return <footer id="rfp" className="section site-footer">
     <div className="shell">
       <div style={{display:"grid",gridTemplateColumns:"minmax(0,1fr) minmax(0,1.3fr)",gap:60}} className="footer-grid">
-        <div className="footer-info-panel"><div><Logo/><p className="lede" style={{fontSize:16,marginTop:20}}>A senior technical partner for websites that need to stay reliable, evolve, and perform.</p></div>
+        <div className="footer-info-panel">
           <div className="footer-location-grid"><div><span className="eyebrow">Serbia / Europe</span><strong>Dimaso RS</strong><small>Novi Sad, Serbia</small></div><div><span className="eyebrow">United States</span><strong>Dimaso US</strong><small>Sheridan, USA</small></div></div>
           <div className="footer-contact-list"><TrackedLink tracking="email" trackingLocation="footer" className="footer-contact-link email" href="mailto:office@dimaso.co">office@dimaso.co</TrackedLink><a className="footer-contact-link phone" href="tel:+381611375150">+381 61 137 5150</a><TrackedLink tracking="linkedin" trackingLocation="footer" className="footer-contact-link linkedin" href={linkedinUrl} target="_blank" rel="noopener noreferrer">LinkedIn</TrackedLink></div>
           <div style={{marginTop:42}}><Newsletter /></div>
         </div>
-        <div className="footer-rfp-column"><FooterLinkColumns/><div className="footer-rfp-head"><span className="eyebrow">Start a conversation</span><h2>Send your RFP or project brief.</h2><p>Share the context, goals, constraints, and files you already have. A senior member of the team will review it directly.</p></div><ContactForm {...formContext}/></div>
+        <div className="footer-rfp-column"><div className="footer-rfp-head"><span className="eyebrow">Start a conversation</span><h2>Send your RFP or project brief.</h2><p>Share the context, goals, constraints, and files you already have. A senior member of the team will review it directly.</p></div><ContactForm {...formContext}/></div>
       </div>
-      <div className="rule" style={{margin:"65px 0 25px"}}/><div className="footer-bottom"><span>© {new Date().getFullYear()} Dimaso. All rights reserved.</span><div className="footer-legal-row"><span>Websites maintained, developed, and improved with care since 2008.</span><nav aria-label="Legal links"><Link href="/privacy-policy">Privacy Policy</Link><Link href="/terms-and-conditions">Terms and Conditions</Link></nav></div></div>
+      <div className="footer-directory"><div><Logo/><p className="lede" style={{fontSize:16,marginTop:20}}>A senior technical partner for websites that need to stay reliable, evolve, and perform.</p></div><FooterLinkColumns/></div>
+      <div className="rule" style={{margin:"40px 0 25px"}}/><div className="footer-bottom"><span>© {new Date().getFullYear()} Dimaso. All rights reserved.</span><div className="footer-legal-row"><span>Websites maintained, developed, and improved with care since 2008.</span><nav aria-label="Legal links"><Link href="/privacy-policy">Privacy Policy</Link><Link href="/terms-and-conditions">Terms and Conditions</Link></nav></div></div>
     </div>
   </footer>;
 }
