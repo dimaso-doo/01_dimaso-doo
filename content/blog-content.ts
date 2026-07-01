@@ -4,10 +4,46 @@ export type BlogBlock =
   | { type: "p"; content: BlogInline[] };
 
 export const blogContent: Record<string, BlogBlock[]> = {
+  "website-maintenance-checklist-for-nonprofits": [
+    { type: "h2", text: "Start with the forms that support the mission" },
+    { type: "p", content: ["Nonprofit websites often depend on donation forms, contact forms, event signups, volunteer inquiries, and resource downloads. A maintenance checklist should test those paths before focusing on lower-risk visual details."] },
+    { type: "p", content: ["Dimaso supports ", { text: "nonprofit websites", href: "/industries/nonprofits" }, " with practical ", { text: "website maintenance", href: "/services/website-maintenance" }, " that includes updates, QA, backups, security, content help, analytics, and technical SEO."] },
+    { type: "h2", text: "Review content, accessibility, and trust signals" },
+    { type: "p", content: ["Check program pages, staff or board information, event pages, donation explanations, accessibility basics, and public contact details. Nonprofit visitors should quickly understand who the organization helps, how to participate, and how to give or ask questions."] },
+    { type: "h2", text: "Keep a monthly operating rhythm" },
+    { type: "p", content: ["A useful monthly rhythm covers CMS and plugin updates, backups, security review, form testing, key page QA, analytics notes, and a short list of next priorities. That rhythm helps nonprofit teams stay budget-conscious without becoming reactive."] },
+  ],
+  "how-to-choose-a-website-maintenance-partner": [
+    { type: "h2", text: "Look for ownership, not only task execution" },
+    { type: "p", content: ["A website maintenance partner should understand the business role of the website, not only apply updates. Ask how they handle urgent issues, backups, security, QA, reporting, forms, performance, and technical SEO implementation."] },
+    { type: "p", content: ["Dimaso provides ", { text: "website maintenance services", href: "/services/website-maintenance" }, " for teams that need ongoing technical ownership and a clear monthly support process."] },
+    { type: "h2", text: "Ask how they protect important journeys" },
+    { type: "p", content: ["Maintenance should include checks for lead forms, checkout flows, search visibility, analytics events, redirects, responsive layouts, and business-critical templates. The right partner can explain what they test and why."] },
+    { type: "h2", text: "Confirm communication and reporting" },
+    { type: "p", content: ["A good partner makes work visible: what changed, what remains risky, what should happen next, and which decisions need client input. For teams planning larger work, maintenance can connect naturally to ", { text: "web development", href: "/services/web-development" }, " or ", { text: "technical SEO", href: "/services/technical-seo" }, "."] },
+  ],
+  "wordpress-maintenance-for-associations": [
+    { type: "h2", text: "Association websites change constantly" },
+    { type: "p", content: ["Associations often manage event pages, member resources, announcements, directories, forms, and recurring content updates. WordPress can support that well, but only if plugins, themes, backups, security, and editorial workflows are maintained."] },
+    { type: "p", content: ["Dimaso provides ", { text: "WordPress support", href: "/services/wordpress-support" }, " and ", { text: "association website support", href: "/industries/associations" }, " for teams that need dependable monthly care."] },
+    { type: "h2", text: "Prioritize plugins, forms, and resource libraries" },
+    { type: "p", content: ["The maintenance checklist should include plugin and theme updates, form delivery, search and filter behavior, resource downloads, mobile layouts, event pages, and analytics. These are the areas members and staff notice first."] },
+    { type: "h2", text: "Connect maintenance with reporting" },
+    { type: "p", content: ["Monthly reporting should summarize completed updates, open risks, content needs, analytics notes, and recommended improvements. That record helps association teams plan calmly instead of treating every issue as a separate emergency."] },
+  ],
+  "website-redesign-rfp-checklist": [
+    { type: "h2", text: "Explain why the redesign is needed" },
+    { type: "p", content: ["A useful website redesign RFP starts with business context: what the current website fails to explain, which audiences matter, what content must change, and which outcomes the new website should support."] },
+    { type: "p", content: ["Dimaso supports redesign RFPs through ", { text: "web design", href: "/services/web-design" }, ", ", { text: "web development", href: "/services/web-development" }, ", technical SEO, QA, and post-launch maintenance planning."] },
+    { type: "h2", text: "Include technical and SEO constraints" },
+    { type: "p", content: ["List the current platform, hosting, analytics, CRM or form integrations, important URLs, SEO risks, accessibility needs, content responsibilities, launch timeline, and approval process. This helps vendors propose a realistic approach."] },
+    { type: "h2", text: "Ask for post-launch ownership" },
+    { type: "p", content: ["A redesign is not finished when the new pages go live. Ask how QA, redirects, metadata, schema, analytics, backups, security, and ongoing ", { text: "website maintenance", href: "/services/website-maintenance" }, " will be handled after launch."] },
+  ],
   "why-ongoing-website-maintenance-matters": [
     { type: "h2", text: "Maintenance protects business continuity" },
     { type: "p", content: ["A business website is connected to hosting, a CMS, third-party services, forms, analytics, and security controls. Each part changes over time. Without active ownership, small compatibility issues accumulate until a routine update becomes an outage or a lead path stops working."] },
-    { type: "p", content: ["Ongoing ", { text: "website maintenance", href: "/website-maintenance" }, " turns that uncertainty into a managed process. Updates are reviewed, critical journeys are checked, backups are verified, and emerging risks are recorded before they become urgent."] },
+    { type: "p", content: ["Ongoing ", { text: "website maintenance", href: "/services/website-maintenance" }, " turns that uncertainty into a managed process. Updates are reviewed, critical journeys are checked, backups are verified, and emerging risks are recorded before they become urgent."] },
     { type: "h2", text: "What a practical maintenance cycle includes" },
     { type: "h3", text: "Updates, QA, and operational visibility" },
     { type: "p", content: ["A useful monthly cycle covers dependency and CMS updates, uptime and security checks, form testing, responsive QA, performance review, and a clear release record. The exact checklist should reflect the website’s role: an ecommerce store needs checkout coverage, while a B2B website may prioritize inquiry forms, CRM routing, and key service pages."] },
@@ -15,6 +51,7 @@ export const blogContent: Record<string, BlogBlock[]> = {
     { type: "h2", text: "The cost of waiting for failure" },
     { type: "p", content: ["Reactive support often looks cheaper because there is no monthly line item. In practice, emergency diagnosis, lost inquiries, rushed releases, and uncertain backups cost more than planned care. Failure also tends to arrive at the least convenient time: during a campaign, a sales push, or a platform update."] },
     { type: "p", content: ["The goal is not to eliminate every incident. It is to reduce preventable failures, shorten recovery time, and give the business a technical partner who already understands the system."] },
+    { type: "p", content: ["Teams that want a more predictable operating rhythm can pair maintenance with clear ", { text: "maintenance reporting", href: "/blog/what-good-website-maintenance-reporting-looks-like" }, " and release-aware ", { text: "QA after every update", href: "/blog/why-qa-matters-after-every-update" }, "."] },
   ],
   "website-support-vs-one-time-development": [
     { type: "h2", text: "Start with the nature of the work" },
@@ -23,10 +60,11 @@ export const blogContent: Record<string, BlogBlock[]> = {
     { type: "h2", text: "Compare ownership, not only price" },
     { type: "h3", text: "Who is responsible after release?" },
     { type: "p", content: ["A project quote usually covers a defined output. It does not automatically include monitoring, post-release adjustments, dependency updates, or future troubleshooting. Businesses should ask who owns the website after launch, how incidents are handled, and whether documentation and access are complete."] },
-    { type: "p", content: ["A structured ", { text: "website support plan", href: "/website-maintenance" }, " can include a regular capacity allowance, maintenance checks, QA, and prioritization. This makes cost more predictable while keeping senior technical knowledge available."] },
+    { type: "p", content: ["A structured ", { text: "website support plan", href: "/services/website-maintenance" }, " can include a regular capacity allowance, maintenance checks, QA, and prioritization. This makes cost more predictable while keeping senior technical knowledge available."] },
     { type: "h2", text: "Use a hybrid model when the roadmap is mixed" },
     { type: "p", content: ["Many B2B websites need both models. A redesign or custom workflow can run as a project, followed by ongoing support for releases, measurement, and incremental improvements. Larger features can still be scoped separately when they exceed the support allowance."] },
-    { type: "p", content: ["Choose based on frequency, uncertainty, and business impact. If requests are recurring and the website is operationally important, continuity is valuable. If the requirement is stable and handover is realistic, a focused project may be enough."] },
+    { type: "p", content: ["Choose based on frequency, uncertainty, and business impact. If requests are recurring and the website is operationally important, continuity is valuable. If the requirement is stable and handover is realistic, a focused ", { text: "web development", href: "/services/web-development" }, " project may be enough."] },
+    { type: "p", content: ["For teams planning a redesign, support decisions should be made before launch so ", { text: "post-launch website care", href: "/services/website-maintenance" }, " does not become an afterthought."] },
   ],
   "why-qa-matters-after-every-update": [
     { type: "h2", text: "A small change can affect the whole system" },
@@ -38,7 +76,8 @@ export const blogContent: Record<string, BlogBlock[]> = {
     { type: "p", content: ["Good QA also checks the environment around the change. Confirm caching behavior, redirects, consent rules, email delivery, and third-party responses where relevant. A staging pass is useful, but production smoke testing is still necessary because infrastructure and configuration can differ."] },
     { type: "h2", text: "Make verification part of delivery" },
     { type: "p", content: ["QA works best when acceptance criteria are written before development. Developers know what must remain stable, reviewers have a shared definition of done, and releases produce evidence instead of assumptions."] },
-    { type: "p", content: ["Dimaso includes release-aware QA within ", { text: "ongoing website maintenance", href: "/website-maintenance" }, " so routine changes receive proportionate checks and high-risk work receives deeper coverage."] },
+    { type: "p", content: ["Dimaso includes release-aware QA within ", { text: "ongoing website maintenance", href: "/services/website-maintenance" }, " so routine changes receive proportionate checks and high-risk work receives deeper coverage."] },
+    { type: "p", content: ["QA should also be planned during ", { text: "custom web development", href: "/services/web-development" }, " and redesign work, especially when a release changes forms, navigation, content hierarchy, or integration behavior."] },
   ],
   "technical-seo-for-long-term-growth": [
     { type: "h2", text: "Technical SEO creates a dependable foundation" },
@@ -49,8 +88,9 @@ export const blogContent: Record<string, BlogBlock[]> = {
     { type: "p", content: ["Begin with robots directives, XML sitemaps, response codes, redirects, canonicals, and internal navigation. Then review rendering, structured data, mobile behavior, Core Web Vitals, image delivery, and template metadata. These controls should be tested on representative page types rather than only the homepage."] },
     { type: "p", content: ["Large lists of warnings need context. An orphaned commercial page matters more than a harmless parameter URL. A slow high-conversion template deserves attention before a minor optimization on an unused page. Prioritization connects technical findings to acquisition and revenue."] },
     { type: "h2", text: "Protect SEO through continuous development" },
-    { type: "p", content: ["Technical SEO is not a one-off launch task. New templates, migrations, JavaScript features, and CMS changes can alter crawl behavior. Include SEO acceptance criteria in ", { text: "web development", href: "/web-development" }, " and verify important signals after every material release."] },
+    { type: "p", content: ["Technical SEO is not a one-off launch task. New templates, migrations, JavaScript features, and CMS changes can alter crawl behavior. Include SEO acceptance criteria in ", { text: "web development", href: "/services/web-development" }, " and verify important signals after every material release."] },
     { type: "p", content: ["A stable baseline also makes content work more effective. When indexing and templates are reliable, teams can focus on answering buyer questions and strengthening the pages that should rank."] },
+    { type: "p", content: ["If the work involves a rebuild, treat SEO as part of the migration plan and follow a controlled ", { text: "website migration process", href: "/blog/website-migration-without-losing-seo-value" }, " instead of fixing crawl issues after launch."] },
   ],
   "what-to-check-before-redesigning": [
     { type: "h2", text: "Do not redesign without a baseline" },
@@ -62,7 +102,8 @@ export const blogContent: Record<string, BlogBlock[]> = {
     { type: "p", content: ["The technical review should include hosting, CMS workflows, redirects, structured data, accessibility issues, and performance constraints. Hidden dependencies discovered late tend to create compromises or launch risk."] },
     { type: "h2", text: "Define success before design begins" },
     { type: "p", content: ["Set practical outcomes such as clearer service discovery, higher-quality inquiries, easier publishing, faster mobile pages, or safer campaign launches. Each major design decision can then be evaluated against a business need."] },
-    { type: "p", content: ["Dimaso approaches ", { text: "web design", href: "/web-design" }, " as a connected system of positioning, UX, visual direction, responsive behavior, and conversion paths—not as a cosmetic layer placed over unresolved content and technology."] },
+    { type: "p", content: ["Dimaso approaches ", { text: "web design", href: "/services/web-design" }, " as a connected system of positioning, UX, visual direction, responsive behavior, and conversion paths—not as a cosmetic layer placed over unresolved content and technology."] },
+    { type: "p", content: ["When the redesign will move URLs, templates, or CMS behavior, involve ", { text: "web development", href: "/services/web-development" }, " and ", { text: "website maintenance", href: "/services/website-maintenance" }, " early so launch risk is managed before the final polish stage."] },
   ],
   "how-to-prepare-a-website-rfp": [
     { type: "h2", text: "Give partners enough context to make decisions" },
@@ -74,7 +115,7 @@ export const blogContent: Record<string, BlogBlock[]> = {
     { type: "p", content: ["Provide a realistic budget range and target timeline. These are design constraints, not negotiation mistakes. They help partners recommend an appropriate platform, team shape, and delivery sequence instead of producing a generic response."] },
     { type: "h2", text: "Ask for an approach, not only a price" },
     { type: "p", content: ["Request relevant experience, proposed phases, team responsibilities, QA practices, change control, assumptions, and ongoing ownership. Comparable proposals should explain what is included, what depends on discovery, and how risk will be managed."] },
-    { type: "p", content: ["When the brief is ready, ", { text: "send Dimaso your RFP", href: "/contact" }, ". We review project context directly and can shape the engagement around maintenance, development, design, or a combination of services."] },
+    { type: "p", content: ["When the brief is ready, ", { text: "send Dimaso your RFP", href: "/contact" }, ". We review project context directly and can shape the engagement around ", { text: "maintenance", href: "/services/website-maintenance" }, ", ", { text: "development", href: "/services/web-development" }, ", ", { text: "design", href: "/services/web-design" }, ", or a combination of services."] },
   ],
   "website-migration-without-losing-seo-value": [
     { type: "h2", text: "Treat migration as a controlled release" },
@@ -86,7 +127,8 @@ export const blogContent: Record<string, BlogBlock[]> = {
     { type: "p", content: ["Keep canonical tags, robots rules, hreflang where used, structured data, and XML sitemaps aligned with the production host. Staging blocks must be removed carefully, while genuinely private or duplicate areas should remain controlled."] },
     { type: "h2", text: "Validate before and after launch" },
     { type: "p", content: ["Crawl the staging build, compare templates, test redirects, and verify analytics before release. After launch, monitor server errors, indexation, rankings, traffic, Core Web Vitals, and conversion paths. Keep the old inventory available for regression checks."] },
-    { type: "p", content: ["Migration-aware ", { text: "web development", href: "/web-development" }, " connects engineering, content, QA, and technical SEO. That coordination protects existing value while allowing the platform to improve."] },
+    { type: "p", content: ["Migration-aware ", { text: "web development", href: "/services/web-development" }, " connects engineering, content, QA, and technical SEO. That coordination protects existing value while allowing the platform to improve."] },
+    { type: "p", content: ["After launch, a structured ", { text: "website maintenance plan", href: "/services/website-maintenance" }, " keeps redirects, forms, analytics, and technical SEO signals under review while teams adjust to the new platform."] },
   ],
   "what-good-website-maintenance-reporting-looks-like": [
     { type: "h2", text: "A report should support decisions" },
@@ -98,7 +140,8 @@ export const blogContent: Record<string, BlogBlock[]> = {
     { type: "p", content: ["Open risks need an owner, impact statement, and recommendation. Distinguish urgent remediation from planned improvement and optional ideas. This prevents important technical debt from disappearing inside a general backlog."] },
     { type: "h2", text: "Connect reporting to the next cycle" },
     { type: "p", content: ["Useful reporting ends with priorities for the next period. Recommendations should reflect business events, available capacity, dependencies, and evidence—not a generic optimization checklist."] },
-    { type: "p", content: ["Dimaso’s ", { text: "website maintenance service", href: "/website-maintenance" }, " combines practical care with clear visibility, so teams can see both the work completed and the decisions required to keep the platform reliable."] },
+    { type: "p", content: ["Dimaso’s ", { text: "website maintenance service", href: "/services/website-maintenance" }, " combines practical care with clear visibility, so teams can see both the work completed and the decisions required to keep the platform reliable."] },
+    { type: "p", content: ["Reporting becomes stronger when it is tied to real checks such as ", { text: "QA after updates", href: "/blog/why-qa-matters-after-every-update" }, ", uptime, form delivery, technical SEO, and the next development priorities."] },
   ],
   "design-systems-for-growing-websites": [
     { type: "h2", text: "Growth exposes inconsistency" },
@@ -110,7 +153,8 @@ export const blogContent: Record<string, BlogBlock[]> = {
     { type: "p", content: ["Documentation should explain purpose and constraints, not only show a component. Editors need to know when a pattern is appropriate, developers need expected behavior, and designers need clear extension rules."] },
     { type: "h2", text: "Treat the system as a product" },
     { type: "p", content: ["A design system needs ownership. Review new patterns, remove duplication, test responsive and interactive states, and update documentation alongside releases. Governance can be lightweight, but it cannot be absent."] },
-    { type: "p", content: ["Dimaso’s ", { text: "web design service", href: "/web-design" }, " connects visual direction with reusable UX structure and implementation reality, helping growing websites stay consistent without blocking useful change."] },
+    { type: "p", content: ["Dimaso’s ", { text: "web design service", href: "/services/web-design" }, " connects visual direction with reusable UX structure and implementation reality, helping growing websites stay consistent without blocking useful change."] },
+    { type: "p", content: ["The same system should also guide ", { text: "web development", href: "/services/web-development" }, " so new components, landing pages, and CMS patterns remain maintainable after launch."] },
   ],
   "when-custom-web-development-is-worth-it": [
     { type: "h2", text: "Custom development should solve a real constraint" },
@@ -122,6 +166,7 @@ export const blogContent: Record<string, BlogBlock[]> = {
     { type: "p", content: ["Estimate the full lifecycle: discovery, implementation, migration, QA, documentation, hosting, monitoring, and future change. The right comparison is total operational value, not the initial cost of custom code versus a subscription."] },
     { type: "h2", text: "Use the smallest durable solution" },
     { type: "p", content: ["A strong technical approach may combine established services with a focused custom layer. This reduces reinvention while preserving the workflow that creates competitive value. Clear interfaces and documentation keep that layer maintainable."] },
-    { type: "p", content: ["Dimaso provides ", { text: "custom web development", href: "/web-development" }, " for business rules, integrations, CMS workflows, and digital platforms where dependable behavior matters more than adding another generic feature."] },
+    { type: "p", content: ["Dimaso provides ", { text: "custom web development", href: "/services/web-development" }, " for business rules, integrations, CMS workflows, and digital platforms where dependable behavior matters more than adding another generic feature."] },
+    { type: "p", content: ["Once custom behavior is live, ongoing ", { text: "website support", href: "/services/website-maintenance" }, " and release QA help protect the value of that investment as the business changes."] },
   ],
 };

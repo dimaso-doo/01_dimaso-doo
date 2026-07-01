@@ -196,7 +196,7 @@ export function ContactForm({source,subject,defaultService=""}:{source:string;su
     <label htmlFor={messageId} style={hiddenLabelStyle}>Project message</label>
     <textarea id={messageId} className="field" required name="message" placeholder="Tell us about the project *" aria-label="Message" aria-invalid={formErrors.message?true:undefined} aria-describedby={formErrors.message?formStatusId:undefined} onChange={()=>clearFormError("message")} rows={5} style={{gridColumn:"1 / -1"}}/>
     <div className="upload-field">
-      <label htmlFor={fileId} className={`upload-dropzone ${fileInfo?"has-file":""} ${fileError?"has-error":""}`}><input id={fileId} ref={fileInput} type="file" name="file" accept=".pdf,.doc,.docx,.txt,.zip" aria-invalid={fileError?true:undefined} aria-describedby={fileError?formStatusId:undefined} onChange={updateFile}/><span className="upload-icon">{fileInfo?"✓":"↑"}</span><span><strong>{fileInfo?"Change attached file":"Click to upload or drag a project brief here"}</strong><small>{fileInfo?"PDF, DOC, DOCX, TXT or ZIP · maximum 10MB":"PDF, DOC, DOCX, TXT or ZIP · maximum 10MB"}</small></span></label>
+      <label htmlFor={fileId} className={`upload-dropzone ${fileInfo?"has-file":""} ${fileError?"has-error":""}`}><input id={fileId} ref={fileInput} type="file" name="file" accept=".pdf,.doc,.docx,.txt,.zip" aria-invalid={fileError?true:undefined} aria-describedby={fileError?formStatusId:undefined} onChange={updateFile}/><span className="upload-icon">{fileInfo?"✓":"↑"}</span><span><strong>{fileInfo?"Change attached file":"Optional: upload a project brief"}</strong><small>{fileInfo?"PDF, DOC, DOCX, TXT or ZIP · maximum 10MB":"PDF, DOC, DOCX, TXT or ZIP · maximum 10MB"}</small></span></label>
       {fileInfo&&<div key={fileInfo.nonce} className="upload-confirmation"><span><strong>File attached:</strong> {fileInfo.name}</span><small>{formatFileSize(fileInfo.size)}</small><button type="button" onClick={removeFile}>Remove</button></div>}
     </div>
     <label htmlFor={honeypotId} style={hiddenLabelStyle} aria-hidden="true">Website</label>
@@ -207,7 +207,7 @@ export function ContactForm({source,subject,defaultService=""}:{source:string;su
       {!hasFormErrors&&!fileError&&status==="success"&&<small>{successText}</small>}
       {!hasFormErrors&&!fileError&&status==="error"&&<small>We could not send your request. Please check the fields or email us directly at office@dimaso.co.</small>}
     </div>
-    <button className="btn" disabled={status==="loading"} style={{gridColumn:"1 / -1"}}>{status==="loading"?"Sending...":"Send RFP / Project Request"}</button>
+    <button className="btn" disabled={status==="loading"} style={{gridColumn:"1 / -1"}}>{status==="loading"?"Sending...":"Send project request"}</button>
   </form>;
 }
 

@@ -1,0 +1,52 @@
+# Dimaso
+
+Dimaso is a web development, website maintenance, web design, AI implementation, and technical support team based in Novi Sad, Serbia. Dimaso serves international clients, including US-based nonprofits, associations, agencies, small businesses, education organizations, healthcare organizations, and ecommerce businesses.
+
+## Services
+- Website maintenance
+- Web development
+- Web design
+- WordPress support
+- Laravel/custom development
+- CMS support
+- Technical SEO
+- AI website and workflow support
+- AI search visibility support
+- Analytics and reporting
+- Hosting, backups, and security
+- QA and testing
+- Website migrations
+- RFP website proposal support
+- Long-term monthly website support
+
+## Industries
+- Nonprofits
+- Associations
+- Agencies
+- Small businesses
+- Education organizations
+- Healthcare organizations
+- Ecommerce businesses
+
+## Key pages
+- https://dimaso.co/
+- https://dimaso.co/services/website-maintenance
+- https://dimaso.co/services/web-development
+- https://dimaso.co/services/web-design
+- https://dimaso.co/services/wordpress-support
+- https://dimaso.co/services/technical-seo
+- https://dimaso.co/services/ai-website-workflow-support
+- https://dimaso.co/industries/nonprofits
+- https://dimaso.co/industries/associations
+- https://dimaso.co/industries/agencies
+- https://dimaso.co/industries/small-businesses
+- https://dimaso.co/industries/education
+- https://dimaso.co/industries/healthcare
+- https://dimaso.co/industries/ecommerce
+- https://dimaso.co/case-studies
+- https://dimaso.co/blog
+- https://dimaso.co/about
+- https://dimaso.co/contact
+
+## Contact
+office@dimaso.co

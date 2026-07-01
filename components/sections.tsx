@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { caseStudies, posts, services } from "@/content/data";
+import { caseStudies, industries, posts, services } from "@/content/data";
 import { testimonials } from "@/content/testimonials";
 
 export function Reveal({children}:{children:React.ReactNode}) { return <motion.div initial={{opacity:0,y:22}} whileInView={{opacity:1,y:0}} viewport={{once:true,margin:"-80px"}} transition={{duration:.55}}>{children}</motion.div>; }
@@ -18,8 +18,12 @@ export function ClientLogos(){
 }
 
 export function ServiceCards(){
- const symbols=["↻","〈/〉","□"];
- return <div style={{display:"grid",gridTemplateColumns:"repeat(3,minmax(0,1fr))",gap:18}} className="cards-grid service-cards">{Object.values(services).map((s,i)=><Link href={`/${s.slug}`} key={s.slug} className={`service-card service-card-${i+1}`} style={{minHeight:500,display:"flex",flexDirection:"column",color:"#fff"}}><div className="service-graphic"><div className="service-signal"/><div className="service-symbol">{symbols[i]}</div></div><span className="eyebrow">0{i+1} / {s.eyebrow}</span><h3 style={{fontSize:29,margin:"30px 0 18px"}}>{s.label}</h3><p className="muted" style={{lineHeight:1.76}}>{s.intro}</p><span className="text-link" style={{marginTop:"auto"}}>Explore service →</span></Link>)}</div>
+ const symbols=["↻","〈/〉","□","WP","SEO","AI"];
+ return <div style={{display:"grid",gridTemplateColumns:"repeat(3,minmax(0,1fr))",gap:18}} className="cards-grid service-cards">{Object.values(services).map((s,i)=><Link href={`/${s.slug}`} key={s.slug} className={`service-card service-card-${(i%3)+1}`} style={{minHeight:500,display:"flex",flexDirection:"column",color:"#fff"}}><div className="service-graphic"><div className="service-signal"/><div className="service-symbol">{symbols[i]}</div></div><span className="eyebrow">0{i+1} / {s.eyebrow}</span><h3 style={{fontSize:29,margin:"30px 0 18px"}}>{s.label}</h3><p className="muted" style={{lineHeight:1.76}}>{s.intro}</p><span className="text-link" style={{marginTop:"auto"}}>Explore service →</span></Link>)}</div>
+}
+
+export function IndustryCards(){
+ return <div style={{display:"grid",gridTemplateColumns:"repeat(4,minmax(0,1fr))",gap:14}} className="cards-grid industry-grid">{Object.values(industries).map((industry,index)=><Link key={industry.slug} href={`/${industry.slug}`} className="card" style={{color:"#fff",minHeight:220,display:"flex",flexDirection:"column"}}><span className="eyebrow">Industry / {String(index+1).padStart(2,"0")}</span><h3 style={{fontSize:24,margin:"22px 0 14px"}}>{industry.label}</h3><p className="muted" style={{lineHeight:1.65}}>{industry.who}</p><span className="text-link" style={{marginTop:"auto"}}>Explore industry →</span></Link>)}</div>;
 }
 export function Cases({limit,slugs}:{limit?:number;slugs?:string[]}){const studies=slugs?slugs.map(slug=>caseStudies.find(c=>c.slug===slug)).filter((c):c is (typeof caseStudies)[number]=>Boolean(c)):caseStudies;return <div style={{display:"grid",gridTemplateColumns:"repeat(2,minmax(0,1fr))",gap:18}} className="cards-grid work-grid">{studies.slice(0,limit).map((c,i)=><article className="card case-card" key={c.name}><Link href={`/case-studies/${c.slug}`} className={`case-visual case-visual-${i+1}`} aria-label={`Read ${c.name} case study`}>{c.image&&<Image className="case-visual-image" src={c.image} alt={c.imageAlt} width={1200} height={700} sizes="(max-width: 900px) 100vw, 50vw" loading="lazy"/>}<span className="case-logo-mark">{c.name.split(" ").map(x=>x[0]).join("").slice(0,2)}</span><span className="case-logo-name">{c.name}</span><span className="case-visual-line one"/><span className="case-visual-line two"/></Link><div className="case-content"><div className="case-meta"><span className="tag">{c.category}</span><span>{c.services}</span></div><h3><Link href={`/case-studies/${c.slug}`}>{c.name}</Link></h3><p className="muted case-summary">{c.summary}</p><div className="case-links"><Link href={`/case-studies/${c.slug}`} className="text-link">View case study →</Link></div></div></article>)}</div>}
 export function BlogCards({limit,page=1,perPage}:{limit?:number;page?:number;perPage?:number}){

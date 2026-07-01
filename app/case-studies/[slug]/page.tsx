@@ -33,6 +33,9 @@ export default async function CaseStudyPage({ params }: Props) {
   const { slug } = await params;
   const study = caseStudies.find((item) => item.slug === slug);
   if (!study) notFound();
+  const isForeverLiving = study.slug === "forever-living-shop";
+  const screenshot = `/case-studies/screenshots/${study.slug}.jpg`;
+  const visualClass = `case-study-visual case-study-visual-wide ${isForeverLiving ? "case-study-visual-display" : ""}`;
   return <main>
     <JsonLd data={{"@context":"https://schema.org","@graph":[{"@type":"BreadcrumbList",itemListElement:[{"@type":"ListItem",position:1,name:"Home",item:site.url},{"@type":"ListItem",position:2,name:"Case Studies",item:`${site.url}/case-studies`},{"@type":"ListItem",position:3,name:study.name,item:`${site.url}/case-studies/${study.slug}`}]},{"@type":"CreativeWork",name:study.name,url:`${site.url}/case-studies/${study.slug}`,description:study.summary,image:`${site.url}${study.image}`,about:study.serviceTags,genre:study.category,provider:{"@type":"Organization","name":"Dimaso","url":site.url}}]}}/>
     <section className="case-study-hero grid-bg">
@@ -50,6 +53,24 @@ export default async function CaseStudyPage({ params }: Props) {
     <section className="section">
       <div className="shell case-study-stats">
         {study.metrics.map(([value,label])=><div className="case-stat" key={label}><CountUpMetric value={value}/><span>{label}</span></div>)}
+      </div>
+    </section>
+    <section className="section case-study-visuals-section">
+      <div className="shell">
+        <div className={`case-study-visuals-head ${isForeverLiving ? "case-study-visuals-head-display" : ""}`}>
+          <span className="eyebrow">Project visuals</span>
+          <h2>Live website captures from the project.</h2>
+        </div>
+        <figure className={visualClass}>
+          {isForeverLiving ? <div className="case-study-display-model" role="img" aria-label={`${study.name} desktop homepage screenshot`}>
+            <div className="case-study-display-screen">
+              <Image src={screenshot} alt="" width={1600} height={980} sizes="(max-width: 900px) calc(100vw - 56px), 900px"/>
+            </div>
+            <span className="case-study-display-neck"/>
+            <span className="case-study-display-foot"/>
+          </div> : <Image src={screenshot} alt={`${study.name} desktop homepage screenshot`} width={1600} height={980} sizes="100vw"/>}
+          <figcaption>Desktop homepage screenshot</figcaption>
+        </figure>
       </div>
     </section>
     <section className="section case-study-body-section">

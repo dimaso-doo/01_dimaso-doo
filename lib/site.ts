@@ -9,12 +9,12 @@ export const site = {
   email: "office@dimaso.co",
   phone: "+381 61 137 5150",
   description:
-    "Ongoing website support, maintenance, development, integrations, technical SEO, QA, analytics, and platform care for business-critical digital platforms.",
+    "Website maintenance, web development, web design, WordPress support, technical SEO, AI website visibility, hosting, security, analytics, and long-term website care.",
 };
 
 export const social = {
-  title: "Dimaso — Website Support, Maintenance & Development",
-  description: site.description,
+  title: "Dimaso | Website Maintenance, Web Development & AI Website Support",
+  description: "Dimaso helps nonprofits, associations, agencies, SMBs, education, healthcare, and ecommerce organizations with website maintenance, web development, WordPress support, technical SEO, AI website visibility, hosting, security, and long-term website care.",
   image: `${productionUrl}/og-dimaso.png`,
   imageAlt: "Dimaso — Website Support, Maintenance & Development",
 };
