@@ -44,5 +44,13 @@ tmp/
 temp/
 *.zip
 
+# Local DimasoBot lead database and uploads
+data/dimasobot-leads.jsonl
+data/dimasobot-conversations.jsonl
+data/dimasobot-messages.jsonl
+data/dimasobot-memory.jsonl
+data/dimasobot-knowledge-index.json
+data/dimasobot-uploads/
+
 # Vercel
 .vercel/
