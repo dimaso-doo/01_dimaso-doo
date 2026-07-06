@@ -51,6 +51,8 @@ data/dimasobot-messages.jsonl
 data/dimasobot-memory.jsonl
 data/dimasobot-knowledge-index.json
 data/dimasobot-uploads/
+.dimasobot-admin-token
 
 # Vercel
 .vercel/
+.vercel
