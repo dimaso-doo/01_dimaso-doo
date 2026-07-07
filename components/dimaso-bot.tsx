@@ -129,9 +129,6 @@ export function DimasoBot() {
     const nextVisitorId = existingVisitorId || `${Date.now()}-${Math.random().toString(16).slice(2)}`;
     if (!existingVisitorId) window.localStorage.setItem("dimasobot-visitor-id", nextVisitorId);
     setVisitorId(nextVisitorId);
-    const dismissedUntil = Number(window.sessionStorage.getItem("dimasobot-dismissed-until") || 0);
-    if (dismissedUntil > Date.now()) return;
-
     let shown = false;
     const reveal = () => {
       if (shown) return;
@@ -155,11 +152,6 @@ export function DimasoBot() {
   useEffect(() => {
     messagesRef.current?.scrollTo({ top: messagesRef.current.scrollHeight, behavior: "smooth" });
   }, [messages]);
-
-  function dismissPrompt() {
-    setVisible(false);
-    window.sessionStorage.setItem("dimasobot-dismissed-until", String(Date.now() + 1000 * 60 * 45));
-  }
 
   function closeChat() {
     setOpen(false);
@@ -263,14 +255,6 @@ export function DimasoBot() {
   if (!mounted) return null;
 
   return <div className={`dimasobot ${visible ? "is-visible" : ""} ${open ? "is-open" : ""}`}>
-    {!open && visible && <div className="dimasobot-nudge" role="dialog" aria-label="DimasoBot assistant prompt">
-      <button className="dimasobot-dismiss" type="button" aria-label="Close DimasoBot prompt" onClick={dismissPrompt}>x</button>
-      <button className="dimasobot-nudge-body" type="button" onClick={() => setOpen(true)}>
-        <BotIcon className="dimasobot-mini-robot"/>
-        <span><strong>Want help from DimasoBot?</strong><small>Ask freely about Dimaso, the website, services, or an RFP.</small></span>
-      </button>
-    </div>}
-
     <button className="dimasobot-launcher" type="button" aria-label={open ? "Close DimasoBot" : "Open DimasoBot"} aria-expanded={open} onClick={toggleChat}>
       <BotIcon/>
     </button>
