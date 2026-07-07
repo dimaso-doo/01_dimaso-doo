@@ -161,6 +161,20 @@ export function DimasoBot() {
     window.sessionStorage.setItem("dimasobot-dismissed-until", String(Date.now() + 1000 * 60 * 45));
   }
 
+  function closeChat() {
+    setOpen(false);
+    setVisible(false);
+  }
+
+  function toggleChat() {
+    if (open) {
+      closeChat();
+      return;
+    }
+    setVisible(true);
+    setOpen(true);
+  }
+
   function updateFile(event: ChangeEvent<HTMLInputElement>) {
     const file = event.currentTarget.files?.[0];
     setError("");
@@ -257,14 +271,14 @@ export function DimasoBot() {
       </button>
     </div>}
 
-    <button className="dimasobot-launcher" type="button" aria-label={open ? "Close DimasoBot" : "Open DimasoBot"} aria-expanded={open} onClick={() => { setVisible(true); setOpen((current) => !current); }}>
+    <button className="dimasobot-launcher" type="button" aria-label={open ? "Close DimasoBot" : "Open DimasoBot"} aria-expanded={open} onClick={toggleChat}>
       <BotIcon/>
     </button>
 
     {open && <section className="dimasobot-panel" aria-label="DimasoBot chat">
       <div className="dimasobot-head">
         <div className="dimasobot-title"><BotIcon className="dimasobot-head-robot"/><div><span className="eyebrow">Dimaso AI</span><h2>DimasoBot</h2></div></div>
-        <button type="button" aria-label="Close DimasoBot" onClick={() => setOpen(false)}>x</button>
+        <button type="button" aria-label="Close DimasoBot" onClick={closeChat}>x</button>
       </div>
 
       <div ref={messagesRef} className="dimasobot-messages" aria-live="polite">
