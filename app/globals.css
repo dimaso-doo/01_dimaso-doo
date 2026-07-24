@@ -2,6 +2,7 @@
 
 :root { --ink:#171719; --panel:#202020; --panel-2:#292929; --line:#303231; --muted:#9fa8a2; --green:oklch(74% .145 163.7); --green-deep:oklch(29% .07 163.7); --surface:rgba(255,255,255,.024); }
 * { box-sizing: border-box; }
+.sr-only { position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0; }
 html { scroll-behavior: smooth; background: var(--ink); }
 body { margin:0; background:var(--ink); color:#ecefeb; font-family:var(--font-inter),Arial,sans-serif; font-weight:300; }
 h1,h2,.display { font-family:var(--font-sora),Arial,sans-serif; letter-spacing:-.04em; font-weight:400; }

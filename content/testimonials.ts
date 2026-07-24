@@ -3,7 +3,7 @@ export type Testimonial = {
   person: string;
   role: string;
   category: string;
-  url: string;
+  url?: string;
   scope: string;
   quote: string;
   alt: string;
@@ -19,7 +19,6 @@ export const testimonials: Testimonial[] = [
     person: "Mitch Scher",
     role: "Project Owner",
     category: "Development / Automotive Platform",
-    url: "https://drivedowncars.com?show=promo",
     image: "/testimonials/drivedown-cars.jpg",
     alt: "DriveDownCars automotive platform built with custom database and vehicle listing functionality by Dimaso",
     scope: "Automotive platform with custom database structure and tailored functionality for vehicle listings and management",

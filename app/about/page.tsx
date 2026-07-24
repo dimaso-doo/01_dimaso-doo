@@ -3,7 +3,7 @@ import { JsonLd } from "@/components/site";
 import { SectionHead, Team } from "@/components/sections";
 import { metadata as meta, organizationId, site, websiteId } from "@/lib/site";
 
-export const metadata = meta("About Dimaso", "Dimaso is a web development, website maintenance, web design, WordPress support, technical SEO, and AI website support team based in Novi Sad, Serbia, working remotely with US and international clients.", "/about");
+export const metadata = meta("About Dimaso", "Meet the Dimaso team in Novi Sad, Serbia: senior specialists in website maintenance, web development, design, WordPress, technical SEO, and QA.", "/about");
 
 const people = [
   ["Predrag Stojanovic", "Web Design & WordPress Developer"],

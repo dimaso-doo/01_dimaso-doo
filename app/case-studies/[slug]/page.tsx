@@ -18,7 +18,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const study = caseStudies.find((item) => item.slug === slug);
   if (!study) return {};
   const title = `${study.name} case study`;
-  const description = `${study.summary} Read how Dimaso approached ${study.category.toLowerCase()} for ${study.name}.`;
+  const description = `${study.summary} See how Dimaso approached the project.`;
   const url = `${site.url}/case-studies/${study.slug}`;
   return {
     title,

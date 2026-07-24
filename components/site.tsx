@@ -38,6 +38,7 @@ const logoPaths=[
 export function Logo({animated=false}:{animated?:boolean}) {
   if(animated) {
     return <Link href="/" aria-label="Dimaso home" className="animated-logo">
+      <span className="sr-only">Dimaso home</span>
       <svg className="animated-logo-svg" viewBox="141 141 798 142" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
         <defs>
           <linearGradient id="logoMarkBubble" x1="158" y1="151" x2="258" y2="270" gradientUnits="userSpaceOnUse">

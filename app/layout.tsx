@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     url:`${site.url}/`,
     type:"website",
     siteName:site.name,
-    images:[{url:social.image,secureUrl:social.image,type:"image/png",width:1200,height:630,alt:social.imageAlt}],
+    images:[{url:social.image,secureUrl:social.image,type:"image/jpeg",width:1200,height:630,alt:social.imageAlt}],
   },
   twitter:{
     card:"summary_large_image",

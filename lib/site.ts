@@ -13,13 +13,13 @@ export const site = {
 };
 
 export const social = {
-  title: "Dimaso | Website Maintenance, Web Development & AI Website Support",
-  description: "Dimaso helps nonprofits, associations, agencies, SMBs, education, healthcare, and ecommerce organizations with website maintenance, web development, WordPress support, technical SEO, AI website visibility, hosting, security, and long-term website care.",
-  image: `${productionUrl}/og-dimaso.png`,
+  title: "Dimaso | Website Maintenance & Web Development",
+  description: "Dimaso provides website maintenance, web development, WordPress support, technical SEO, and AI website support for US and international organizations.",
+  image: `${productionUrl}/og-dimaso.jpg`,
   imageAlt: "Dimaso — Website Support, Maintenance & Development",
 };
 
-const socialImage={url:social.image,secureUrl:social.image,type:"image/png",width:1200,height:630,alt:social.imageAlt};
+const socialImage={url:social.image,secureUrl:social.image,type:"image/jpeg",width:1200,height:630,alt:social.imageAlt};
 
 export function metadata(title: string, description: string, path = "") {
   const url = `${site.url}${path}`;

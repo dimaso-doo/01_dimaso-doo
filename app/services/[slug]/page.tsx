@@ -18,7 +18,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!entry) return {};
   const [key, service] = entry;
   const titles: Record<ServiceKey, string> = {
-    maintenance: "Website Maintenance Services for Nonprofits, Agencies & SMBs",
+    maintenance: "Website Maintenance Services",
     development: "Web Development Services",
     design: "Web Design Services",
     wordpress: "WordPress Support Services",
@@ -29,9 +29,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     maintenance: "Dimaso provides ongoing website maintenance, updates, bug fixes, backups, security, performance, technical SEO, analytics, and monthly support.",
     development: "Dimaso provides WordPress, Laravel, custom CMS, ecommerce, integration, migration, and scalable web development services for US and international clients.",
     design: "Dimaso designs business websites, UX/UI, responsive pages, redesigns, landing pages, and conversion-focused website experiences.",
-    wordpress: "Dimaso provides WordPress maintenance, plugin and theme updates, Elementor support, custom fixes, security, backups, performance, migrations, and WooCommerce support.",
+    wordpress: "WordPress maintenance, plugin and theme updates, Elementor support, custom fixes, security, backups, performance, migrations, and WooCommerce support.",
     technicalSeo: "Dimaso provides technical SEO audits and implementation for indexing, metadata, schema, sitemaps, robots.txt, internal linking, performance, GA4, and GSC.",
-    aiSupport: "Dimaso provides practical AI website and workflow support for AI visibility, structured content, Schema.org, llms.txt, automation, reporting, and AI search clarity.",
+    aiSupport: "AI website and workflow support for search visibility, structured content, Schema.org, llms.txt, automation, reporting, and clearer AI discovery.",
   };
   return meta(titles[key], descriptions[key], `/${service.slug}`);
 }
