@@ -15,6 +15,8 @@ export function IndustryPage({ type }: { type: IndustryKey }) {
   const industry = industries[type];
   const faq = industryFaqs[type];
   const url = `${site.url}/${industry.slug}`;
+  const teamLabel = type==="nonprofits"?"Nonprofit":industry.label;
+  const requestLabel = type==="nonprofits"?"nonprofit":industry.label.toLowerCase();
   return <main>
     <JsonLd data={{"@context":"https://schema.org","@graph":[{"@type":"Service","@id":`${url}#service`,name:industry.title,serviceType:`Website support for ${industry.label}`,url,description:industry.intro,provider:{"@id":organizationId},isPartOf:{"@id":websiteId},areaServed:["United States","Europe","Serbia","International"],audience:{"@type":"Audience",audienceType:industry.label}},{"@type":"BreadcrumbList","@id":`${url}#breadcrumb`,itemListElement:[{"@type":"ListItem",position:1,name:"Home",item:`${site.url}/`},{"@type":"ListItem",position:2,name:"Industries",item:`${site.url}/#industries`},{"@type":"ListItem",position:3,name:industry.label,item:url}]},{"@type":"FAQPage","@id":`${url}#faq`,mainEntity:faq.map(([q,a])=>({"@type":"Question",name:q,acceptedAnswer:{"@type":"Answer",text:a}}))}]}}/>
     <section className="grid-bg" style={{padding:"140px 0 100px",position:"relative",overflow:"hidden"}}>
@@ -28,7 +30,7 @@ export function IndustryPage({ type }: { type: IndustryKey }) {
     </section>
     {type==="nonprofits"&&<NonprofitPrioritySection/>}
     <section className="section ambient-code ambient-left"><div className="shell">
-      <SectionHead eyebrow="Who this is for" title={`${industry.label} teams that need dependable website ownership.`} copy={industry.who}/>
+      <SectionHead eyebrow="Who this is for" title={`${teamLabel} teams that need dependable website ownership.`} copy={industry.who}/>
       <CardGrid items={industry.problems} eyebrow="Problems Dimaso solves"/>
     </div></section>
     <section className="section ambient-code ambient-right"><div className="shell">
@@ -37,7 +39,7 @@ export function IndustryPage({ type }: { type: IndustryKey }) {
       <div style={{display:"flex",gap:24,flexWrap:"wrap",marginTop:36}}>{industry.relatedServices.map((slug)=><Link key={slug} className="text-link" href={`/${slug}`}>{serviceBySlug[slug]?.label || slug} →</Link>)}</div>
     </div></section>
     <section className="section ambient-code ambient-left"><div className="shell">
-      <SectionHead eyebrow="Common requests" title={`Website work ${industry.label.toLowerCase()} teams often need handled.`} copy="These are practical request types that fit ongoing website support, redesign planning, technical SEO, CMS care, or development backlog work."/>
+      <SectionHead eyebrow="Common requests" title={`Website work ${requestLabel} teams often need handled.`} copy="These are practical request types that fit ongoing website support, redesign planning, technical SEO, CMS care, or development backlog work."/>
       <CardGrid items={industry.commonRequests} eyebrow="Request"/>
     </div></section>
     <section className="section ambient-code ambient-right"><div className="shell">
