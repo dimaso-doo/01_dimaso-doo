@@ -16,6 +16,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: { default: social.title, template: "%s | Dimaso" },
   description: social.description,
+  verification: { google: "fNUl_aS6QOK60z0aQkN0J4iLONbNnNjNnDn_St1YYGM" },
   alternates:{canonical:`${site.url}/`},
   openGraph:{
     title:social.title,
