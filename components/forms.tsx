@@ -184,7 +184,7 @@ export function ContactForm({source,subject,defaultService=""}:{source:string;su
     <input id={companyId} className="field" name="company" placeholder="Company" aria-label="Company"/>
     <div ref={servicesField} className={`services-field ${servicesOpen?"is-open":""}`} onKeyDown={handleServicesKeyDown}>
       <span id={servicesLabelId} style={hiddenLabelStyle}>Services</span>
-      <button type="button" className="field services-trigger" aria-label={`Services: ${serviceSummary()}`} aria-labelledby={servicesLabelId} aria-haspopup="true" aria-expanded={servicesOpen} aria-controls={servicesId} aria-invalid={formErrors.services?true:undefined} aria-describedby={formErrors.services?formStatusId:undefined} onClick={()=>setServicesOpen(open=>!open)} onKeyDown={openServicesWithKeyboard}>
+      <button type="button" className="field services-trigger" aria-label={`Services: ${serviceSummary()}`} aria-labelledby={servicesLabelId} aria-haspopup="true" aria-expanded={servicesOpen} aria-controls={servicesId} aria-describedby={formErrors.services?formStatusId:undefined} onClick={()=>setServicesOpen(open=>!open)} onKeyDown={openServicesWithKeyboard}>
         <span>{serviceSummary()}</span><span className="services-arrow" aria-hidden="true">⌄</span>
       </button>
       <div ref={servicesPanel} id={servicesId} className="services-panel" role="group" aria-label="Select one or more services" hidden={!servicesOpen} onPointerDown={event=>event.stopPropagation()}>

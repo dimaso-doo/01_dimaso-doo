@@ -1,5 +1,7 @@
 "use client";
 
+/* eslint-disable @next/next/no-img-element -- external Simple Icons SVGs are lazy, tiny, and intentionally fetched from their CDN */
+
 import { motion } from "framer-motion";
 import { useRef, useState } from "react";
 import Link from "next/link";

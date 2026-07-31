@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import { createPortal } from "react-dom";
@@ -65,7 +66,7 @@ export function Logo({animated=false}:{animated?:boolean}) {
     </Link>;
   }
   return <Link href="/" aria-label="Dimaso home" style={{display:"inline-flex",alignItems:"center",flexShrink:0}}>
-    <img src="/dimaso-logo-accent.svg" alt="Dimaso" width="135" height="24" style={{display:"block",width:135,height:24}}/>
+    <Image src="/dimaso-logo-accent.svg" alt="Dimaso" width={135} height={24} style={{display:"block",width:135,height:24}}/>
   </Link>;
 }
 
