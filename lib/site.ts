@@ -9,12 +9,12 @@ export const site = {
   email: "office@dimaso.co",
   phone: "+381 61 137 5150",
   description:
-    "Website maintenance, web development, web design, WordPress support, technical SEO, AI website visibility, hosting, security, analytics, and long-term website care.",
+    "Senior website maintenance and custom web development partner for US and international organizations, with WordPress support, technical SEO, QA, and long-term website care.",
 };
 
 export const social = {
-  title: "Dimaso | Website Maintenance & Web Development",
-  description: "Dimaso provides website maintenance, web development, WordPress support, technical SEO, and AI website support for US and international organizations.",
+  title: "Website Maintenance & Web Development | Dimaso",
+  description: "Website maintenance, WordPress support, custom web development, and technical SEO for US and international organizations.",
   image: `${productionUrl}/og-dimaso.jpg`,
   imageAlt: "Dimaso | Website Support, Maintenance & Development",
   linkedin: "https://www.linkedin.com/company/dimaso.co/",
@@ -38,10 +38,10 @@ export const organizationSchema = {
   areaServed: ["United States", "Europe", "Serbia", "International"],
   knowsAbout: [
     "Website Maintenance",
-    "Web Development",
-    "Web Design",
-    "WordPress Support",
-    "Technical SEO",
+    "WordPress Maintenance and Support",
+    "Custom Web Development",
+    "Technical SEO Audits and Implementation",
+    "Web Design and Website Redesign",
     "AI Website and Workflow Support",
     "CMS Support",
     "Hosting, Security, and Backups",

@@ -35,7 +35,7 @@ export function IndustryPage({ type }: { type: IndustryKey }) {
       <CardGrid items={industry.problems} eyebrow="Problems Dimaso solves"/>
     </div></section>
     <section className="section ambient-code ambient-right"><div className="shell">
-      <SectionHead eyebrow="Services and deliverables" title="Practical support across the website lifecycle." copy={industry.deliverablesCopy}/>
+      <SectionHead eyebrow="Services and deliverables" title={type==="nonprofits"?"Nonprofit website maintenance across the full lifecycle.":type==="agencies"?"White-label WordPress support and web development capacity.":"Practical support across the website lifecycle."} copy={industry.deliverablesCopy}/>
       <CardGrid items={industry.deliverables} eyebrow="Deliverable"/>
       <div style={{display:"flex",gap:24,flexWrap:"wrap",marginTop:36}}>{industry.relatedServices.map((slug)=><Link key={slug} className="text-link" href={`/${slug}`}>{serviceBySlug[slug]?.label || slug} →</Link>)}</div>
     </div></section>

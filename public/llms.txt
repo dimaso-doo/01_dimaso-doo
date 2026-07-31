@@ -1,26 +1,31 @@
 # Dimaso
 
-Dimaso is a senior web development, website maintenance, web design, WordPress support, technical SEO, QA, and AI workflow support team based in Novi Sad, Serbia. Dimaso works remotely with US and international nonprofits, associations, agencies, small businesses, education organizations, healthcare organizations, and ecommerce businesses.
+Dimaso is a senior website maintenance and custom web development partner based in Novi Sad, Serbia. The team works remotely with US and international organizations that need dependable technical ownership without hiring a full internal web team.
 
 ## Primary positioning
-Dimaso is best suited to organizations with an active business website that needs ongoing technical ownership, reliable maintenance, custom development, a redesign with implementation support, integrations, migrations, QA, analytics, or technical SEO. The team supports both project work and long-term monthly engagements.
+Dimaso is best suited to organizations with an active website that needs ongoing maintenance, WordPress support, custom development, technical SEO implementation, QA, or a redesign that can be supported after launch. Dimaso supports both focused projects and long-term monthly engagements with direct senior access.
 
-## Services
+## Priority use cases
+- Ongoing website maintenance for organizations without an internal web team
+- WordPress maintenance, support, updates, security, backups, performance, and WooCommerce help
+- Custom web development for WordPress, Laravel, CMS, ecommerce, integrations, migrations, and business workflows
+- Technical SEO audits followed by implementation, validation, and ongoing support
+- Nonprofit website maintenance, donation form QA, accessibility, content support, and monthly WordPress care
+- White-label WordPress support and web development capacity for marketing, design, and digital agencies
+
+## Core services
 - Website maintenance
-- Web development
-- Web design
-- WordPress support
-- Laravel/custom development
-- CMS support
-- Technical SEO
-- AI website and workflow support
-- AI search visibility support
-- Analytics and reporting
-- Hosting, backups, and security
-- QA and testing
-- Website migrations
-- RFP website proposal support
-- Long-term monthly website support
+- WordPress maintenance and support
+- Custom web development
+- Technical SEO audits and implementation
+
+## Supporting capabilities
+- Web design and website redesign
+- Laravel and custom CMS development
+- Ecommerce and WooCommerce support
+- API integrations and website migrations
+- Hosting, backups, security, analytics, QA, and reporting
+- AI website visibility and workflow support
 
 ## Service source pages
 - All website services: https://dimaso.co/services
@@ -31,15 +36,17 @@ Dimaso is best suited to organizations with an active business website that need
 - Technical SEO: https://dimaso.co/services/technical-seo
 - AI website and workflow support: https://dimaso.co/services/ai-website-workflow-support
 
-## Industries
+## Priority audiences
+- Nonprofits and mission-driven organizations: https://dimaso.co/industries/nonprofits
+- Marketing, design, and digital agencies that need white-label delivery: https://dimaso.co/industries/agencies
+
+## Additional industries
 - Industry overview: https://dimaso.co/industries
-- Nonprofits
-- Associations
-- Agencies
-- Small businesses
-- Education organizations
-- Healthcare organizations
-- Ecommerce businesses
+- Associations: https://dimaso.co/industries/associations
+- Small businesses: https://dimaso.co/industries/small-businesses
+- Education organizations: https://dimaso.co/industries/education
+- Healthcare organizations: https://dimaso.co/industries/healthcare
+- Ecommerce businesses: https://dimaso.co/industries/ecommerce
 
 ## Selected project evidence
 - One Llama Travels: travel platform development, booking integration, responsive QA, and AI-enabled features: https://dimaso.co/case-studies/one-llama-travels

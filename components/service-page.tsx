@@ -15,10 +15,10 @@ const relevantCaseStudies: Record<ServiceKey, readonly string[]> = {
 };
 
 const relatedIndustries: Record<ServiceKey, readonly (readonly [string,string])[]> = {
- maintenance:[["Nonprofit website support","/industries/nonprofits"],["Association website support","/industries/associations"],["Small business website support","/industries/small-businesses"],["Ecommerce website support","/industries/ecommerce"]],
- development:[["Agency development support","/industries/agencies"],["Ecommerce development","/industries/ecommerce"],["Healthcare website development","/industries/healthcare"],["Education website development","/industries/education"]],
+ maintenance:[["Nonprofit website maintenance","/industries/nonprofits"],["Association website support","/industries/associations"],["Small business website support","/industries/small-businesses"],["Ecommerce website support","/industries/ecommerce"]],
+ development:[["White-label web development for agencies","/industries/agencies"],["Ecommerce development","/industries/ecommerce"],["Healthcare website development","/industries/healthcare"],["Education website development","/industries/education"]],
  design:[["Small business web design","/industries/small-businesses"],["Healthcare web design","/industries/healthcare"],["Ecommerce web design","/industries/ecommerce"],["Nonprofit web design","/industries/nonprofits"]],
- wordpress:[["Nonprofit WordPress support","/industries/nonprofits"],["Association WordPress support","/industries/associations"],["WooCommerce support","/industries/ecommerce"],["White-label agency support","/industries/agencies"]],
+ wordpress:[["WordPress support for nonprofits","/industries/nonprofits"],["Association WordPress support","/industries/associations"],["WooCommerce support","/industries/ecommerce"],["White-label WordPress support","/industries/agencies"]],
  technicalSeo:[["Ecommerce technical SEO","/industries/ecommerce"],["Healthcare technical SEO","/industries/healthcare"],["Education technical SEO","/industries/education"],["Nonprofit technical SEO","/industries/nonprofits"]],
  aiSupport:[["Agency AI workflow support","/industries/agencies"],["Nonprofit AI visibility","/industries/nonprofits"],["Association AI visibility","/industries/associations"],["Education AI support","/industries/education"]],
 };
@@ -75,10 +75,10 @@ function ServiceQualification({type}:{type:ServiceKey}) {
 
 function RelatedServiceLinks({type}:{type:ServiceKey}) {
  const links:Record<ServiceKey,readonly (readonly [string,string])[]>={
-  maintenance:[["Why ongoing maintenance matters","/blog/why-ongoing-website-maintenance-matters"],["Why QA matters after updates","/blog/why-qa-matters-after-every-update"],["Maintenance reporting guide","/blog/what-good-website-maintenance-reporting-looks-like"],["WordPress support","/services/wordpress-support"]],
+  maintenance:[["Why ongoing maintenance matters","/blog/why-ongoing-website-maintenance-matters"],["Why QA matters after updates","/blog/why-qa-matters-after-every-update"],["Maintenance reporting guide","/blog/what-good-website-maintenance-reporting-looks-like"],["WordPress maintenance and support","/services/wordpress-support"]],
   development:[["When custom development is worth it","/blog/when-custom-web-development-is-worth-it"],["Website migration guide","/blog/website-migration-without-losing-seo-value"],["Post-launch website care","/services/website-maintenance"],["Ecommerce support","/industries/ecommerce"]],
   design:[["Website redesign checklist","/blog/what-to-check-before-redesigning"],["Design systems for growing websites","/blog/design-systems-for-growing-websites"],["Development and implementation","/services/web-development"],["Post-launch website care","/services/website-maintenance"]],
-  wordpress:[["Website maintenance","/services/website-maintenance"],["Technical SEO","/services/technical-seo"],["Ecommerce support","/industries/ecommerce"],["Agency support","/industries/agencies"]],
+  wordpress:[["Website maintenance services","/services/website-maintenance"],["Technical SEO implementation","/services/technical-seo"],["WooCommerce development and support","/industries/ecommerce"],["White-label WordPress support","/industries/agencies"]],
   technicalSeo:[["Website migration guide","/blog/website-migration-without-losing-seo-value"],["AI visibility support","/services/ai-website-workflow-support"],["Website development","/services/web-development"],["Healthcare websites","/industries/healthcare"]],
   aiSupport:[["Technical SEO","/services/technical-seo"],["Website maintenance","/services/website-maintenance"],["Website RFP checklist","/blog/how-to-prepare-a-website-rfp"],["Nonprofit support","/industries/nonprofits"]],
  };

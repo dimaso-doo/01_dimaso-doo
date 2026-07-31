@@ -18,8 +18,8 @@ const seo: Record<IndustryKey, { title: string; description: string }> = {
     description: "Website support for associations, including event pages, resource libraries, membership content, WordPress maintenance, analytics, and technical SEO.",
   },
   agencies: {
-    title: "White-Label Web Development for Agencies",
-    description: "White-label web development and website support for agencies that need dependable WordPress, landing page, maintenance, QA, and overflow delivery.",
+    title: "White-Label WordPress & Web Development for Agencies",
+    description: "White-label WordPress support and web development for agencies that need dependable overflow delivery, landing pages, maintenance, QA, and technical capacity.",
   },
   smallBusinesses: {
     title: "Website Support for Small Businesses",
