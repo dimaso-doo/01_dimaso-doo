@@ -8,7 +8,7 @@ const sections=[
   ["How we use information","We use submitted information to respond to inquiries, review RFPs or project briefs, provide requested website maintenance, web development, or web design information, manage newsletter subscriptions, improve website performance, and protect the website from spam or misuse."],
   ["Email communication","When you submit a form, we may send an internal notification to Dimaso and an automatic confirmation to the email address you provided. Newsletter submissions may receive subscription-related communication and future updates from Dimaso."],
   ["Files and project materials","If you upload a file, it is used only to understand your request, RFP, project brief, website issue, or support question. Please avoid sending sensitive credentials, payment data, or private information through upload forms."],
-  ["Analytics and technical data","The website may use analytics and performance tools to understand page visits, loading behavior, and general usage trends. This helps us maintain and improve the website without identifying individual visitors more than necessary."],
+  ["Analytics and technical data","The website may use analytics and performance tools to understand page visits, loading behavior, referral source, campaign parameters, conversion events, and general usage trends. Referral reporting stores a source name or hostname rather than the full referring page URL. This helps us maintain and improve the website without identifying individual visitors more than necessary."],
   ["Sharing information","Dimaso does not sell visitor information. We may share information only with service providers that help operate the website, process email, host the site, analyze performance, or support client communication, or where required by law."],
   ["Data retention","We keep submitted information only for as long as reasonably needed to respond to requests, manage business records, maintain security, and meet legal or operational obligations."],
   ["Your choices","You can request access, correction, or deletion of information you submitted to Dimaso. You can also unsubscribe from newsletter communication using the available unsubscribe option or by contacting us directly."],
@@ -22,7 +22,7 @@ export default function PrivacyPolicy(){
         <span className="eyebrow">Legal / Privacy</span>
         <h1>Privacy Policy</h1>
         <p className="lede">This policy explains how Dimaso handles information submitted through {site.url}.</p>
-        <p className="legal-updated">Last updated: June 8, 2026</p>
+        <p className="legal-updated">Last updated: July 31, 2026</p>
       </div>
     </section>
     <section className="section legal-section">

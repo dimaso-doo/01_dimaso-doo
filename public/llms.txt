@@ -36,6 +36,13 @@ Dimaso is best suited to organizations with an active website that needs ongoing
 - Technical SEO: https://dimaso.co/services/technical-seo
 - AI website and workflow support: https://dimaso.co/services/ai-website-workflow-support
 
+## Decision guides
+- Website maintenance costs and pricing factors: https://dimaso.co/blog/website-maintenance-costs-and-pricing
+- Taking over an existing WordPress website safely: https://dimaso.co/blog/taking-over-an-existing-wordpress-website
+- White-label WordPress maintenance for agencies: https://dimaso.co/blog/white-label-wordpress-maintenance-for-agencies
+- What happens after a technical SEO audit: https://dimaso.co/blog/what-happens-after-a-technical-seo-audit
+- Nonprofit website maintenance checklist: https://dimaso.co/blog/website-maintenance-checklist-for-nonprofits
+
 ## Priority audiences
 - Nonprofits and mission-driven organizations: https://dimaso.co/industries/nonprofits
 - Marketing, design, and digital agencies that need white-label delivery: https://dimaso.co/industries/agencies

@@ -11,6 +11,16 @@ const serviceBySlug = Object.values(services).reduce<Record<string, (typeof serv
   return acc;
 }, {});
 
+const industryGuides:Partial<Record<IndustryKey,readonly (readonly [string,string])[]>>={
+  nonprofits:[["Nonprofit website maintenance checklist","/blog/website-maintenance-checklist-for-nonprofits"],["Website maintenance costs and pricing","/blog/website-maintenance-costs-and-pricing"]],
+  associations:[["WordPress maintenance for associations","/blog/wordpress-maintenance-for-associations"],["How to choose a maintenance partner","/blog/how-to-choose-a-website-maintenance-partner"]],
+  agencies:[["White-label WordPress maintenance for agencies","/blog/white-label-wordpress-maintenance-for-agencies"],["Taking over an existing WordPress website","/blog/taking-over-an-existing-wordpress-website"]],
+  smallBusinesses:[["Website maintenance costs and pricing","/blog/website-maintenance-costs-and-pricing"],["What to check before a website redesign","/blog/what-to-check-before-redesigning"]],
+  education:[["How to choose a maintenance partner","/blog/how-to-choose-a-website-maintenance-partner"],["Why QA matters after every update","/blog/why-qa-matters-after-every-update"]],
+  healthcare:[["Taking over an existing WordPress website","/blog/taking-over-an-existing-wordpress-website"],["What happens after a technical SEO audit","/blog/what-happens-after-a-technical-seo-audit"]],
+  ecommerce:[["What happens after a technical SEO audit","/blog/what-happens-after-a-technical-seo-audit"],["Why QA matters after every update","/blog/why-qa-matters-after-every-update"]],
+};
+
 export function IndustryPage({ type }: { type: IndustryKey }) {
   const industry = industries[type];
   const faq = industryFaqs[type];
@@ -42,6 +52,7 @@ export function IndustryPage({ type }: { type: IndustryKey }) {
     <section className="section ambient-code ambient-left"><div className="shell">
       <SectionHead eyebrow="Common requests" title={`Website work ${requestLabel} teams often need handled.`} copy="These are practical request types that fit ongoing website support, redesign planning, technical SEO, CMS care, or development backlog work."/>
       <CardGrid items={industry.commonRequests} eyebrow="Request"/>
+      <div style={{display:"flex",gap:24,flexWrap:"wrap",marginTop:36}}>{industryGuides[type]?.map(([label,href])=><Link key={href} className="text-link" href={href}>{label} →</Link>)}</div>
     </div></section>
     <section className="section ambient-code ambient-right"><div className="shell">
       <SectionHead eyebrow="Why Dimaso" title="Remote senior support with clear structure and long-term care." copy={industry.whyCopy}/>

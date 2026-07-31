@@ -52,7 +52,7 @@ export default async function Page({params}:{params:Promise<{slug:string}>}){
             <p>Written for teams that need the website to keep supporting sales, operations, search visibility, and trust after launch.</p>
           </aside>
           <div className="blog-article-body">
-            {content.map((block,index)=>block.type==="p"?<p key={index}>{renderInline(block.content)}</p>:block.type==="h2"?<h2 key={index}>{block.text}</h2>:<h3 key={index}>{block.text}</h3>)}
+            {content.map((block,index)=>block.type==="p"?<p key={index}>{renderInline(block.content)}</p>:block.type==="ul"?<ul key={index}>{block.items.map((item,itemIndex)=><li key={itemIndex}>{renderInline(item)}</li>)}</ul>:block.type==="h2"?<h2 key={index}>{block.text}</h2>:<h3 key={index}>{block.text}</h3>)}
             <Link href={p.service} className="btn">Explore the relevant service</Link>
             <section aria-labelledby="related-insights-title" style={{marginTop:70,paddingTop:28,borderTop:"1px solid rgba(255,255,255,.07)"}}>
               <span className="eyebrow">Related insights</span>

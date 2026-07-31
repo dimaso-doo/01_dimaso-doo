@@ -766,6 +766,9 @@ button,input,textarea,select { font:inherit; }
 .blog-article-body h2 { color:#fff;font-size:clamp(30px,3vw,40px);line-height:1.12;margin:0 0 22px; }
 .blog-article-body h2:not(:first-child) { margin-top:58px; }
 .blog-article-body p { margin:0 0 22px; }
+.blog-article-body ul { display:grid;gap:12px;margin:4px 0 30px;padding:0;list-style:none; }
+.blog-article-body li { position:relative;padding-left:24px;color:#bdc8c0; }
+.blog-article-body li::before { content:"+";position:absolute;left:0;top:0;color:var(--green);font-family:var(--font-sora); }
 .blog-article-body .btn { margin-top:28px; }
 .blog-pagination { display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-top:34px; }
 .blog-pagination a { min-width:42px;min-height:42px;display:inline-flex;align-items:center;justify-content:center;padding:0 15px;background:rgba(255,255,255,.024);color:#cbd5cf;font-family:var(--font-sora);font-size:13px;transition:background .22s ease,color .22s ease,transform .22s ease,box-shadow .22s ease; }
