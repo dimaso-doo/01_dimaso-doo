@@ -4,7 +4,7 @@ import { z } from "zod";
 
 export const runtime="nodejs";
 const serviceSchema=z.enum(["Website Maintenance","Web Development","Web Design","WordPress Support","Technical SEO","AI Website & Workflow Support","General Inquiry / Not Sure Yet"]);
-const schema=z.object({email:z.string().trim().email(),name:z.string().max(120).optional(),company:z.string().max(160).optional(),services:z.array(serviceSchema).max(3).optional(),message:z.string().max(10000).optional(),source:z.string().min(2).max(120),subject:z.string().min(6).max(180),kind:z.enum(["rfp","newsletter"]),pageUrl:z.string().max(500).optional()});
+const schema=z.object({email:z.string().trim().email(),name:z.string().max(120).optional(),company:z.string().max(160).optional(),websiteUrl:z.string().trim().max(500).optional(),services:z.array(serviceSchema).max(3).optional(),message:z.string().max(10000).optional(),source:z.string().min(2).max(120),subject:z.string().min(6).max(180),kind:z.enum(["rfp","newsletter"]),pageUrl:z.string().max(500).optional()});
 const allowedExtensions=new Set(["pdf","doc","docx","txt","zip"]);
 const maxUploadSize=10*1024*1024;
 const rfpSubjectBySource:Record<string,string>={
@@ -70,7 +70,7 @@ export async function POST(req:Request){
   const submittedServices=form.getAll("services").filter((value):value is string=>typeof value==="string");
   const parsed=schema.safeParse({...fields,services:submittedServices});
   if(!parsed.success)return NextResponse.json({error:"Invalid form data"},{status:400});
-  if(parsed.data.kind==="rfp"&&(!parsed.data.name||!parsed.data.message||!parsed.data.services?.length))return NextResponse.json({error:"Missing required fields"},{status:400});
+  if(parsed.data.kind==="rfp"&&(!parsed.data.name||!parsed.data.message))return NextResponse.json({error:"Missing required fields"},{status:400});
   if(parsed.data.services?.includes("General Inquiry / Not Sure Yet")&&parsed.data.services.length>1)return NextResponse.json({error:"Invalid service selection"},{status:400});
   const file=form.get("file"); let attachment; let uploadName="-";
   if(file instanceof File&&file.size>0){
@@ -81,7 +81,7 @@ export async function POST(req:Request){
   }
   if(!process.env.SMTP_HOST||!process.env.SMTP_USER||!process.env.SMTP_PASS)return NextResponse.json({error:"Unable to send"},{status:503});
   const transport=nodemailer.createTransport({host:process.env.SMTP_HOST,port:Number(process.env.SMTP_PORT||587),secure:Number(process.env.SMTP_PORT)===465,auth:{user:process.env.SMTP_USER,pass:process.env.SMTP_PASS}});
-  const d=parsed.data; const from=process.env.SMTP_FROM||process.env.SMTP_USER; const selectedServices=d.services?.length?d.services.map(service=>`- ${service}`).join("\n"):"-"; const text=[`Source page: ${d.source}`,`Page URL: ${d.pageUrl||"-"}`,`Date/time: ${new Date().toISOString()}`,`Name: ${d.name||"-"}`,`Email: ${d.email}`,`Company: ${d.company||"-"}`,`Services:\n${selectedServices}`,`Upload: ${uploadName}`,`Message: ${d.message||"-"}`].join("\n");
+  const d=parsed.data; const from=process.env.SMTP_FROM||process.env.SMTP_USER; const selectedServices=d.services?.length?d.services.map(service=>`- ${service}`).join("\n"):"-"; const text=[`Source page: ${d.source}`,`Page URL: ${d.pageUrl||"-"}`,`Date/time: ${new Date().toISOString()}`,`Name: ${d.name||"-"}`,`Email: ${d.email}`,`Company: ${d.company||"-"}`,`Current website: ${d.websiteUrl||"-"}`,`Services:\n${selectedServices}`,`Upload: ${uploadName}`,`Message: ${d.message||"-"}`].join("\n");
   await transport.sendMail({from,to:process.env.CONTACT_TO_EMAIL||process.env.RFP_TO_EMAIL||"office@dimaso.co",replyTo:d.email,subject:internalSubject(d.kind,d.source),text,attachments:attachment?[attachment]:[]});
   await transport.sendMail({from,to:d.email,subject:autoReplySubject(d.kind,d.source),text:autoReplyText(d.name,d.services)});
   return NextResponse.json({ok:true});

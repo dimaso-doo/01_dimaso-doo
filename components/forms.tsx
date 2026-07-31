@@ -8,7 +8,7 @@ const services=["Website Maintenance","Web Development","Web Design","WordPress 
 const generalInquiry="General Inquiry / Not Sure Yet" as const;
 const serviceOptions=[...services,generalInquiry] as const;
 type ServiceOption=(typeof serviceOptions)[number];
-type ContactField="name"|"email"|"services"|"message";
+type ContactField="name"|"email"|"message";
 type ContactErrors=Partial<Record<ContactField,string>>;
 const allowedFileExtensions=["pdf","doc","docx","txt","zip"];
 const maxFileSize=10*1024*1024;
@@ -41,17 +41,33 @@ export function ContactForm({source,subject,defaultService=""}:{source:string;su
   const [selectedServices,setSelectedServices]=useState<ServiceOption[]>(defaultService&&services.includes(defaultService as (typeof services)[number])?[defaultService as ServiceOption]:[]);
   const [servicesOpen,setServicesOpen]=useState(false);
   const fileInput=useRef<HTMLInputElement>(null);
+  const formRef=useRef<HTMLFormElement>(null);
   const servicesField=useRef<HTMLDivElement>(null);
   const servicesPanel=useRef<HTMLDivElement>(null);
   const servicesId=useId();
   const formStatusId=useId();
   const nameId=useId();
   const emailId=useId();
-  const companyId=useId();
+  const websiteUrlId=useId();
   const servicesLabelId=useId();
   const messageId=useId();
   const fileId=useId();
   const honeypotId=useId();
+  const viewTracked=useRef(false);
+  const startTracked=useRef(false);
+
+  useEffect(()=>{
+    const form=formRef.current;
+    if(!form||viewTracked.current)return;
+    const observer=new IntersectionObserver(([entry])=>{
+      if(!entry?.isIntersecting||viewTracked.current)return;
+      viewTracked.current=true;
+      trackEvent("project_form_view",{form_name:source==="Contact Page"?"contact":"rfp",form_source:source});
+      observer.disconnect();
+    },{threshold:.35});
+    observer.observe(form);
+    return()=>observer.disconnect();
+  },[source]);
 
   useEffect(()=>{
     if(!servicesOpen)return;
@@ -63,7 +79,7 @@ export function ContactForm({source,subject,defaultService=""}:{source:string;su
   },[servicesOpen]);
 
   function serviceSummary(){
-    if(!selectedServices.length)return "Services *";
+    if(!selectedServices.length)return "Not selected";
     if(selectedServices[0]===generalInquiry)return "General Inquiry";
     if(selectedServices.length<=2)return selectedServices.join(" + ");
     return `${selectedServices.length} services selected`;
@@ -75,7 +91,6 @@ export function ContactForm({source,subject,defaultService=""}:{source:string;su
       const concrete=current.filter(item=>item!==generalInquiry);
       return concrete.includes(service)?concrete.filter(item=>item!==service):[...concrete,service];
     });
-    clearFormError("services");
   }
 
   function clearFormError(field:ContactField){
@@ -138,15 +153,14 @@ export function ContactForm({source,subject,defaultService=""}:{source:string;su
     if(!name)nextErrors.name="Name is required.";
     if(!email)nextErrors.email="Email is required.";
     else if(!validateEmail(email))nextErrors.email="Please enter a valid email address.";
-    if(!selectedServices.length)nextErrors.services="Please select at least one service.";
     if(!message)nextErrors.message="Message is required.";
     setFormErrors(nextErrors);
     if(Object.keys(nextErrors).length){
+      trackEvent("project_form_validation_error",{form_name:source==="Contact Page"?"contact":"rfp",form_source:source,error_fields:Object.keys(nextErrors).join(",")});
       setStatus("idle");
       const firstField=Object.keys(nextErrors)[0] as ContactField;
       requestAnimationFrame(()=>{
-        if(firstField==="services")servicesField.current?.querySelector<HTMLButtonElement>("button")?.focus();
-        else (form.elements.namedItem(firstField) as HTMLElement|null)?.focus();
+        (form.elements.namedItem(firstField) as HTMLElement|null)?.focus();
       });
       return;
     }
@@ -176,16 +190,16 @@ export function ContactForm({source,subject,defaultService=""}:{source:string;su
   }
   const hasFormErrors=Object.keys(formErrors).length>0;
   const formErrorMessage=formErrors.email==="Please enter a valid email address."?"Please complete the highlighted fields and enter a valid email address.":"Please complete the highlighted required fields.";
-  return <form action="/api/contact" method="post" encType="multipart/form-data" onSubmit={submit} noValidate className="form-grid form-panel" style={{display:"grid",gridTemplateColumns:"repeat(2,minmax(0,1fr))",gap:12}}>
+  return <form ref={formRef} action="/api/contact" method="post" encType="multipart/form-data" onSubmit={submit} onFocusCapture={()=>{if(startTracked.current)return;startTracked.current=true;trackEvent("project_form_start",{form_name:source==="Contact Page"?"contact":"rfp",form_source:source});}} noValidate className="form-grid form-panel" style={{display:"grid",gridTemplateColumns:"repeat(2,minmax(0,1fr))",gap:12}}>
     <label htmlFor={nameId} style={hiddenLabelStyle}>Name</label>
     <input id={nameId} className="field" required name="name" placeholder="Name *" aria-label="Name" aria-invalid={formErrors.name?true:undefined} aria-describedby={formErrors.name?formStatusId:undefined} onChange={()=>clearFormError("name")}/>
     <div className="field-wrap"><label htmlFor={emailId} style={hiddenLabelStyle}>Email</label><input id={emailId} className="field" required type="email" name="email" placeholder="Email *" aria-label="Email" aria-invalid={formErrors.email?true:undefined} aria-describedby={formErrors.email?formStatusId:undefined} onChange={()=>clearFormError("email")}/></div>
-    <label htmlFor={companyId} style={hiddenLabelStyle}>Company</label>
-    <input id={companyId} className="field" name="company" placeholder="Company" aria-label="Company"/>
+    <label htmlFor={websiteUrlId} style={hiddenLabelStyle}>Current website</label>
+    <input id={websiteUrlId} className="field" type="text" inputMode="url" name="websiteUrl" placeholder="Current website (optional)" aria-label="Current website"/>
     <div ref={servicesField} className={`services-field ${servicesOpen?"is-open":""}`} onKeyDown={handleServicesKeyDown}>
-      <span id={servicesLabelId} style={hiddenLabelStyle}>Services</span>
-      <button type="button" className="field services-trigger" aria-label={`Services: ${serviceSummary()}`} aria-labelledby={servicesLabelId} aria-haspopup="true" aria-expanded={servicesOpen} aria-controls={servicesId} aria-describedby={formErrors.services?formStatusId:undefined} onClick={()=>setServicesOpen(open=>!open)} onKeyDown={openServicesWithKeyboard}>
-        <span>{serviceSummary()}</span><span className="services-arrow" aria-hidden="true">⌄</span>
+      <span id={servicesLabelId} style={hiddenLabelStyle}>Area of help (optional)</span>
+      <button type="button" className="field services-trigger" aria-label={`Area of help: ${serviceSummary()}`} aria-labelledby={servicesLabelId} aria-haspopup="true" aria-expanded={servicesOpen} aria-controls={servicesId} onClick={()=>setServicesOpen(open=>!open)} onKeyDown={openServicesWithKeyboard}>
+        <span>{selectedServices.length?serviceSummary():"Area of help (optional)"}</span><span className="services-arrow" aria-hidden="true">⌄</span>
       </button>
       <div ref={servicesPanel} id={servicesId} className="services-panel" role="group" aria-label="Select one or more services" hidden={!servicesOpen} onPointerDown={event=>event.stopPropagation()}>
         {serviceOptions.map(service=><label key={service} className={`service-option ${service===generalInquiry?"is-general":""}`}>
@@ -207,7 +221,7 @@ export function ContactForm({source,subject,defaultService=""}:{source:string;su
       {!hasFormErrors&&!fileError&&status==="success"&&<small>{successText}</small>}
       {!hasFormErrors&&!fileError&&status==="error"&&<small>We could not send your request. Please check the fields or email us directly at office@dimaso.co.</small>}
     </div>
-    <button className="btn" disabled={status==="loading"} style={{gridColumn:"1 / -1"}}>{status==="loading"?"Sending...":"Send project request"}</button>
+    <button className="btn" disabled={status==="loading"} style={{gridColumn:"1 / -1"}}>{status==="loading"?"Sending...":"Start the conversation"}</button>
   </form>;
 }
 

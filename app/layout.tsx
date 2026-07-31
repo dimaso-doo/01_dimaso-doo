@@ -35,5 +35,5 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="en" data-scroll-behavior="smooth"><body className={`${inter.variable} ${sora.variable}`}><Header /><RouteTransition>{children}</RouteTransition><Footer /><DimasoBot /><GoogleAnalytics /><SpeedInsights /><Analytics /></body></html>;
+  return <html lang="en"><body className={`${inter.variable} ${sora.variable}`}><Header /><RouteTransition>{children}</RouteTransition><Footer /><DimasoBot /><GoogleAnalytics /><SpeedInsights /><Analytics /></body></html>;
 }

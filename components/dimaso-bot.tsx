@@ -1,6 +1,7 @@
 "use client";
 
 import { ChangeEvent, FormEvent, ReactNode, useEffect, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
 import { trackEvent, trackLead } from "@/lib/ga-events";
 
 type BotIntent = "general" | "info" | "offer" | "rfp" | "contact";
@@ -110,9 +111,11 @@ function MarkdownMessage({ text }: { text: string }) {
 }
 
 export function DimasoBot() {
+  const pathname = usePathname();
   const [mounted, setMounted] = useState(false);
   const [visible, setVisible] = useState(false);
   const [open, setOpen] = useState(false);
+  const [conversionInView, setConversionInView] = useState(false);
   const [messages, setMessages] = useState<Message[]>([newMessage("bot", starterMessage)]);
   const [draft, setDraft] = useState("");
   const [intent, setIntent] = useState<BotIntent>("general");
@@ -150,6 +153,17 @@ export function DimasoBot() {
       window.removeEventListener("scroll", reveal);
     };
   }, []);
+
+  useEffect(() => {
+    const target = document.querySelector("#rfp");
+    if (!target) {
+      setConversionInView(false);
+      return;
+    }
+    const observer = new IntersectionObserver(([entry]) => setConversionInView(Boolean(entry?.isIntersecting)), { threshold: 0.08 });
+    observer.observe(target);
+    return () => observer.disconnect();
+  }, [pathname]);
 
   useEffect(() => {
     messagesRef.current?.scrollTo({ top: messagesRef.current.scrollHeight, behavior: "smooth" });
@@ -264,9 +278,9 @@ export function DimasoBot() {
   if (!mounted) return null;
 
   return <div className={`dimasobot ${visible ? "is-visible" : ""} ${open ? "is-open" : ""}`}>
-    <button className="dimasobot-launcher" type="button" aria-label={open ? "Close DimasoBot" : "Open DimasoBot"} aria-expanded={open} onClick={toggleChat}>
+    {(visible||open)&&(!conversionInView||open) && <button className="dimasobot-launcher" type="button" aria-label={open ? "Close DimasoBot" : "Open DimasoBot"} aria-expanded={open} onClick={toggleChat}>
       <BotIcon/>
-    </button>
+    </button>}
 
     {open && <section className="dimasobot-panel" aria-label="DimasoBot chat">
       <div className="dimasobot-head">

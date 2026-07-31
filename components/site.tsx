@@ -112,11 +112,11 @@ export function Header() {
         <NavDropdown id="industries" label="Industries" items={industryLinks} active={pathname.startsWith("/industries")} open={openDropdown==="industries"} suppressed={suppressedDropdown==="industries"} setOpen={setOpenDropdown} setSuppressed={setSuppressedDropdown}/>
         {links.slice(1).map(([l,h])=><Link key={h} href={h} className={`nav-link ${isActive(h)?"is-active":""}`} aria-current={isActive(h)?"page":undefined}>{l}</Link>)}
       </nav>
-      <TrackedLink tracking="cta" trackingLocation="header" trackingLabel="Send RFP" href="#rfp" className="btn hide-mobile" style={{"--btn-h":"44px"} as React.CSSProperties}>Send RFP</TrackedLink>
+      <TrackedLink tracking="cta" trackingLocation="header" trackingLabel="Discuss your website" href="#rfp" className="btn hide-mobile" style={{"--btn-h":"44px"} as React.CSSProperties}>Discuss your website</TrackedLink>
       <button ref={menuButton} aria-label={open?"Close menu":"Open menu"} aria-expanded={open} onClick={()=>setOpen(!open)} className={`menu-button ${open?"is-open":""}`} style={{display:"none"}}><span/><span/><span/></button>
     </div>
     <div className="scroll-progress" aria-hidden="true"/>
-    {mounted&&open&&createPortal(<nav className="mobile-nav" aria-label="Mobile navigation">{links.slice(0,1).map(([l,h],i)=><Link key={h} href={h} ref={i===0?firstMobileLink:undefined} onClick={()=>setOpen(false)} className={`nav-link ${isActive(h)?"is-active":""}`} aria-current={isActive(h)?"page":undefined}>{l}</Link>)}<MobileGroup label="Services" items={serviceLinks} close={()=>setOpen(false)}/><MobileGroup label="Industries" items={industryLinks} close={()=>setOpen(false)}/>{links.slice(1).map(([l,h])=><Link key={h} href={h} onClick={()=>setOpen(false)} className={`nav-link ${isActive(h)?"is-active":""}`} aria-current={isActive(h)?"page":undefined}>{l}</Link>)}<TrackedLink tracking="cta" trackingLocation="mobile_navigation" trackingLabel="Send RFP" href="#rfp" onClick={()=>setOpen(false)} className="btn" style={{marginTop:22}}>Send RFP</TrackedLink><div className="mobile-nav-contact"><TrackedLink tracking="email" trackingLocation="header" href="mailto:office@dimaso.co">office@dimaso.co</TrackedLink><TrackedLink tracking="phone" trackingLocation="header" href="tel:+381611375150">+381 61 137 5150</TrackedLink><TrackedLink tracking="linkedin" trackingLocation="header" href={linkedinUrl} target="_blank" rel="noopener noreferrer">LinkedIn</TrackedLink></div><div className="mobile-nav-meta">Dimaso RS · Novi Sad, Serbia<br/>Dimaso US · Sheridan, USA</div></nav>,document.body)}
+    {mounted&&open&&createPortal(<nav className="mobile-nav" aria-label="Mobile navigation">{links.slice(0,1).map(([l,h],i)=><Link key={h} href={h} ref={i===0?firstMobileLink:undefined} onClick={()=>setOpen(false)} className={`nav-link ${isActive(h)?"is-active":""}`} aria-current={isActive(h)?"page":undefined}>{l}</Link>)}<MobileGroup label="Services" items={serviceLinks} close={()=>setOpen(false)}/><MobileGroup label="Industries" items={industryLinks} close={()=>setOpen(false)}/>{links.slice(1).map(([l,h])=><Link key={h} href={h} onClick={()=>setOpen(false)} className={`nav-link ${isActive(h)?"is-active":""}`} aria-current={isActive(h)?"page":undefined}>{l}</Link>)}<TrackedLink tracking="cta" trackingLocation="mobile_navigation" trackingLabel="Discuss your website" href="#rfp" onClick={()=>setOpen(false)} className="btn" style={{marginTop:22}}>Discuss your website</TrackedLink><div className="mobile-nav-contact"><TrackedLink tracking="email" trackingLocation="header" href="mailto:office@dimaso.co">office@dimaso.co</TrackedLink><TrackedLink tracking="phone" trackingLocation="header" href="tel:+381611375150">+381 61 137 5150</TrackedLink><TrackedLink tracking="linkedin" trackingLocation="header" href={linkedinUrl} target="_blank" rel="noopener noreferrer">LinkedIn</TrackedLink></div><div className="mobile-nav-meta">Dimaso RS · Novi Sad, Serbia<br/>Dimaso US · Sheridan, USA</div></nav>,document.body)}
   </header>;
 }
 
@@ -126,21 +126,22 @@ function NavDropdown({id,label,items,active,open,suppressed,setOpen,setSuppresse
 }
 
 function MobileGroup({label,items,close}:{label:string;items:readonly (readonly [string,string])[];close:()=>void}) {
-  return <details className="mobile-nav-group" open><summary>{label}</summary><div>{items.map(([item,href])=><Link key={href} href={href} onClick={close}>{item}</Link>)}</div></details>;
+  return <details className="mobile-nav-group"><summary>{label}</summary><div>{items.map(([item,href])=><Link key={href} href={href} onClick={close}>{item}</Link>)}</div></details>;
 }
 
 export function Footer() {
   const pathname=usePathname();
+  const isContactPage=pathname==="/contact";
   const formContext=formContextByPath[pathname]||{source:"Home/Footer",subject:"New RFP Request - Home/Footer - dimaso.co"};
-  return <footer id="rfp" className="section site-footer">
+  return <footer className="section site-footer">
     <div className="shell">
-      <div style={{display:"grid",gridTemplateColumns:"minmax(0,1fr) minmax(0,1.3fr)",gap:60}} className="footer-grid">
+      <div style={{display:"grid",gridTemplateColumns:"minmax(0,1fr) minmax(0,1.3fr)",gap:60}} className={`footer-grid ${isContactPage?"footer-grid-contact":""}`}>
         <div className="footer-info-panel">
           <div className="footer-location-grid"><div><span className="eyebrow">Serbia / Europe</span><strong>Dimaso RS</strong><small>Novi Sad, Serbia</small></div><div><span className="eyebrow">United States</span><strong>Dimaso US</strong><small>Sheridan, USA</small></div></div>
           <div className="footer-contact-list"><TrackedLink tracking="email" trackingLocation="footer" className="footer-contact-link email" href="mailto:office@dimaso.co">office@dimaso.co</TrackedLink><TrackedLink tracking="phone" trackingLocation="footer" className="footer-contact-link phone" href="tel:+381611375150">+381 61 137 5150</TrackedLink><TrackedLink tracking="linkedin" trackingLocation="footer" className="footer-contact-link linkedin" href={linkedinUrl} target="_blank" rel="noopener noreferrer">LinkedIn</TrackedLink></div>
           <div style={{marginTop:42}}><Newsletter /></div>
         </div>
-        <div className="footer-rfp-column"><div className="footer-rfp-head"><span className="eyebrow">Start a conversation</span><h2>Send your RFP or project brief.</h2><p>Share the context, goals, constraints, and files you already have. A senior member of the team will review it directly.</p></div><ContactForm {...formContext}/></div>
+        {!isContactPage&&<div id="rfp" className="footer-rfp-column"><div className="footer-rfp-head"><span className="eyebrow">Start a conversation</span><h2>Discuss your website with a senior specialist.</h2><p>Send a short note or attach a project brief. The people responsible for delivery review the context directly.</p></div><ContactForm {...formContext}/><p className="form-expectation">Reviewed by a senior team member · No generic sales handoff</p></div>}
       </div>
       <div className="footer-directory"><div><Logo/><p className="lede" style={{fontSize:16,marginTop:20}}>A senior technical partner for websites that need to stay reliable, evolve, and perform.</p></div><FooterLinkColumns/></div>
       <div className="rule" style={{margin:"40px 0 25px"}}/><div className="footer-bottom"><span>© {new Date().getFullYear()} Dimaso. All rights reserved.</span><div className="footer-legal-row"><span>Websites maintained, developed, and improved with care since 2008.</span><nav aria-label="Legal links"><Link href="/privacy-policy">Privacy Policy</Link><Link href="/terms-and-conditions">Terms and Conditions</Link></nav></div></div>
@@ -149,7 +150,7 @@ export function Footer() {
 }
 
 function FooterLinkColumns() {
-  const companyLinks = [["Home","/"],["Case Studies","/case-studies"],["Blog","/blog"],["About","/about"],["Contact","/contact"],["Send RFP","#rfp"]] as const;
+  const companyLinks = [["Home","/"],["Case Studies","/case-studies"],["Blog","/blog"],["About","/about"],["Contact","/contact"],["Discuss your website","#rfp"]] as const;
   return <nav className="footer-link-columns" aria-label="Footer navigation"><FooterColumn title="Services" links={serviceLinks}/><FooterColumn title="Industries" links={industryLinks}/><FooterColumn title="Company" links={companyLinks}/></nav>;
 }
 
@@ -157,7 +158,7 @@ function FooterColumn({title,links}:{title:string;links:readonly (readonly [stri
   return <div><span className="eyebrow">{title}</span>{links.map(([label,href])=><Link key={href} href={href}>{label}</Link>)}</div>;
 }
 
-export function CTA({title="Need a partner who can own the technical detail?",label="Request a technical review"}:{title?:string,label?:string}) {
+export function CTA({title="Need a partner who can own the technical detail?",label="Discuss your website"}:{title?:string,label?:string}) {
   return <section className="inner-cta">
     <div className="tech-orbit inner-cta-orbit one"/>
     <div className="tech-orbit two inner-cta-orbit two"/>
@@ -167,7 +168,7 @@ export function CTA({title="Need a partner who can own the technical detail?",la
 }
 
 export function FeatureCTA() {
-  return <section className="feature-cta"><div className="tech-orbit" style={{inset:"auto -120px -290px auto",width:620,height:620}}/><div className="tech-orbit two" style={{inset:"auto -10px -180px auto",width:400,height:400}}/><span className="hero-plus p1">+</span><span className="hero-plus p2">+</span><span className="hero-plus p3">+</span><div className="shell" style={{position:"relative",zIndex:1}}><span className="eyebrow">Website operations / growth</span><h2 style={{fontSize:"clamp(42px,6.4vw,76px)",lineHeight:.98,maxWidth:880,margin:"20px 0 34px"}}>Your website should be a dependable business system.</h2><TrackedLink tracking="cta" trackingLocation="home_feature" trackingLabel="Get a technical review" href="#rfp" className="btn">Get a technical review</TrackedLink></div></section>;
+  return <section className="feature-cta"><div className="tech-orbit" style={{inset:"auto -120px -290px auto",width:620,height:620}}/><div className="tech-orbit two" style={{inset:"auto -10px -180px auto",width:400,height:400}}/><span className="hero-plus p1">+</span><span className="hero-plus p2">+</span><span className="hero-plus p3">+</span><div className="shell" style={{position:"relative",zIndex:1}}><span className="eyebrow">Website operations / growth</span><h2 style={{fontSize:"clamp(42px,6.4vw,76px)",lineHeight:.98,maxWidth:880,margin:"20px 0 34px"}}>Your website should be a dependable business system.</h2><TrackedLink tracking="cta" trackingLocation="home_feature" trackingLabel="Talk to a senior specialist" href="#rfp" className="btn">Talk to a senior specialist</TrackedLink></div></section>;
 }
 
 export function JsonLd({data}:{data:object}) { return <script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(data)}}/>; }

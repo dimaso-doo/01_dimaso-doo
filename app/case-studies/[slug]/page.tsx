@@ -54,7 +54,8 @@ export default async function CaseStudyPage({ params }: Props) {
           <span className="eyebrow">{study.category}</span>
           <h1>{study.name}</h1>
           <p className="lede">{study.summary}</p>
-          <div className="case-study-actions"><a className="btn" href={study.website} target="_blank" rel="noopener noreferrer">Visit website</a><Link className="btn ghost" href={study.href}>{study.cta}</Link></div>
+          <div className="case-study-actions"><Link className="btn" href="#rfp">Discuss a similar project</Link><a className="btn ghost" href={study.website} target="_blank" rel="noopener noreferrer">Visit website</a></div>
+          <Link className="text-link case-study-service-link" href={study.href}>{study.cta} →</Link>
         </div>
         <div className="case-study-hero-media"><Image src={study.image} alt={study.imageAlt} width={1200} height={700} priority sizes="(max-width: 900px) calc(100vw - 28px), 560px"/><span>{study.services}</span></div>
       </div>
@@ -64,6 +65,22 @@ export default async function CaseStudyPage({ params }: Props) {
         {study.metrics.map(([value,label])=><div className="case-stat" key={label}><CountUpMetric value={value}/><span>{label}</span></div>)}
       </div>
     </section>}
+    <section className="section case-study-body-section">
+      <div className="shell case-study-body">
+        <div className="case-study-main">
+          <article className="case-study-panel"><span className="eyebrow">Project overview</span><h2>Why {study.name} needed a stronger digital foundation.</h2><p>{study.overview}</p></article>
+          <article className="case-study-panel"><span className="eyebrow">Challenge</span><h2>What needed to be solved for {study.category.toLowerCase()}.</h2><p>{study.problem}</p></article>
+          <article className="case-study-panel"><span className="eyebrow">Solution</span><h2>How Dimaso approached {study.services.toLowerCase()}.</h2><p>{study.solution}</p></article>
+          <article className="case-study-panel case-study-results"><span className="eyebrow">Results</span><h2>What changed for {study.name} after the work.</h2><p>{study.result}</p><div className="case-delivery-evidence"><span className="eyebrow">Documented delivery</span><ul>{study.work.slice(0,3).map((item)=><li key={item}>{item}</li>)}</ul></div><Link href="#rfp" className="btn">Discuss a similar project</Link></article>
+        </div>
+        <aside className="case-study-side">
+          <div className="case-study-panel"><span className="eyebrow">What Dimaso worked on</span><p>{study.workSummary}</p><ul>{study.work.map((item)=><li key={item}>{item}</li>)}</ul></div>
+          <div className="case-study-panel"><span className="eyebrow">Services used</span><div className="case-tech-list">{study.serviceTags.map((item)=><span key={item}>{item}</span>)}</div></div>
+          <div className="case-study-panel"><span className="eyebrow">Technical scope</span><div className="case-tech-list">{study.technologies.map((item)=><span key={item}>{item}</span>)}</div></div>
+          <Link href="/case-studies" className="text-link">Back to all case studies →</Link>
+        </aside>
+      </div>
+    </section>
     <section className="section case-study-visuals-section">
       <div className="shell">
         <div className={`case-study-visuals-head ${isForeverLiving ? "case-study-visuals-head-display" : ""}`}>
@@ -82,22 +99,6 @@ export default async function CaseStudyPage({ params }: Props) {
         </figure>
       </div>
     </section>
-    <section className="section case-study-body-section">
-      <div className="shell case-study-body">
-        <div className="case-study-main">
-          <article className="case-study-panel"><span className="eyebrow">Project overview</span><h2>Why {study.name} needed a stronger digital foundation.</h2><p>{study.overview}</p></article>
-          <article className="case-study-panel"><span className="eyebrow">Challenge</span><h2>What needed to be solved for {study.category.toLowerCase()}.</h2><p>{study.problem}</p></article>
-          <article className="case-study-panel"><span className="eyebrow">Solution</span><h2>How Dimaso approached {study.services.toLowerCase()}.</h2><p>{study.solution}</p></article>
-          <article className="case-study-panel"><span className="eyebrow">Results</span><h2>What changed for {study.name} after the work.</h2><p>{study.result}</p></article>
-        </div>
-        <aside className="case-study-side">
-          <div className="case-study-panel"><span className="eyebrow">What Dimaso worked on</span><p>{study.workSummary}</p><ul>{study.work.map((item)=><li key={item}>{item}</li>)}</ul></div>
-          <div className="case-study-panel"><span className="eyebrow">Services used</span><div className="case-tech-list">{study.serviceTags.map((item)=><span key={item}>{item}</span>)}</div></div>
-          <div className="case-study-panel"><span className="eyebrow">Technical scope</span><div className="case-tech-list">{study.technologies.map((item)=><span key={item}>{item}</span>)}</div></div>
-          <Link href="/case-studies" className="text-link">Back to all case studies →</Link>
-        </aside>
-      </div>
-    </section>
     <section className="section ambient-code ambient-right">
       <div className="shell">
         <span className="eyebrow">Related case studies</span>
@@ -107,6 +108,6 @@ export default async function CaseStudyPage({ params }: Props) {
         </div>
       </div>
     </section>
-    <CTA title={`Have a similar ${study.category.toLowerCase()} challenge?`} label="Send your RFP"/>
+    <CTA title={`Have a similar ${study.category.toLowerCase()} challenge?`} label="Discuss a similar project"/>
   </main>;
 }
