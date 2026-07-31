@@ -1,15 +1,10 @@
-"use client";
-
 /* eslint-disable @next/next/no-img-element -- external Simple Icons SVGs are lazy, tiny, and intentionally fetched from their CDN */
 
-import { motion } from "framer-motion";
-import { useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { caseStudies, industries, posts, services } from "@/content/data";
-import { testimonials } from "@/content/testimonials";
 
-export function Reveal({children}:{children:React.ReactNode}) { return <motion.div initial={{opacity:0,y:22}} whileInView={{opacity:1,y:0}} viewport={{once:true,margin:"-80px"}} transition={{duration:.55}}>{children}</motion.div>; }
+export function Reveal({children}:{children:React.ReactNode}) { return <div className="reveal">{children}</div>; }
 export function SectionHead({eyebrow,title,copy}:{eyebrow:string;title:string;copy?:string}){return <Reveal><span className="eyebrow">{eyebrow}</span><h2 style={{fontSize:"clamp(34px,4.6vw,60px)",maxWidth:850,margin:"16px 0 22px"}}>{title}</h2>{copy&&<p className="lede">{copy}</p>}</Reveal>}
 
 export function ClientLogos(){
@@ -33,34 +28,6 @@ export function BlogCards({limit,page=1,perPage}:{limit?:number;page?:number;per
  const items=posts.slice(start,perPage?start+perPage:limit);
  return <div style={{display:"grid",gridTemplateColumns:"repeat(3,minmax(0,1fr))",gap:15}} className="cards-grid blog-grid">{items.map((p,i)=>{const number=start+i+1;return <Link href={`/blog/${p.slug}`} className="card blog-card" key={p.slug} style={{color:"#fff"}}><div className={`blog-card-visual blog-card-visual-${(number%6)||6}`}><span>{String(number).padStart(2,"0")}</span><i/><b/></div><span className="eyebrow">{p.category} · {new Date(p.date).toLocaleDateString("en-US",{month:"short",year:"numeric"})}</span><h3>{p.title}</h3><p className="muted">{p.excerpt}</p><span className="text-link">Read insight →</span></Link>})}</div>
 }
-export function Team(){
- const track=useRef<HTMLDivElement>(null);
- const drag=useRef({active:false,startX:0,scrollLeft:0});
- const [progress,setProgress]=useState(0);
- const [loaded,setLoaded]=useState<Record<string,boolean>>({});
- const team=[
-  {name:"Branislav Stojanovic",role:"Project Lead & Lead Integration Developer",image:"/team/branislav.webp",experience:"Active since 2013",bio:"Leads solution architecture, complex integrations, and critical-path development. Coordinates technical delivery, reviews code, and keeps implementation, performance, reliability, and project communication aligned from planning through production."},
-  {name:"Predrag Stojanovic",role:"Front-end & WordPress Integration Developer",image:"/team/predrag.webp",experience:"Active since 2008",bio:"Supports front-end implementation across WordPress and WooCommerce, including template adjustments, HTML/CSS development, responsive interface updates, and website-side integration work. Focuses on clear, dependable, maintainable user experiences."},
-  {name:"Sandra Lukic",role:"QA Engineer & Technical Support",image:"/team/sandra-lukic.webp",experience:"Active since 2011",bio:"Owns test planning, API and workflow validation, regression testing, defect tracking, and production-readiness verification. Supports UAT and keeps quality visible throughout the entire project delivery lifecycle."},
-  {name:"Marko Milojevic",role:"Senior Web Developer",image:"/team/marko-milojevic.webp",experience:"Web development since 2016",bio:"Builds reliable front-end and back-end features with a focus on performance, maintainability, and clean integrations. Turns complex requirements into stable website functionality that teams can extend."},
-  {name:"Sanja Mazic",role:"Web QA & Project Support",image:"/team/sanja-mazic.webp",experience:"Quality-focused delivery",bio:"Supports organized delivery across content, QA, and client feedback. Reviews releases carefully, keeps communication clear, and helps projects move smoothly from initial requirements through final launch."},
- ];
- const updateProgress=()=>{const node=track.current;if(!node)return;const max=node.scrollWidth-node.clientWidth;setProgress(max>0?node.scrollLeft/max:0)};
- const move=(direction:number)=>{const node=track.current;if(!node)return;const card=node.querySelector<HTMLElement>(".team-card");node.scrollBy({left:direction*((card?.offsetWidth||360)+16),behavior:"smooth"})};
- const onPointerDown=(event:React.PointerEvent<HTMLDivElement>)=>{const node=track.current;if(!node)return;drag.current={active:true,startX:event.clientX,scrollLeft:node.scrollLeft};node.setPointerCapture(event.pointerId);node.classList.add("is-grabbing")};
- const onPointerMove=(event:React.PointerEvent<HTMLDivElement>)=>{const node=track.current;if(!node||!drag.current.active)return;event.preventDefault();node.scrollLeft=drag.current.scrollLeft-(event.clientX-drag.current.startX);updateProgress()};
- const endDrag=(event:React.PointerEvent<HTMLDivElement>)=>{const node=track.current;if(!node)return;drag.current.active=false;node.classList.remove("is-grabbing");if(node.hasPointerCapture(event.pointerId))node.releasePointerCapture(event.pointerId)};
- return <div className="team-shell"><div className="team-head"><span className="client-note">Senior specialists · grab to scroll</span><div><button className="slider-control" onClick={()=>move(-1)} aria-label="Previous team members">←</button><button className="slider-control" onClick={()=>move(1)} aria-label="Next team members">→</button></div></div><div className="team-track" ref={track} onScroll={updateProgress} onPointerDown={onPointerDown} onPointerMove={onPointerMove} onPointerUp={endDrag} onPointerCancel={endDrag}>{team.map(({name,role,image,experience,bio})=><article className="team-card" key={name}><div className={`image-preload-frame team-image-frame ${loaded[name]?"is-loaded":""}`}><Image src={image} alt={`${name}, ${role}`} width={500} height={520} sizes="(max-width: 900px) 86vw, 380px" loading="lazy" onLoad={()=>setLoaded((current)=>({...current,[name]:true}))}/></div><div className="team-card-copy"><h3>{name}</h3><p className="team-role">{role}</p><p className="team-experience">{experience}</p><p className="muted">{bio}</p></div></article>)}</div><div className="team-progress" aria-hidden="true"><span style={{transform:`scaleX(${Math.max(.16,progress)})`}}/></div></div>
-}
-export function Testimonials(){
- const track=useRef<HTMLDivElement>(null);
- const [progress,setProgress]=useState(0);
- const [loaded,setLoaded]=useState<Record<string,boolean>>({});
- const updateProgress=()=>{const node=track.current;if(!node)return;const max=node.scrollWidth-node.clientWidth;setProgress(max>0?node.scrollLeft/max:0)};
- const move=(direction:number)=>{const node=track.current;if(!node)return;const max=node.scrollWidth-node.clientWidth;if(direction>0&&node.scrollLeft>=max-8){node.scrollTo({left:0,behavior:"smooth"});return}if(direction<0&&node.scrollLeft<=8){node.scrollTo({left:max,behavior:"smooth"});return}const card=node.querySelector<HTMLElement>(".testimonial-card");node.scrollBy({left:direction*((card?.offsetWidth||520)+20),behavior:"smooth"})};
- return <div className="testimonial-shell"><div className="testimonial-head"><span className="client-note">Client stories</span><div><button className="slider-control" onClick={()=>move(-1)} aria-label="Previous testimonials">←</button><button className="slider-control" onClick={()=>move(1)} aria-label="Next testimonials">→</button></div></div><div className="testimonial-track" ref={track} onScroll={updateProgress}>{testimonials.map((item,i)=><article className={`card testimonial-card ${item.youtubeId?"testimonial-video-card":""}`} key={`${item.name}-${i}`}><div className="testimonial-media">{item.youtubeId?<iframe src={`https://www.youtube-nocookie.com/embed/${item.youtubeId}`} title={item.alt} loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen/>:item.image?<div className={`image-preload-frame testimonial-image-frame ${loaded[item.name]?"is-loaded":""}`}><Image src={item.image} alt={item.alt} width={1200} height={700} sizes="(max-width: 900px) 88vw, 580px" loading="lazy" onLoad={()=>setLoaded((current)=>({...current,[item.name]:true}))}/></div>:<div className="testimonial-site-shot"><div className="site-browser-bar"><span/><span/><span/></div><div className="site-shot-brand"><strong>{item.initials}</strong><span>{item.name}</span></div><div className="site-shot-lines"><span/><span/><span/></div><div className="site-shot-panel"/></div>}<div className="testimonial-signal"/><span className="eyebrow" style={{position:"absolute",left:18,bottom:15}}>Testimonial / {String(i+1).padStart(2,"0")}</span></div><div className="testimonial-copy"><span className="tag">Testimonial</span><h3>{item.name}</h3><p className="testimonial-category">{item.category}</p><p className="testimonial-scope">{item.scope}</p><blockquote>&ldquo;{item.quote}&rdquo;</blockquote><div className="testimonial-person"><span>{item.person}</span><small>{item.role}</small></div>{item.url&&<a className="text-link" href={item.url} target="_blank" rel="noopener noreferrer">Visit website →</a>}</div></article>)}</div><div className="testimonial-progress" aria-hidden="true"><span style={{transform:`scaleX(${Math.max(.12,progress)})`}}/></div></div>
-}
-
 export function ProcessStack({items=["Understand the context","Define priorities","Build and verify","Improve continuously"],title="Clear from first conversation to continuous improvement."}:{items?:readonly string[];title?:string}) {
  const motions=["audit","plan","build","improve"];
  const copy=["We map business priorities, technical constraints, risk, and the people who depend on the platform.","We turn context into an ordered roadmap with clear ownership, outcomes, and a practical delivery rhythm.","Senior specialists execute the work while QA stays inside every release, not after it.","We measure what changed, protect the system, and keep the next valuable improvement visible."];
@@ -68,6 +35,5 @@ export function ProcessStack({items=["Understand the context","Define priorities
 }
 
 export function FAQSection({eyebrow,title,copy,items}:{eyebrow:string;title:string;copy:string;items:readonly (readonly [string,string])[]}) {
- const [openIndex,setOpenIndex]=useState(0);
- return <section className="section faq-section"><div className="shell faq-layout"><div className="faq-intro"><span className="eyebrow">{eyebrow}</span><h2>{title}</h2><p className="lede">{copy}</p></div><div className="faq-list">{items.map(([q,a],i)=><details className="faq-item" key={q} open={openIndex===i} onToggle={(event)=>{if(event.currentTarget.open)setOpenIndex(i)}}><summary onClick={(event)=>{event.preventDefault();setOpenIndex(i)}}><span className="faq-number">0{i+1}</span><span>{q}</span><span className="faq-toggle" aria-hidden="true"/></summary><div className="faq-answer"><p className="muted">{a}</p></div></details>)}</div></div></section>;
+ return <section className="section faq-section"><div className="shell faq-layout"><div className="faq-intro"><span className="eyebrow">{eyebrow}</span><h2>{title}</h2><p className="lede">{copy}</p></div><div className="faq-list">{items.map(([q,a],i)=><details className="faq-item" name="dimaso-faq" key={q} open={i===0}><summary><span className="faq-number">0{i+1}</span><span>{q}</span><span className="faq-toggle" aria-hidden="true"/></summary><div className="faq-answer"><p className="muted">{a}</p></div></details>)}</div></div></section>;
 }

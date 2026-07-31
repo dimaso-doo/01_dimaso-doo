@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { BlogCards, Cases, ClientLogos, FAQSection, IndustryCards, ProcessStack, SectionHead, ServiceCards, Team, Testimonials } from "@/components/sections";
+import { BlogCards, Cases, ClientLogos, FAQSection, IndustryCards, ProcessStack, SectionHead, ServiceCards } from "@/components/sections";
+import { Team, Testimonials } from "@/components/interactive-sections";
 import { FeatureCTA, JsonLd } from "@/components/site";
 import { TechVisual } from "@/components/tech-visual";
 import { organizationId, organizationSchema, site, websiteId } from "@/lib/site";

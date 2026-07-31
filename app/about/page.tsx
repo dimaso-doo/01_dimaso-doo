@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { JsonLd } from "@/components/site";
-import { SectionHead, Team } from "@/components/sections";
+import { SectionHead } from "@/components/sections";
+import { Team } from "@/components/interactive-sections";
 import { metadata as meta, organizationId, organizationSchema, site, websiteId } from "@/lib/site";
 
 export const metadata = meta("About Our Website Support Team", "Meet the Dimaso team in Novi Sad, Serbia: senior specialists in website maintenance, web development, design, WordPress, technical SEO, and QA.", "/about");

@@ -5,7 +5,6 @@ import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import { createPortal } from "react-dom";
-import { motion, useScroll } from "framer-motion";
 import { ContactForm, Newsletter } from "./forms";
 import { TrackedLink } from "./tracked-link";
 
@@ -79,7 +78,6 @@ export function Header() {
   const menuButton=useRef<HTMLButtonElement>(null);
   const navRef=useRef<HTMLElement>(null);
   const firstMobileLink=useRef<HTMLAnchorElement>(null);
-  const {scrollYProgress}=useScroll();
   const isActive=(href:string)=>href==="/" ? pathname==="/" : pathname===href||pathname.startsWith(`${href}/`);
   useEffect(()=>setMounted(true),[]);
   useEffect(()=>{setOpenDropdown(null);setSuppressedDropdown(null);},[pathname]);
@@ -109,7 +107,7 @@ export function Header() {
       <Link href="#rfp" className="btn hide-mobile" style={{"--btn-h":"44px"} as React.CSSProperties}>Send RFP</Link>
       <button ref={menuButton} aria-label={open?"Close menu":"Open menu"} aria-expanded={open} onClick={()=>setOpen(!open)} className={`menu-button ${open?"is-open":""}`} style={{display:"none"}}><span/><span/><span/></button>
     </div>
-    <motion.div className="scroll-progress" style={{scaleX:scrollYProgress}}/>
+    <div className="scroll-progress" aria-hidden="true"/>
     {mounted&&open&&createPortal(<nav className="mobile-nav" aria-label="Mobile navigation">{links.slice(0,1).map(([l,h],i)=><Link key={h} href={h} ref={i===0?firstMobileLink:undefined} onClick={()=>setOpen(false)} className={`nav-link ${isActive(h)?"is-active":""}`} aria-current={isActive(h)?"page":undefined}>{l}</Link>)}<MobileGroup label="Services" items={serviceLinks} close={()=>setOpen(false)}/><MobileGroup label="Industries" items={industryLinks} close={()=>setOpen(false)}/>{links.slice(1).map(([l,h])=><Link key={h} href={h} onClick={()=>setOpen(false)} className={`nav-link ${isActive(h)?"is-active":""}`} aria-current={isActive(h)?"page":undefined}>{l}</Link>)}<Link href="#rfp" onClick={()=>setOpen(false)} className="btn" style={{marginTop:22}}>Send RFP</Link><div className="mobile-nav-contact"><TrackedLink tracking="email" trackingLocation="header" href="mailto:office@dimaso.co">office@dimaso.co</TrackedLink><TrackedLink tracking="phone" trackingLocation="header" href="tel:+381611375150">+381 61 137 5150</TrackedLink><TrackedLink tracking="linkedin" trackingLocation="header" href={linkedinUrl} target="_blank" rel="noopener noreferrer">LinkedIn</TrackedLink></div><div className="mobile-nav-meta">Dimaso RS · Novi Sad, Serbia<br/>Dimaso US · Sheridan, USA</div></nav>,document.body)}
   </header>;
 }

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { serviceFaqs, services, ServiceKey } from "@/content/data";
-import { Cases, FAQSection, ProcessStack, Reveal, SectionHead, Testimonials } from "./sections";
+import { Cases, FAQSection, ProcessStack, Reveal, SectionHead } from "./sections";
+import { Testimonials } from "./interactive-sections";
 import { CTA, JsonLd } from "./site";
 import { organizationId, site, websiteId } from "@/lib/site";
 import { TechVisual } from "./tech-visual";
