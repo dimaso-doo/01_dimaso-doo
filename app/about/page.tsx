@@ -1,9 +1,9 @@
 import Link from "next/link";
 import { JsonLd } from "@/components/site";
 import { SectionHead, Team } from "@/components/sections";
-import { metadata as meta, organizationId, site, websiteId } from "@/lib/site";
+import { metadata as meta, organizationId, organizationSchema, site, websiteId } from "@/lib/site";
 
-export const metadata = meta("About Dimaso", "Meet the Dimaso team in Novi Sad, Serbia: senior specialists in website maintenance, web development, design, WordPress, technical SEO, and QA.", "/about");
+export const metadata = meta("About Our Website Support Team", "Meet the Dimaso team in Novi Sad, Serbia: senior specialists in website maintenance, web development, design, WordPress, technical SEO, and QA.", "/about");
 
 const people = [
   ["Predrag Stojanovic", "Web Design & WordPress Developer"],
@@ -15,7 +15,7 @@ const people = [
 
 export default function AboutPage() {
   return <main>
-    <JsonLd data={{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":organizationId,name:"Dimaso",url:site.url,email:site.email,telephone:site.phone,location:{"@type":"Place",name:"Novi Sad, Serbia"},areaServed:["United States","Europe","Serbia","International"],knowsAbout:["Website Maintenance","Web Development","Web Design","WordPress Support","Technical SEO","AI Website & Workflow Support","CMS Support","Hosting, Security, Backups","QA and Testing"]},{"@type":"WebPage","@id":`${site.url}/about#webpage`,url:`${site.url}/about`,name:"About Dimaso",isPartOf:{"@id":websiteId},about:{"@id":organizationId}},...people.map(([name,jobTitle])=>({"@type":"Person",name,jobTitle,worksFor:{"@id":organizationId}}))]}}/>
+    <JsonLd data={{"@context":"https://schema.org","@graph":[organizationSchema,{"@type":"WebPage","@id":`${site.url}/about#webpage`,url:`${site.url}/about`,name:"About Dimaso",isPartOf:{"@id":websiteId},about:{"@id":organizationId}},...people.map(([name,jobTitle])=>({"@type":"Person",name,jobTitle,worksFor:{"@id":organizationId}}))]}}/>
     <section className="grid-bg" style={{padding:"140px 0 100px",position:"relative",overflow:"hidden"}}>
       <div className="shell">
         <span className="eyebrow">About Dimaso</span>

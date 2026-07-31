@@ -4,7 +4,7 @@ import { metadata as meta,site } from "@/lib/site";
 
 const linkedinUrl="https://www.linkedin.com/company/dimaso.co/";
 
-export const metadata=meta("Contact Dimaso","Send Dimaso your website maintenance, development, or design RFP and talk with a senior technical team.","/contact");
+export const metadata=meta("Contact Our Website Support Team","Send Dimaso your website maintenance, web development, redesign, WordPress, technical SEO, or support RFP and speak directly with a senior technical team.","/contact");
 
 export default function Page(){
   return <main>

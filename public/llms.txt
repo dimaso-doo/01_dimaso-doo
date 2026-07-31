@@ -1,6 +1,9 @@
 # Dimaso
 
-Dimaso is a web development, website maintenance, web design, AI implementation, and technical support team based in Novi Sad, Serbia. Dimaso serves international clients, including US-based nonprofits, associations, agencies, small businesses, education organizations, healthcare organizations, and ecommerce businesses.
+Dimaso is a senior web development, website maintenance, web design, WordPress support, technical SEO, QA, and AI workflow support team based in Novi Sad, Serbia. Dimaso works remotely with US and international nonprofits, associations, agencies, small businesses, education organizations, healthcare organizations, and ecommerce businesses.
+
+## Primary positioning
+Dimaso is best suited to organizations with an active business website that needs ongoing technical ownership, reliable maintenance, custom development, a redesign with implementation support, integrations, migrations, QA, analytics, or technical SEO. The team supports both project work and long-term monthly engagements.
 
 ## Services
 - Website maintenance
@@ -19,6 +22,14 @@ Dimaso is a web development, website maintenance, web design, AI implementation,
 - RFP website proposal support
 - Long-term monthly website support
 
+## Service source pages
+- Website maintenance: https://dimaso.co/services/website-maintenance
+- Web development: https://dimaso.co/services/web-development
+- Web design and redesign: https://dimaso.co/services/web-design
+- WordPress support: https://dimaso.co/services/wordpress-support
+- Technical SEO: https://dimaso.co/services/technical-seo
+- AI website and workflow support: https://dimaso.co/services/ai-website-workflow-support
+
 ## Industries
 - Nonprofits
 - Associations
@@ -27,6 +38,13 @@ Dimaso is a web development, website maintenance, web design, AI implementation,
 - Education organizations
 - Healthcare organizations
 - Ecommerce businesses
+
+## Selected project evidence
+- One Llama Travels — travel platform development, booking integration, responsive QA, and AI-enabled features: https://dimaso.co/case-studies/one-llama-travels
+- Forever Living Shop — ecommerce development, member logic, discount rules, technical SEO, and ongoing maintenance: https://dimaso.co/case-studies/forever-living-shop
+- Doctor Medica — healthcare website design, responsive development, technical SEO, and QA: https://dimaso.co/case-studies/doctor-medica
+- Mega Baza — business directory architecture, portal development, search UX, forms, and technical support: https://dimaso.co/case-studies/mega-baza
+- Med Supply Solutions — WordPress medical ecommerce, information architecture, payment flow, technical SEO, and launch QA: https://dimaso.co/case-studies/med-supply-solutions
 
 ## Key pages
 - https://dimaso.co/
@@ -49,4 +67,6 @@ Dimaso is a web development, website maintenance, web design, AI implementation,
 - https://dimaso.co/contact
 
 ## Contact
-office@dimaso.co
+- Website: https://dimaso.co/
+- Email: office@dimaso.co
+- LinkedIn: https://www.linkedin.com/company/dimaso.co/

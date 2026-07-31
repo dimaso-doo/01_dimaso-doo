@@ -5,7 +5,7 @@ import { notFound } from "next/navigation";
 import { CountUpMetric } from "@/components/count-up-metric";
 import { CTA, JsonLd } from "@/components/site";
 import { caseStudies } from "@/content/data";
-import { site } from "@/lib/site";
+import { organizationId, site, websiteId } from "@/lib/site";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -17,8 +17,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const study = caseStudies.find((item) => item.slug === slug);
   if (!study) return {};
-  const title = `${study.name} case study`;
-  const description = `${study.summary} See how Dimaso approached the project.`;
+  const title = `${study.name} ${study.serviceTags[0]} Case Study`;
+  const detailedDescription = `${study.summary} See the challenge, Dimaso's technical approach, services, and project outcome.`;
+  const description = detailedDescription.length <= 160
+    ? detailedDescription
+    : `${study.summary} See Dimaso's technical approach and project outcome.`;
   const url = `${site.url}/case-studies/${study.slug}`;
   return {
     title,
@@ -37,7 +40,7 @@ export default async function CaseStudyPage({ params }: Props) {
   const screenshot = `/case-studies/screenshots/${study.slug}.jpg`;
   const visualClass = `case-study-visual case-study-visual-wide ${isForeverLiving ? "case-study-visual-display" : ""}`;
   return <main>
-    <JsonLd data={{"@context":"https://schema.org","@graph":[{"@type":"BreadcrumbList",itemListElement:[{"@type":"ListItem",position:1,name:"Home",item:site.url},{"@type":"ListItem",position:2,name:"Case Studies",item:`${site.url}/case-studies`},{"@type":"ListItem",position:3,name:study.name,item:`${site.url}/case-studies/${study.slug}`}]},{"@type":"CreativeWork",name:study.name,url:`${site.url}/case-studies/${study.slug}`,description:study.summary,image:`${site.url}${study.image}`,about:study.serviceTags,genre:study.category,provider:{"@type":"Organization","name":"Dimaso","url":site.url}}]}}/>
+    <JsonLd data={{"@context":"https://schema.org","@graph":[{"@type":"BreadcrumbList","@id":`${site.url}/case-studies/${study.slug}#breadcrumb`,itemListElement:[{"@type":"ListItem",position:1,name:"Home",item:site.url},{"@type":"ListItem",position:2,name:"Case Studies",item:`${site.url}/case-studies`},{"@type":"ListItem",position:3,name:study.name,item:`${site.url}/case-studies/${study.slug}`}]},{"@type":"CreativeWork","@id":`${site.url}/case-studies/${study.slug}#case-study`,name:study.name,url:`${site.url}/case-studies/${study.slug}`,description:study.summary,image:`${site.url}${study.image}`,about:study.serviceTags,genre:study.category,provider:{"@id":organizationId},isPartOf:{"@id":websiteId}}]}}/>
     <section className="case-study-hero grid-bg">
       <div className="shell case-study-hero-grid">
         <div>

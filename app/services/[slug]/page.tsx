@@ -20,7 +20,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const titles: Record<ServiceKey, string> = {
     maintenance: "Website Maintenance Services",
     development: "Web Development Services",
-    design: "Web Design Services",
+    design: "Web Design & Website Redesign Services",
     wordpress: "WordPress Support Services",
     technicalSeo: "Technical SEO Services",
     aiSupport: "AI Website & Workflow Support",

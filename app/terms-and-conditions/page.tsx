@@ -1,7 +1,7 @@
 import { metadata as meta, site } from "@/lib/site";
 import { TrackedLink } from "@/components/tracked-link";
 
-export const metadata=meta("Terms and Conditions","Terms for using the Dimaso website and submitting inquiries through dimaso.co.","/terms-and-conditions");
+export const metadata=meta("Dimaso Website Terms and Conditions","Read the terms for using dimaso.co, submitting project inquiries and files, following third-party links, and discussing website service proposals with Dimaso.","/terms-and-conditions");
 
 const sections=[
   ["Use of this website","By using this website, you agree to use it lawfully and respectfully. You may not attempt to disrupt the website, misuse forms, upload harmful files, or interfere with website security or availability."],

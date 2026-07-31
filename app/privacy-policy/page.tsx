@@ -1,7 +1,7 @@
 import { metadata as meta, site } from "@/lib/site";
 import { TrackedLink } from "@/components/tracked-link";
 
-export const metadata=meta("Privacy Policy","How Dimaso collects, uses, and protects visitor information submitted through dimaso.co.","/privacy-policy");
+export const metadata=meta("Dimaso Website Privacy Policy","Learn what information Dimaso collects through dimaso.co, how inquiry and analytics data is used, and how website visitors can contact us about privacy.","/privacy-policy");
 
 const sections=[
   ["Information we collect","When you use this website, Dimaso may collect information you choose to submit through forms, including your name, email address, company, selected service, message, and uploaded project files. We may also receive basic technical information such as page URL, browser/device data, analytics events, and spam-protection signals."],

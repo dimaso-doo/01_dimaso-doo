@@ -8,7 +8,7 @@ import { metadata as meta, site, websiteId } from "@/lib/site";
 const perPage=9;
 const totalPages=Math.ceil(posts.length/perPage);
 
-export const metadata=meta("Website insights","Practical website support, development, QA, design, and technical SEO insights from Dimaso.","/blog");
+export const metadata=meta("Website Maintenance & Development Insights","Practical guidance from Dimaso on website maintenance, web development, WordPress, QA, technical SEO, redesigns, migrations, and long-term support.","/blog");
 
 export default function Page(){
   const url=`${site.url}/blog`;
