@@ -23,6 +23,7 @@ Dimaso is best suited to organizations with an active business website that need
 - Long-term monthly website support
 
 ## Service source pages
+- All website services: https://dimaso.co/services
 - Website maintenance: https://dimaso.co/services/website-maintenance
 - Web development: https://dimaso.co/services/web-development
 - Web design and redesign: https://dimaso.co/services/web-design
@@ -31,6 +32,7 @@ Dimaso is best suited to organizations with an active business website that need
 - AI website and workflow support: https://dimaso.co/services/ai-website-workflow-support
 
 ## Industries
+- Industry overview: https://dimaso.co/industries
 - Nonprofits
 - Associations
 - Agencies
@@ -48,6 +50,8 @@ Dimaso is best suited to organizations with an active business website that need
 
 ## Key pages
 - https://dimaso.co/
+- https://dimaso.co/services
+- https://dimaso.co/industries
 - https://dimaso.co/services/website-maintenance
 - https://dimaso.co/services/web-development
 - https://dimaso.co/services/web-design

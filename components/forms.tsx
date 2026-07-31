@@ -4,7 +4,7 @@ import { CSSProperties, ChangeEvent, FormEvent, KeyboardEvent as ReactKeyboardEv
 import { trackEvent, trackLead } from "@/lib/ga-events";
 
 const successText="Thank you. Your request has been received. We will review the details and get back to you shortly.";
-const services=["Website Maintenance","Web Development","Web Design"] as const;
+const services=["Website Maintenance","Web Development","Web Design","WordPress Support","Technical SEO","AI Website & Workflow Support"] as const;
 const generalInquiry="General Inquiry / Not Sure Yet" as const;
 const serviceOptions=[...services,generalInquiry] as const;
 type ServiceOption=(typeof serviceOptions)[number];

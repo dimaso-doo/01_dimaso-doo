@@ -3,10 +3,28 @@ import nodemailer from "nodemailer";
 import { z } from "zod";
 
 export const runtime="nodejs";
-const serviceSchema=z.enum(["Website Maintenance","Web Development","Web Design","General Inquiry / Not Sure Yet"]);
+const serviceSchema=z.enum(["Website Maintenance","Web Development","Web Design","WordPress Support","Technical SEO","AI Website & Workflow Support","General Inquiry / Not Sure Yet"]);
 const schema=z.object({email:z.string().trim().email(),name:z.string().max(120).optional(),company:z.string().max(160).optional(),services:z.array(serviceSchema).max(3).optional(),message:z.string().max(10000).optional(),source:z.string().min(2).max(120),subject:z.string().min(6).max(180),kind:z.enum(["rfp","newsletter"]),pageUrl:z.string().max(500).optional()});
 const allowedExtensions=new Set(["pdf","doc","docx","txt","zip"]);
 const maxUploadSize=10*1024*1024;
+const rfpSubjectBySource:Record<string,string>={
+  "Website Maintenance":"New RFP Request - Website Maintenance - dimaso.co",
+  "Web Development":"New RFP Request - Web Development - dimaso.co",
+  "Web Design":"New RFP Request - Web Design - dimaso.co",
+  "WordPress Support":"New RFP Request - WordPress Support - dimaso.co",
+  "Technical SEO":"New RFP Request - Technical SEO - dimaso.co",
+  "AI Website & Workflow Support":"New RFP Request - AI Website Support - dimaso.co",
+  "Services Hub":"New RFP Request - Services Hub - dimaso.co",
+  "Industries Hub":"New RFP Request - Industries Hub - dimaso.co",
+  "Nonprofit Website Support":"New Nonprofit Website Audit / Support Request - dimaso.co",
+  "Association Website Support":"New Association Website Support Request - dimaso.co",
+  "Agency Website Support":"New Agency Website Support Request - dimaso.co",
+  "Small Business Website Support":"New Small Business Website Support Request - dimaso.co",
+  "Education Website Support":"New Education Website Support Request - dimaso.co",
+  "Healthcare Website Support":"New Healthcare Website Support Request - dimaso.co",
+  "Ecommerce Website Support":"New Ecommerce Website Support Request - dimaso.co",
+  "Contact Page":"New Contact / RFP Request - Contact Page - dimaso.co",
+};
 
 function formatUploadSize(size:number){
   if(size>=1024*1024)return `${(size/(1024*1024)).toFixed(size>=10*1024*1024?0:1)} MB`;
@@ -15,11 +33,7 @@ function formatUploadSize(size:number){
 
 function internalSubject(kind:"rfp"|"newsletter",source:string){
   if(kind==="newsletter")return "New Newsletter Signup - dimaso.co";
-  if(source==="Website Maintenance")return "New RFP Request - Website Maintenance - dimaso.co";
-  if(source==="Web Development")return "New RFP Request - Web Development - dimaso.co";
-  if(source==="Web Design")return "New RFP Request - Web Design - dimaso.co";
-  if(source==="Contact Page")return "New Contact / RFP Request - Contact Page - dimaso.co";
-  return "New RFP Request - Home/Footer - dimaso.co";
+  return rfpSubjectBySource[source]||"New RFP Request - Home/Footer - dimaso.co";
 }
 
 function autoReplySubject(kind:"rfp"|"newsletter",source:string){
@@ -42,7 +56,7 @@ function autoReplyText(name:string|undefined,services:string[]|undefined){
     "Best regards,",
     "Dimaso",
     "",
-    "Website Maintenance | Web Development | Web Design",
+    "Website Maintenance | Web Development | Web Design | WordPress | Technical SEO | AI Website Support",
     "office@dimaso.co",
     "+381 61 137 5150",
     "https://dimaso.co",
