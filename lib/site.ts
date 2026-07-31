@@ -1,7 +1,7 @@
 export const productionUrl = "https://dimaso.co";
 export const organizationId = `${productionUrl}/#organization`;
 export const websiteId = `${productionUrl}/#website`;
-export const seoContentLastModified = "2026-06-19";
+export const seoContentLastModified = "2026-07-31";
 
 export const site = {
   name: "Dimaso",

@@ -4,6 +4,7 @@ import { CTA, JsonLd } from "@/components/site";
 import { industries, industryFaqs, IndustryKey, services } from "@/content/data";
 import { organizationId, site, websiteId } from "@/lib/site";
 import { TechVisual } from "@/components/tech-visual";
+import { TrackedLink } from "@/components/tracked-link";
 
 const serviceBySlug = Object.values(services).reduce<Record<string, (typeof services)[keyof typeof services]>>((acc, service) => {
   acc[service.slug] = service;
@@ -22,9 +23,10 @@ export function IndustryPage({ type }: { type: IndustryKey }) {
         <span className="eyebrow">Industry support · US & international</span>
         <h1 style={{fontSize:"clamp(48px,8vw,92px)",lineHeight:1.02,maxWidth:1050,margin:"22px 0 28px"}}>{industry.title}</h1>
         <p className="lede">{industry.intro}</p>
-        <div style={{display:"flex",gap:12,marginTop:35,flexWrap:"wrap"}}><Link href="#rfp" className="btn">Send your RFP</Link><Link href="/case-studies" className="btn ghost">View case studies</Link></div>
+        <div style={{display:"flex",gap:12,marginTop:35,flexWrap:"wrap"}}>{type==="nonprofits"?<TrackedLink tracking="cta" trackingLocation="nonprofit_hero" trackingLabel="Request a nonprofit website audit" href="#nonprofit-audit" className="btn">Request a nonprofit website audit</TrackedLink>:<Link href="#rfp" className="btn">Send your RFP</Link>}<Link href="/case-studies" className="btn ghost">View case studies</Link></div>
       </div>
     </section>
+    {type==="nonprofits"&&<NonprofitPrioritySection/>}
     <section className="section ambient-code ambient-left"><div className="shell">
       <SectionHead eyebrow="Who this is for" title={`${industry.label} teams that need dependable website ownership.`} copy={industry.who}/>
       <CardGrid items={industry.problems} eyebrow="Problems Dimaso solves"/>
@@ -47,8 +49,22 @@ export function IndustryPage({ type }: { type: IndustryKey }) {
       <div style={{marginTop:50}}><Cases slugs={[...industry.caseSlugs]} limit={3}/></div>
     </div></section>
     <FAQSection eyebrow={`FAQ / ${industry.label}`} title={`Questions about website support for ${industry.label.toLowerCase()}.`} copy="Short answers about scope, remote collaboration, maintenance, technical SEO, and ongoing support." items={faq}/>
-    <CTA title={`Need website support for ${industry.label.toLowerCase()}?`} label="Send your RFP"/>
+    <CTA title={type==="nonprofits"?"Need a reliable partner for your nonprofit website?":`Need website support for ${industry.label.toLowerCase()}?`} label={type==="nonprofits"?"Request your website audit":"Send your RFP"}/>
   </main>;
+}
+
+function NonprofitPrioritySection(){
+  const auditItems=["Donation, contact, volunteer, and event form QA","WordPress or CMS health, updates, backups, and security review","Accessibility basics, mobile behavior, and priority-page clarity","Analytics, technical SEO, indexation, and tracking checks","A prioritized 30-, 60-, and 90-day action plan"];
+  const monthlyItems=["Preventive website and form checks","CMS updates, fixes, and content support","Security, backups, uptime, and performance review","Accessibility and technical SEO improvements","Monthly reporting and a prioritized improvement backlog"];
+  return <section id="nonprofit-audit" className="section nonprofit-priority"><div className="shell">
+    <SectionHead eyebrow="A practical first step" title="Start with a focused nonprofit website audit." copy="We review the parts of the website that protect donations, participation, public trust, and day-to-day publishing. You receive a clear list of risks, quick wins, and the work that deserves budget next."/>
+    <div className="nonprofit-offer-grid">
+      <Reveal><article className="card nonprofit-offer-card"><span className="eyebrow">Initial audit</span><h3>Know what needs attention before committing to a larger project.</h3><ul>{auditItems.map(item=><li key={item}>{item}</li>)}</ul><TrackedLink tracking="cta" trackingLocation="nonprofit_audit" trackingLabel="Request the audit" className="btn" href="#rfp">Request the audit</TrackedLink></article></Reveal>
+      <Reveal><article className="card nonprofit-offer-card"><span className="eyebrow">Monthly website care</span><h3>Keep critical website work moving without adding an internal web team.</h3><ul>{monthlyItems.map(item=><li key={item}>{item}</li>)}</ul><TrackedLink tracking="cta" trackingLocation="nonprofit_monthly_care" trackingLabel="Discuss monthly support" className="btn ghost" href="#rfp">Discuss monthly support</TrackedLink></article></Reveal>
+    </div>
+    <Reveal><aside className="nonprofit-proof"><div><span className="eyebrow">Relevant institutional work</span><h3>Art &amp; Science</h3><p>We structured and supported an information-rich platform that connects scientific, educational, event, and editorial content. The work included information architecture, content migration planning, responsive templates, metadata, and technical SEO—patterns directly relevant to mission-driven organizations.</p></div><Link className="text-link" href="/case-studies/art-and-science">See the case study →</Link></aside></Reveal>
+    <p className="nonprofit-guide-link">Planning internally first? Use our <Link href="/blog/website-maintenance-checklist-for-nonprofits">nonprofit website maintenance checklist</Link> to review donation paths, accessibility, security, analytics, and ongoing support needs.</p>
+  </div></section>;
 }
 
 function CardGrid({ items, eyebrow }: { items: readonly string[]; eyebrow: string }) {
