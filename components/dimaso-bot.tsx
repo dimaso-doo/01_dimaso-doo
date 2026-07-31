@@ -1,6 +1,7 @@
 "use client";
 
 import { ChangeEvent, FormEvent, ReactNode, useEffect, useRef, useState } from "react";
+import { trackEvent, trackLead } from "@/lib/ga-events";
 
 type BotIntent = "general" | "info" | "offer" | "rfp" | "contact";
 type Message = { id: string; role: "bot" | "user" | "system"; text: string; pending?: boolean };
@@ -122,6 +123,7 @@ export function DimasoBot() {
   const [visitorId, setVisitorId] = useState("");
   const fileInput = useRef<HTMLInputElement>(null);
   const messagesRef = useRef<HTMLDivElement>(null);
+  const leadTracked = useRef(false);
 
   useEffect(() => {
     setMounted(true);
@@ -223,6 +225,13 @@ export function DimasoBot() {
       setMessages((current) => current.map((message) => message.id === thinkingId ? newMessage("bot", payload.reply || "Thanks. I saved the conversation for the Dimaso team.") : message));
       setSaved(true);
       setError("");
+      const hasContact=Boolean(contact.email||contact.phone);
+      const hasAttachment=Boolean(file);
+      trackEvent("dimasobot_message",{intent:nextIntent,contact_provided:hasContact,file_attached:hasAttachment});
+      if(!leadTracked.current&&(hasContact||hasAttachment)){
+        trackLead("dimasobot",{intent:nextIntent,contact_provided:hasContact,file_attached:hasAttachment});
+        leadTracked.current=true;
+      }
     } catch {
       setMessages((current) => current.map((message) => message.id === thinkingId ? newMessage("bot", "I could not save that message right now. You can continue the conversation, and we will try again on the next message.") : message));
       setError("The conversation was not saved. Please try again.");

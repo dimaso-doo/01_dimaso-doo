@@ -10,8 +10,8 @@ const industryEntries = Object.entries(industries) as [IndustryKey, (typeof indu
 
 const seo: Record<IndustryKey, { title: string; description: string }> = {
   nonprofits: {
-    title: "Website Support for Nonprofits",
-    description: "Website maintenance and development for nonprofits, including WordPress support, donation form QA, accessibility, security, analytics, and technical SEO.",
+    title: "Nonprofit Website Maintenance & Support",
+    description: "Nonprofit website maintenance, WordPress support, donation form QA, accessibility, security, analytics, technical SEO, and monthly website care.",
   },
   associations: {
     title: "Website Support for Associations",
