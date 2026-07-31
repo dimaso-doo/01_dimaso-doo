@@ -102,7 +102,7 @@ export const blogContent: Record<string, BlogBlock[]> = {
     { type: "p", content: ["The technical review should include hosting, CMS workflows, redirects, structured data, accessibility issues, and performance constraints. Hidden dependencies discovered late tend to create compromises or launch risk."] },
     { type: "h2", text: "Define success before design begins" },
     { type: "p", content: ["Set practical outcomes such as clearer service discovery, higher-quality inquiries, easier publishing, faster mobile pages, or safer campaign launches. Each major design decision can then be evaluated against a business need."] },
-    { type: "p", content: ["Dimaso approaches ", { text: "web design", href: "/services/web-design" }, " as a connected system of positioning, UX, visual direction, responsive behavior, and conversion paths—not as a cosmetic layer placed over unresolved content and technology."] },
+    { type: "p", content: ["Dimaso approaches ", { text: "web design", href: "/services/web-design" }, " as a connected system of positioning, UX, visual direction, responsive behavior, and conversion paths, not as a cosmetic layer placed over unresolved content and technology."] },
     { type: "p", content: ["When the redesign will move URLs, templates, or CMS behavior, involve ", { text: "web development", href: "/services/web-development" }, " and ", { text: "website maintenance", href: "/services/website-maintenance" }, " early so launch risk is managed before the final polish stage."] },
   ],
   "how-to-prepare-a-website-rfp": [
@@ -139,7 +139,7 @@ export const blogContent: Record<string, BlogBlock[]> = {
     { type: "p", content: ["Summarize releases, updates, fixes, content support, and QA completed during the period. Add website health indicators relevant to the platform: uptime, backups, security findings, performance, form delivery, ecommerce checks, or analytics integrity."] },
     { type: "p", content: ["Open risks need an owner, impact statement, and recommendation. Distinguish urgent remediation from planned improvement and optional ideas. This prevents important technical debt from disappearing inside a general backlog."] },
     { type: "h2", text: "Connect reporting to the next cycle" },
-    { type: "p", content: ["Useful reporting ends with priorities for the next period. Recommendations should reflect business events, available capacity, dependencies, and evidence—not a generic optimization checklist."] },
+    { type: "p", content: ["Useful reporting ends with priorities for the next period. Recommendations should reflect business events, available capacity, dependencies, and evidence instead of a generic optimization checklist."] },
     { type: "p", content: ["Dimaso’s ", { text: "website maintenance service", href: "/services/website-maintenance" }, " combines practical care with clear visibility, so teams can see both the work completed and the decisions required to keep the platform reliable."] },
     { type: "p", content: ["Reporting becomes stronger when it is tied to real checks such as ", { text: "QA after updates", href: "/blog/why-qa-matters-after-every-update" }, ", uptime, form delivery, technical SEO, and the next development priorities."] },
   ],

@@ -42,11 +42,11 @@ Dimaso is best suited to organizations with an active business website that need
 - Ecommerce businesses
 
 ## Selected project evidence
-- One Llama Travels — travel platform development, booking integration, responsive QA, and AI-enabled features: https://dimaso.co/case-studies/one-llama-travels
-- Forever Living Shop — ecommerce development, member logic, discount rules, technical SEO, and ongoing maintenance: https://dimaso.co/case-studies/forever-living-shop
-- Doctor Medica — healthcare website design, responsive development, technical SEO, and QA: https://dimaso.co/case-studies/doctor-medica
-- Mega Baza — business directory architecture, portal development, search UX, forms, and technical support: https://dimaso.co/case-studies/mega-baza
-- Med Supply Solutions — WordPress medical ecommerce, information architecture, payment flow, technical SEO, and launch QA: https://dimaso.co/case-studies/med-supply-solutions
+- One Llama Travels: travel platform development, booking integration, responsive QA, and AI-enabled features: https://dimaso.co/case-studies/one-llama-travels
+- Forever Living Shop: ecommerce development, member logic, discount rules, technical SEO, and ongoing maintenance: https://dimaso.co/case-studies/forever-living-shop
+- Doctor Medica: healthcare website design, responsive development, technical SEO, and QA: https://dimaso.co/case-studies/doctor-medica
+- Mega Baza: business directory architecture, portal development, search UX, forms, and technical support: https://dimaso.co/case-studies/mega-baza
+- Med Supply Solutions: WordPress medical ecommerce, information architecture, payment flow, technical SEO, and launch QA: https://dimaso.co/case-studies/med-supply-solutions
 
 ## Key pages
 - https://dimaso.co/

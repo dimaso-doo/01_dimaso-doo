@@ -56,7 +56,7 @@ export default function IndustriesPage() {
     </div></section>
 
     <section className="section ambient-code ambient-left"><div className="shell">
-      <SectionHead eyebrow="Capabilities" title="Bring in the service the organization needs now, then keep the wider system connected." copy="Dimaso can own a focused maintenance, development, design, WordPress, technical SEO, or AI visibility scope—or coordinate those capabilities as one long-term website partner."/>
+      <SectionHead eyebrow="Capabilities" title="Bring in the service the organization needs now, then keep the wider system connected." copy="Dimaso can own a focused maintenance, development, design, WordPress, technical SEO, or AI visibility scope, or coordinate those capabilities as one long-term website partner."/>
       <div style={{marginTop:55}}><ServiceCards/></div>
       <Link className="btn ghost" style={{marginTop:30}} href="/services">Explore all services</Link>
     </div></section>

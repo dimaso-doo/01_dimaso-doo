@@ -16,7 +16,7 @@ export const social = {
   title: "Dimaso | Website Maintenance & Web Development",
   description: "Dimaso provides website maintenance, web development, WordPress support, technical SEO, and AI website support for US and international organizations.",
   image: `${productionUrl}/og-dimaso.jpg`,
-  imageAlt: "Dimaso — Website Support, Maintenance & Development",
+  imageAlt: "Dimaso | Website Support, Maintenance & Development",
   linkedin: "https://www.linkedin.com/company/dimaso.co/",
 };
 
