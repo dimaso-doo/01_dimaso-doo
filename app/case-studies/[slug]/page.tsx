@@ -50,11 +50,11 @@ export default async function CaseStudyPage({ params }: Props) {
         <div className="case-study-hero-media"><Image src={study.image} alt={study.imageAlt} width={1200} height={700} priority sizes="(max-width: 900px) 100vw, 50vw"/><span>{study.services}</span></div>
       </div>
     </section>
-    <section className="section">
+    {study.metrics.length > 0 && <section className="section">
       <div className="shell case-study-stats">
         {study.metrics.map(([value,label])=><div className="case-stat" key={label}><CountUpMetric value={value}/><span>{label}</span></div>)}
       </div>
-    </section>
+    </section>}
     <section className="section case-study-visuals-section">
       <div className="shell">
         <div className={`case-study-visuals-head ${isForeverLiving ? "case-study-visuals-head-display" : ""}`}>
