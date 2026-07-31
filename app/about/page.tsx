@@ -6,9 +6,9 @@ import { metadata as meta, organizationId, organizationSchema, site, websiteId }
 export const metadata = meta("About Our Website Support Team", "Meet the Dimaso team in Novi Sad, Serbia: senior specialists in website maintenance, web development, design, WordPress, technical SEO, and QA.", "/about");
 
 const people = [
-  ["Predrag Stojanovic", "Web Design & WordPress Developer"],
-  ["Branislav Stojanovic", "Full Stack Developer"],
-  ["Sandra Lukic", "QA & Technical Support"],
+  ["Branislav Stojanovic", "Project Lead & Lead Integration Developer"],
+  ["Predrag Stojanovic", "Front-end & WordPress Integration Developer"],
+  ["Sandra Lukic", "QA Engineer & Technical Support"],
   ["Marko Milojevic", "Senior Web Developer"],
   ["Sanja Mazic", "Web QA & Project Support"],
 ] as const;
