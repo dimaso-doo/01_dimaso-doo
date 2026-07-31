@@ -25,7 +25,8 @@ export function IndustryPage({ type }: { type: IndustryKey }) {
         <span className="eyebrow">Industry support · US & international</span>
         <h1 style={{fontSize:"clamp(48px,8vw,92px)",lineHeight:1.02,maxWidth:1050,margin:"22px 0 28px"}}>{industry.title}</h1>
         <p className="lede">{industry.intro}</p>
-        <div style={{display:"flex",gap:12,marginTop:35,flexWrap:"wrap"}}>{type==="nonprofits"?<TrackedLink tracking="cta" trackingLocation="nonprofit_hero" trackingLabel="Request a nonprofit website audit" href="#nonprofit-audit" className="btn">Request a nonprofit website audit</TrackedLink>:<Link href="#rfp" className="btn">Send your RFP</Link>}<Link href="/case-studies" className="btn ghost">View case studies</Link></div>
+        {type==="nonprofits"?<ul className="nonprofit-hero-signals" aria-label="Nonprofit website support highlights"><li>Donation &amp; form QA</li><li>30/60/90-day action plan</li><li>Monthly WordPress care</li></ul>:null}
+        <div style={{display:"flex",gap:12,marginTop:35,flexWrap:"wrap"}}>{type==="nonprofits"?<><TrackedLink tracking="cta" trackingLocation="nonprofit_hero" trackingLabel="Request a nonprofit website audit" href="#nonprofit-audit" className="btn">Request a nonprofit website audit</TrackedLink><TrackedLink tracking="cta" trackingLocation="nonprofit_hero" trackingLabel="Discuss monthly website care" href="#rfp" className="btn ghost">Discuss monthly care</TrackedLink></>:<><TrackedLink tracking="cta" trackingLocation="industry_hero" trackingLabel="Send RFP" href="#rfp" className="btn">Send your RFP</TrackedLink><Link href="/case-studies" className="btn ghost">View case studies</Link></>}</div>
       </div>
     </section>
     {type==="nonprofits"&&<NonprofitPrioritySection/>}

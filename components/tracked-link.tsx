@@ -14,7 +14,7 @@ export function TrackedLink({tracking,trackingLocation,trackingLabel,onClick,...
     if(tracking==="email")trackEvent("email_click",{email:"office@dimaso.co",location:trackingLocation});
     else if(tracking==="phone")trackEvent("phone_click",{phone:"+381611375150",location:trackingLocation});
     else if(tracking==="linkedin")trackEvent("linkedin_click",{location:trackingLocation});
-    else trackEvent("cta_click",{cta_label:trackingLabel,location:trackingLocation});
+    else trackEvent("cta_click",{cta_label:trackingLabel,cta_destination:typeof props.href==="string"?props.href:undefined,location:trackingLocation});
     onClick?.(event);
   }
 

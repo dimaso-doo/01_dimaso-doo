@@ -907,4 +907,5 @@ button,input,textarea,select { font:inherit; }
 .nonprofit-proof .text-link{flex:none}
 .nonprofit-guide-link{margin:28px 0 0;color:#b7c1b9;line-height:1.7}
 .nonprofit-guide-link a{color:#00d892;text-decoration:underline;text-underline-offset:4px}
+.nonprofit-hero-signals{display:flex;gap:9px;flex-wrap:wrap;margin:25px 0 0;padding:0;list-style:none}.nonprofit-hero-signals li{padding:9px 12px;background:oklch(74% .145 163.7 / .055);box-shadow:inset 0 0 0 1px oklch(74% .145 163.7 / .16);color:#b9c7be;font-size:11px;line-height:1.25;letter-spacing:.055em;text-transform:uppercase}
 @media(max-width:800px){.nonprofit-offer-grid{grid-template-columns:1fr}.nonprofit-proof{align-items:flex-start;flex-direction:column;gap:20px}}
