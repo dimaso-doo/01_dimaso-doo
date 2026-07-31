@@ -5,6 +5,24 @@ import { CTA, JsonLd } from "./site";
 import { organizationId, site, websiteId } from "@/lib/site";
 import { TechVisual } from "./tech-visual";
 
+const relevantCaseStudies: Record<ServiceKey, readonly string[]> = {
+ maintenance:["forever-living-shop","mega-baza"],
+ development:["forever-living-shop","call-the-waiter"],
+ design:["doctor-medica","brightside-kosmaj"],
+ wordpress:["med-supply-solutions","one-llama-travels"],
+ technicalSeo:["art-and-science","med-supply-solutions"],
+ aiSupport:["one-llama-travels","art-and-science"],
+};
+
+const relatedIndustries: Record<ServiceKey, readonly (readonly [string,string])[]> = {
+ maintenance:[["Nonprofit website support","/industries/nonprofits"],["Association website support","/industries/associations"],["Small business website support","/industries/small-businesses"],["Ecommerce website support","/industries/ecommerce"]],
+ development:[["Agency development support","/industries/agencies"],["Ecommerce development","/industries/ecommerce"],["Healthcare website development","/industries/healthcare"],["Education website development","/industries/education"]],
+ design:[["Small business web design","/industries/small-businesses"],["Healthcare web design","/industries/healthcare"],["Ecommerce web design","/industries/ecommerce"],["Nonprofit web design","/industries/nonprofits"]],
+ wordpress:[["Nonprofit WordPress support","/industries/nonprofits"],["Association WordPress support","/industries/associations"],["WooCommerce support","/industries/ecommerce"],["White-label agency support","/industries/agencies"]],
+ technicalSeo:[["Ecommerce technical SEO","/industries/ecommerce"],["Healthcare technical SEO","/industries/healthcare"],["Education technical SEO","/industries/education"],["Nonprofit technical SEO","/industries/nonprofits"]],
+ aiSupport:[["Agency AI workflow support","/industries/agencies"],["Nonprofit AI visibility","/industries/nonprofits"],["Association AI visibility","/industries/associations"],["Education AI support","/industries/education"]],
+};
+
 export function ServicePage({type}:{type:ServiceKey}) {
  const s=services[type];
  const faq=serviceFaqs[type];
@@ -25,7 +43,7 @@ export function ServicePage({type}:{type:ServiceKey}) {
   {type==="maintenance"&&<CTA title="Need a maintenance partner who can protect the details?" label="Request a maintenance review"/>}
   <section className="section service-section ambient-code ambient-right"><div className="shell"><SectionHead eyebrow="Problems we solve" title={type==="design"?"When the website is unclear, the offer feels weaker than it is.":"Technical friction should not become business drag."}/><div style={{display:"grid",gridTemplateColumns:"repeat(2,minmax(0,1fr))",gap:14,marginTop:50}} className="cards-grid">{s.problems.map((x,i)=><Reveal key={x}><div className="card"><span className="eyebrow">0{i+1}</span><h3 style={{fontSize:25,lineHeight:1.3}}>{x}</h3></div></Reveal>)}</div></div></section>
   <section className="section service-section ambient-code ambient-left"><div className="shell"><ProcessStack items={s.process} title="A process built for momentum and confidence."/></div></section>
-  <section className="section service-section ambient-code ambient-right"><div className="shell"><SectionHead eyebrow="Relevant work" title="Outcomes shaped by context, not templates."/><div style={{marginTop:50}}><Cases limit={2} slugs={type==="development"?["forever-living-shop","call-the-waiter"]:type==="design"?["doctor-medica","brightside-kosmaj"]:undefined}/></div></div></section>
+  <section className="section service-section ambient-code ambient-right"><div className="shell"><SectionHead eyebrow="Relevant work" title="Outcomes shaped by context, not templates."/><div style={{marginTop:50}}><Cases limit={2} slugs={[...relevantCaseStudies[type]]}/></div><div style={{display:"flex",gap:24,flexWrap:"wrap",marginTop:36}}>{relatedIndustries[type].map(([label,href])=><Link key={href} className="text-link" href={href}>{label} →</Link>)}</div></div></section>
   <section className="section service-section ambient-code ambient-left"><div className="shell"><SectionHead eyebrow="Client perspective" title="A technical partner teams can rely on."/><div style={{marginTop:50}}><Testimonials/></div></div></section>
   <FAQSection eyebrow={`FAQ / ${s.label}`} title={`Questions about ${s.label.toLowerCase()}.`} copy="Practical answers about scope, collaboration, quality, and how the service works in real business conditions." items={faq}/>
  </main>;

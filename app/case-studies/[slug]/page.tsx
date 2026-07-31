@@ -39,6 +39,12 @@ export default async function CaseStudyPage({ params }: Props) {
   const isForeverLiving = study.slug === "forever-living-shop";
   const screenshot = `/case-studies/screenshots/${study.slug}.jpg`;
   const visualClass = `case-study-visual case-study-visual-wide ${isForeverLiving ? "case-study-visual-display" : ""}`;
+  const relatedStudies = caseStudies
+    .filter((item) => item.slug !== study.slug)
+    .map((item) => ({ item, score: item.serviceTags.filter((tag) => study.serviceTags.includes(tag)).length }))
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 3)
+    .map(({ item }) => item);
   return <main>
     <JsonLd data={{"@context":"https://schema.org","@graph":[{"@type":"BreadcrumbList","@id":`${site.url}/case-studies/${study.slug}#breadcrumb`,itemListElement:[{"@type":"ListItem",position:1,name:"Home",item:site.url},{"@type":"ListItem",position:2,name:"Case Studies",item:`${site.url}/case-studies`},{"@type":"ListItem",position:3,name:study.name,item:`${site.url}/case-studies/${study.slug}`}]},{"@type":"CreativeWork","@id":`${site.url}/case-studies/${study.slug}#case-study`,name:study.name,url:`${site.url}/case-studies/${study.slug}`,description:study.summary,image:`${site.url}${study.image}`,about:study.serviceTags,genre:study.category,provider:{"@id":organizationId},isPartOf:{"@id":websiteId}}]}}/>
     <section className="case-study-hero grid-bg">
@@ -50,7 +56,7 @@ export default async function CaseStudyPage({ params }: Props) {
           <p className="lede">{study.summary}</p>
           <div className="case-study-actions"><a className="btn" href={study.website} target="_blank" rel="noopener noreferrer">Visit website</a><Link className="btn ghost" href={study.href}>{study.cta}</Link></div>
         </div>
-        <div className="case-study-hero-media"><Image src={study.image} alt={study.imageAlt} width={1200} height={700} priority sizes="(max-width: 900px) 100vw, 50vw"/><span>{study.services}</span></div>
+        <div className="case-study-hero-media"><Image src={study.image} alt={study.imageAlt} width={1200} height={700} priority sizes="(max-width: 900px) calc(100vw - 28px), 560px"/><span>{study.services}</span></div>
       </div>
     </section>
     {study.metrics.length > 0 && <section className="section">
@@ -71,7 +77,7 @@ export default async function CaseStudyPage({ params }: Props) {
             </div>
             <span className="case-study-display-neck"/>
             <span className="case-study-display-foot"/>
-          </div> : <Image src={screenshot} alt={`${study.name} desktop homepage screenshot`} width={1600} height={980} sizes="100vw"/>}
+          </div> : <Image src={screenshot} alt={`${study.name} desktop homepage screenshot`} width={1600} height={980} sizes="(max-width: 900px) calc(100vw - 28px), 1180px"/>}
           <figcaption>Desktop homepage screenshot</figcaption>
         </figure>
       </div>
@@ -90,6 +96,15 @@ export default async function CaseStudyPage({ params }: Props) {
           <div className="case-study-panel"><span className="eyebrow">Technical scope</span><div className="case-tech-list">{study.technologies.map((item)=><span key={item}>{item}</span>)}</div></div>
           <Link href="/case-studies" className="text-link">Back to all case studies →</Link>
         </aside>
+      </div>
+    </section>
+    <section className="section ambient-code ambient-right">
+      <div className="shell">
+        <span className="eyebrow">Related case studies</span>
+        <h2 style={{fontSize:"clamp(34px,4.6vw,60px)",maxWidth:850,margin:"16px 0 22px"}}>More website work connected to {study.serviceTags[0].toLowerCase()}.</h2>
+        <div className="cards-grid" style={{display:"grid",gridTemplateColumns:"repeat(3,minmax(0,1fr))",gap:14,marginTop:42}}>
+          {relatedStudies.map((item)=><Link key={item.slug} href={`/case-studies/${item.slug}`} className="card" style={{color:"#fff",minHeight:220,display:"flex",flexDirection:"column"}}><span className="eyebrow">{item.category}</span><h3 style={{fontSize:24,margin:"22px 0 14px"}}>{item.name}</h3><p className="muted" style={{lineHeight:1.65}}>{item.summary}</p><span className="text-link" style={{marginTop:"auto"}}>View case study →</span></Link>)}
+        </div>
       </div>
     </section>
     <CTA title={`Have a similar ${study.category.toLowerCase()} challenge?`} label="Send your RFP"/>

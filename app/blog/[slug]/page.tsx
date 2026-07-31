@@ -24,6 +24,12 @@ export default async function Page({params}:{params:Promise<{slug:string}>}){
   const next=postIndex<posts.length-1?posts[postIndex+1]:null;
   const content=blogContent[p.slug];
   const url=`${site.url}/blog/${p.slug}`;
+  const relatedPosts=posts
+    .filter((item)=>item.slug!==p.slug)
+    .map((item)=>({item,score:(item.service===p.service?2:0)+(item.category===p.category?1:0)}))
+    .sort((a,b)=>b.score-a.score)
+    .slice(0,3)
+    .map(({item})=>item);
   return <main>
     <JsonLd data={{"@context":"https://schema.org","@graph":[{"@type":"Article","@id":`${url}#article`,headline:p.title,description:p.description,url,mainEntityOfPage:{"@type":"WebPage","@id":url},image:social.image,datePublished:p.date,dateModified:p.date,author:{"@id":organizationId},publisher:{"@id":organizationId},isPartOf:{"@id":websiteId}},{"@type":"BreadcrumbList","@id":`${url}#breadcrumb`,itemListElement:[{"@type":"ListItem",position:1,name:"Home",item:`${site.url}/`},{"@type":"ListItem",position:2,name:"Blog",item:`${site.url}/blog`},{"@type":"ListItem",position:3,name:p.title,item:url}]}]}}/>
     <article>
@@ -48,6 +54,13 @@ export default async function Page({params}:{params:Promise<{slug:string}>}){
           <div className="blog-article-body">
             {content.map((block,index)=>block.type==="p"?<p key={index}>{renderInline(block.content)}</p>:block.type==="h2"?<h2 key={index}>{block.text}</h2>:<h3 key={index}>{block.text}</h3>)}
             <Link href={p.service} className="btn">Explore the relevant service</Link>
+            <section aria-labelledby="related-insights-title" style={{marginTop:70,paddingTop:28,borderTop:"1px solid rgba(255,255,255,.07)"}}>
+              <span className="eyebrow">Related insights</span>
+              <h2 id="related-insights-title" style={{marginTop:16}}>Continue exploring this website topic.</h2>
+              <div className="cards-grid" style={{display:"grid",gridTemplateColumns:"repeat(3,minmax(0,1fr))",gap:12,marginTop:28}}>
+                {relatedPosts.map((item)=><Link key={item.slug} href={`/blog/${item.slug}`} className="blog-post-nav-card"><span className="eyebrow">{item.category}</span><strong>{item.title}</strong></Link>)}
+              </div>
+            </section>
             <nav className="blog-post-nav" aria-label="Blog post navigation">
               <Link href="/blog" className="blog-back-link">Back to all posts</Link>
               <div className="blog-post-nav-grid">
