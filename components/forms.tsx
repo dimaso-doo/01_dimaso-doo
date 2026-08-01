@@ -1,6 +1,6 @@
 "use client";
 
-import { CSSProperties, ChangeEvent, FormEvent, KeyboardEvent as ReactKeyboardEvent, useEffect, useId, useRef, useState } from "react";
+import { CSSProperties, ChangeEvent, FormEvent, useEffect, useId, useRef, useState } from "react";
 import { trackEvent, trackLead } from "@/lib/ga-events";
 
 const successText="Thank you. Your request has been received. We will review the details and get back to you shortly.";
@@ -38,18 +38,15 @@ export function ContactForm({source,subject,defaultService=""}:{source:string;su
   const [formErrors,setFormErrors]=useState<ContactErrors>({});
   const [fileError,setFileError]=useState("");
   const [fileInfo,setFileInfo]=useState<{name:string;size:number;nonce:number}|null>(null);
-  const [selectedServices,setSelectedServices]=useState<ServiceOption[]>(defaultService&&services.includes(defaultService as (typeof services)[number])?[defaultService as ServiceOption]:[]);
-  const [servicesOpen,setServicesOpen]=useState(false);
+  const initialService:ServiceOption|""=defaultService&&services.includes(defaultService as (typeof services)[number])?defaultService as ServiceOption:"";
+  const [selectedService,setSelectedService]=useState<ServiceOption|"">(initialService);
   const fileInput=useRef<HTMLInputElement>(null);
   const formRef=useRef<HTMLFormElement>(null);
-  const servicesField=useRef<HTMLDivElement>(null);
-  const servicesPanel=useRef<HTMLDivElement>(null);
-  const servicesId=useId();
   const formStatusId=useId();
   const nameId=useId();
   const emailId=useId();
   const websiteUrlId=useId();
-  const servicesLabelId=useId();
+  const serviceId=useId();
   const messageId=useId();
   const fileId=useId();
   const honeypotId=useId();
@@ -69,30 +66,6 @@ export function ContactForm({source,subject,defaultService=""}:{source:string;su
     return()=>observer.disconnect();
   },[source]);
 
-  useEffect(()=>{
-    if(!servicesOpen)return;
-    const closeOnOutsideClick=(event:PointerEvent)=>{
-      if(!servicesField.current?.contains(event.target as Node))setServicesOpen(false);
-    };
-    document.addEventListener("pointerdown",closeOnOutsideClick);
-    return()=>document.removeEventListener("pointerdown",closeOnOutsideClick);
-  },[servicesOpen]);
-
-  function serviceSummary(){
-    if(!selectedServices.length)return "Not selected";
-    if(selectedServices[0]===generalInquiry)return "General Inquiry";
-    if(selectedServices.length<=2)return selectedServices.join(" + ");
-    return `${selectedServices.length} services selected`;
-  }
-
-  function toggleService(service:ServiceOption){
-    setSelectedServices(current=>{
-      if(service===generalInquiry)return current.includes(generalInquiry)?[]:[generalInquiry];
-      const concrete=current.filter(item=>item!==generalInquiry);
-      return concrete.includes(service)?concrete.filter(item=>item!==service):[...concrete,service];
-    });
-  }
-
   function clearFormError(field:ContactField){
     setFormErrors(current=>{
       if(!current[field])return current;
@@ -100,20 +73,6 @@ export function ContactForm({source,subject,defaultService=""}:{source:string;su
       delete next[field];
       return next;
     });
-  }
-
-  function handleServicesKeyDown(event:ReactKeyboardEvent){
-    if(event.key==="Escape"){
-      setServicesOpen(false);
-      (servicesField.current?.querySelector("button") as HTMLButtonElement|null)?.focus();
-    }
-  }
-
-  function openServicesWithKeyboard(event:ReactKeyboardEvent<HTMLButtonElement>){
-    if(event.key!=="ArrowDown")return;
-    event.preventDefault();
-    setServicesOpen(true);
-    requestAnimationFrame(()=>servicesPanel.current?.querySelector<HTMLInputElement>("input")?.focus());
   }
 
   function updateFile(event:ChangeEvent<HTMLInputElement>){
@@ -166,6 +125,7 @@ export function ContactForm({source,subject,defaultService=""}:{source:string;su
     }
     setStatus("loading");
     const data=values;
+    if(!selectedService)data.delete("services");
     data.set("source",source);
     data.set("subject",subject);
     data.set("kind","rfp");
@@ -178,11 +138,11 @@ export function ContactForm({source,subject,defaultService=""}:{source:string;su
           trackEvent("contact_form_submit",{form_name:"contact"});
           trackLead("contact");
         }else{
-          const leadParams={selected_service:selectedServices.length?selectedServices.join(", "):undefined,file_attached:fileInfo!==null};
+          const leadParams={selected_service:selectedService||undefined,file_attached:fileInfo!==null};
           trackEvent("rfp_form_submit",{form_name:"rfp",...leadParams});
           trackLead("rfp",leadParams);
         }
-        form.reset();setSelectedServices(defaultService?[defaultService as ServiceOption]:[]);setFileInfo(null);setFileError("");setFormErrors({});
+        form.reset();setSelectedService(initialService);setFileInfo(null);setFileError("");setFormErrors({});
       }
     }catch{
       setStatus("error");
@@ -191,26 +151,34 @@ export function ContactForm({source,subject,defaultService=""}:{source:string;su
   const hasFormErrors=Object.keys(formErrors).length>0;
   const formErrorMessage=formErrors.email==="Please enter a valid email address."?"Please complete the highlighted fields and enter a valid email address.":"Please complete the highlighted required fields.";
   return <form ref={formRef} action="/api/contact" method="post" encType="multipart/form-data" onSubmit={submit} onFocusCapture={()=>{if(startTracked.current)return;startTracked.current=true;trackEvent("project_form_start",{form_name:source==="Contact Page"?"contact":"rfp",form_source:source});}} noValidate className="form-grid form-panel" style={{display:"grid",gridTemplateColumns:"repeat(2,minmax(0,1fr))",gap:12}}>
-    <label htmlFor={nameId} style={hiddenLabelStyle}>Name</label>
-    <input id={nameId} className="field" required name="name" placeholder="Name *" aria-label="Name" aria-invalid={formErrors.name?true:undefined} aria-describedby={formErrors.name?formStatusId:undefined} onChange={()=>clearFormError("name")}/>
-    <div className="field-wrap"><label htmlFor={emailId} style={hiddenLabelStyle}>Email</label><input id={emailId} className="field" required type="email" name="email" placeholder="Email *" aria-label="Email" aria-invalid={formErrors.email?true:undefined} aria-describedby={formErrors.email?formStatusId:undefined} onChange={()=>clearFormError("email")}/></div>
-    <label htmlFor={websiteUrlId} style={hiddenLabelStyle}>Current website</label>
-    <input id={websiteUrlId} className="field" type="text" inputMode="url" name="websiteUrl" placeholder="Current website (optional)" aria-label="Current website"/>
-    <div ref={servicesField} className={`services-field ${servicesOpen?"is-open":""}`} onKeyDown={handleServicesKeyDown}>
-      <span id={servicesLabelId} style={hiddenLabelStyle}>Area of help (optional)</span>
-      <button type="button" className="field services-trigger" aria-label={`Area of help: ${serviceSummary()}`} aria-labelledby={servicesLabelId} aria-haspopup="true" aria-expanded={servicesOpen} aria-controls={servicesId} onClick={()=>setServicesOpen(open=>!open)} onKeyDown={openServicesWithKeyboard}>
-        <span>{selectedServices.length?serviceSummary():"Area of help (optional)"}</span><span className="services-arrow" aria-hidden="true">⌄</span>
-      </button>
-      <div ref={servicesPanel} id={servicesId} className="services-panel" role="group" aria-label="Select one or more services" hidden={!servicesOpen} onPointerDown={event=>event.stopPropagation()}>
-        {serviceOptions.map(service=><label key={service} className={`service-option ${service===generalInquiry?"is-general":""}`}>
-          <input type="checkbox" name="services" value={service} checked={selectedServices.includes(service)} onChange={()=>toggleService(service)}/><span>{service}</span>
-        </label>)}
+    <div className="form-field">
+      <label htmlFor={nameId}>Name <span>Required</span></label>
+      <input id={nameId} className="field" required name="name" placeholder="Your name" aria-invalid={formErrors.name?true:undefined} aria-describedby={formErrors.name?formStatusId:undefined} onChange={()=>clearFormError("name")}/>
+    </div>
+    <div className="form-field">
+      <label htmlFor={emailId}>Email <span>Required</span></label>
+      <input id={emailId} className="field" required type="email" name="email" placeholder="you@company.com" aria-invalid={formErrors.email?true:undefined} aria-describedby={formErrors.email?formStatusId:undefined} onChange={()=>clearFormError("email")}/>
+    </div>
+    <div className="form-field">
+      <label htmlFor={websiteUrlId}>Current website <span>Optional</span></label>
+      <input id={websiteUrlId} className="field" type="text" inputMode="url" name="websiteUrl" placeholder="https://example.com"/>
+    </div>
+    <div className="form-field">
+      <label htmlFor={serviceId}>Main area of help <span>Optional</span></label>
+      <div className="select-field">
+        <select id={serviceId} className="field" name="services" value={selectedService} onChange={event=>setSelectedService(event.target.value as ServiceOption|"")}>
+          <option value="">Choose one if helpful</option>
+          {serviceOptions.map(service=><option key={service} value={service}>{service}</option>)}
+        </select>
+        <span aria-hidden="true">⌄</span>
       </div>
     </div>
-    <label htmlFor={messageId} style={hiddenLabelStyle}>Project message</label>
-    <textarea id={messageId} className="field" required name="message" placeholder="Tell us about the project *" aria-label="Message" aria-invalid={formErrors.message?true:undefined} aria-describedby={formErrors.message?formStatusId:undefined} onChange={()=>clearFormError("message")} rows={5} style={{gridColumn:"1 / -1"}}/>
+    <div className="form-field form-field-wide">
+      <label htmlFor={messageId}>Project message <span>Required</span></label>
+      <textarea id={messageId} className="field" required name="message" placeholder="What should the website do next?" aria-invalid={formErrors.message?true:undefined} aria-describedby={formErrors.message?formStatusId:undefined} onChange={()=>clearFormError("message")} rows={4}/>
+    </div>
     <div className="upload-field">
-      <label htmlFor={fileId} className={`upload-dropzone ${fileInfo?"has-file":""} ${fileError?"has-error":""}`}><input id={fileId} ref={fileInput} type="file" name="file" accept=".pdf,.doc,.docx,.txt,.zip" aria-invalid={fileError?true:undefined} aria-describedby={fileError?formStatusId:undefined} onChange={updateFile}/><span className="upload-icon">{fileInfo?"✓":"↑"}</span><span><strong>{fileInfo?"Change attached file":"Optional: upload a project brief"}</strong><small>{fileInfo?"PDF, DOC, DOCX, TXT or ZIP · maximum 10MB":"PDF, DOC, DOCX, TXT or ZIP · maximum 10MB"}</small></span></label>
+      <label htmlFor={fileId} className={`upload-dropzone ${fileInfo?"has-file":""} ${fileError?"has-error":""}`}><input id={fileId} ref={fileInput} type="file" name="file" accept=".pdf,.doc,.docx,.txt,.zip" aria-invalid={fileError?true:undefined} aria-describedby={fileError?formStatusId:undefined} onChange={updateFile}/><span className="upload-icon">{fileInfo?"✓":"↑"}</span><span><strong>{fileInfo?"Change attached file":"Attach a project brief (optional)"}</strong><small>PDF, DOC, DOCX, TXT or ZIP · up to 10MB</small></span></label>
       {fileInfo&&<div key={fileInfo.nonce} className="upload-confirmation"><span><strong>File attached:</strong> {fileInfo.name}</span><small>{formatFileSize(fileInfo.size)}</small><button type="button" onClick={removeFile}>Remove</button></div>}
     </div>
     <label htmlFor={honeypotId} style={hiddenLabelStyle} aria-hidden="true">Website</label>

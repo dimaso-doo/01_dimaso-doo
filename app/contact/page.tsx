@@ -20,8 +20,10 @@ export default function Page(){
       <div className="shell contact-page-grid">
         <div className="contact-conversion-copy">
           <span className="eyebrow">Contact · senior review</span>
-          <h1>Bring us the brief, backlog, or hard problem.</h1>
-          <p className="lede">Tell us what the website needs to do next. A senior member of the Dimaso team reviews the context directly and responds with a practical starting point.</p>
+          <h1>Bring us the website problem.</h1>
+          <p className="lede">Tell us what needs to change, improve, or get unstuck. A senior Dimaso team member reviews it directly.</p>
+        </div>
+        <div className="contact-supporting-copy">
           <ul className="contact-confidence-list">
             <li>Direct access to the people responsible for delivery</li>
             <li>US and international collaboration</li>
