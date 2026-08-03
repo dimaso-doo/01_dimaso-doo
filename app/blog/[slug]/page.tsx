@@ -30,16 +30,20 @@ export default async function Page({params}:{params:Promise<{slug:string}>}){
   const modifiedDate="modifiedDate" in p&&typeof p.modifiedDate==="string"?p.modifiedDate:p.date;
   const tocSections=content.flatMap((block)=>block.type==="h2"&&block.id?[{id:block.id,text:block.text}]:[]);
   const isNonprofitChecklist=p.slug==="website-maintenance-checklist-for-nonprofits";
+  const isNonprofitRedesignCost=p.slug==="nonprofit-website-redesign-cost";
+  const articleTopics=isNonprofitChecklist?["Nonprofit website maintenance","WordPress maintenance for nonprofit organizations","Donation form QA","Website accessibility","Technical SEO","Website analytics"]:isNonprofitRedesignCost?["Nonprofit website redesign cost","Nonprofit web design","Website redesign budget","Website accessibility","Content migration","Technical SEO"]:p.category;
+  const faqTitle=isNonprofitChecklist?"Nonprofit website maintenance FAQ":isNonprofitRedesignCost?"Nonprofit website redesign cost FAQ":`${p.category} FAQ`;
   const titleSizeClass=p.title.length>58?"blog-title-extra-long":p.title.length>45?"blog-title-long":"";
   const url=`${site.url}/blog/${p.slug}`;
-  const relatedPosts=posts
+  const curatedRelatedSlugs=isNonprofitRedesignCost?["website-maintenance-checklist-for-nonprofits","website-redesign-rfp-checklist","website-migration-without-losing-seo-value"]:null;
+  const relatedPosts=curatedRelatedSlugs?curatedRelatedSlugs.map((relatedSlug)=>posts.find((item)=>item.slug===relatedSlug)).filter((item):item is (typeof posts)[number]=>Boolean(item)):posts
     .filter((item)=>item.slug!==p.slug)
     .map((item)=>({item,score:(item.service===p.service?2:0)+(item.category===p.category?1:0)}))
     .sort((a,b)=>b.score-a.score)
     .slice(0,3)
     .map(({item})=>item);
   return <main>
-    <JsonLd data={{"@context":"https://schema.org","@graph":[{"@type":"Article","@id":`${url}#article`,headline:p.title,description:p.description,url,mainEntityOfPage:{"@type":"WebPage","@id":url},image:social.image,datePublished:p.date,dateModified:modifiedDate,inLanguage:"en",about:isNonprofitChecklist?["Nonprofit website maintenance","WordPress maintenance for nonprofit organizations","Donation form QA","Website accessibility","Technical SEO","Website analytics"]:p.category,author:{"@id":organizationId},publisher:{"@id":organizationId},isPartOf:{"@id":websiteId}},{"@type":"BreadcrumbList","@id":`${url}#breadcrumb`,itemListElement:[{"@type":"ListItem",position:1,name:"Home",item:`${site.url}/`},{"@type":"ListItem",position:2,name:"Blog",item:`${site.url}/blog`},{"@type":"ListItem",position:3,name:p.title,item:url}]},...(faqs.length?[{"@type":"FAQPage","@id":`${url}#faq`,mainEntity:faqs.map(([question,answer])=>({"@type":"Question",name:question,acceptedAnswer:{"@type":"Answer",text:answer}}))}]:[])]}}/>
+    <JsonLd data={{"@context":"https://schema.org","@graph":[{"@type":"Article","@id":`${url}#article`,headline:p.title,description:p.description,url,mainEntityOfPage:{"@type":"WebPage","@id":url},image:social.image,datePublished:p.date,dateModified:modifiedDate,inLanguage:"en",about:articleTopics,author:{"@id":organizationId},publisher:{"@id":organizationId},isPartOf:{"@id":websiteId}},{"@type":"BreadcrumbList","@id":`${url}#breadcrumb`,itemListElement:[{"@type":"ListItem",position:1,name:"Home",item:`${site.url}/`},{"@type":"ListItem",position:2,name:"Blog",item:`${site.url}/blog`},{"@type":"ListItem",position:3,name:p.title,item:url}]},...(faqs.length?[{"@type":"FAQPage","@id":`${url}#faq`,mainEntity:faqs.map(([question,answer])=>({"@type":"Question",name:question,acceptedAnswer:{"@type":"Answer",text:answer}}))}]:[])]}}/>
     <article>
       <header className="grid-bg blog-hero">
         <div className="shell blog-hero-grid">
@@ -57,7 +61,7 @@ export default async function Page({params}:{params:Promise<{slug:string}>}){
         <div className="shell blog-article-layout">
           <aside className="blog-article-aside">
             <span className="eyebrow">Dimaso insight</span>
-            <p>Prepared by the Dimaso website maintenance team for organizations that need dependable technical ownership after launch.</p>
+            <p>Prepared by the Dimaso website team for organizations that need dependable strategy, design, development, technical SEO, and support.</p>
             <Link className="blog-author-link" href="/about">About Dimaso →</Link>
             {tocSections.length?<nav className="blog-toc" aria-label="Article contents"><strong>On this page</strong>{tocSections.map((section)=><a key={section.id} href={`#${section.id}`}>{section.text}</a>)}</nav>:null}
           </aside>
@@ -76,8 +80,21 @@ export default async function Page({params}:{params:Promise<{slug:string}>}){
                 <p>We can review donation paths, WordPress or CMS health, accessibility, security, analytics, technical SEO, and monthly support needs, then organize the findings into immediate risks, quick wins, and a 30/60/90-day roadmap.</p>
                 <div className="blog-conversion-actions"><TrackedLink tracking="cta" trackingLocation="nonprofit_checklist" trackingLabel="Request a nonprofit website audit" href="/industries/nonprofits#nonprofit-audit" className="btn">Request a nonprofit website audit</TrackedLink><Link href="/services/website-maintenance" className="btn ghost">Explore monthly website care</Link></div>
               </aside>
+            </>:isNonprofitRedesignCost?<>
+              <aside className="blog-proof-card" aria-label="Relevant nonprofit website redesign experience">
+                <span className="eyebrow">Relevant institutional work</span>
+                <h2>Information architecture, migration planning, and maintainable publishing for Art &amp; Science.</h2>
+                <p>See how Dimaso supported an information-rich institutional platform with editorial structure, responsive templates, metadata, technical SEO, and content migration planning.</p>
+                <Link className="text-link" href="/case-studies/art-and-science">View the case study →</Link>
+              </aside>
+              <aside className="blog-conversion-card" aria-label="Request a nonprofit website redesign review">
+                <span className="eyebrow">Plan the right level of investment</span>
+                <h2>Find out whether the website needs a refresh, redesign, or stabilization phase.</h2>
+                <p>We can review the current content, donation and form journeys, CMS, accessibility, integrations, technical SEO, analytics, and migration risk, then organize the findings into a practical scope, budget range, and roadmap.</p>
+                <div className="blog-conversion-actions"><TrackedLink tracking="cta" trackingLocation="nonprofit_redesign_cost" trackingLabel="Request a nonprofit website review" href="/industries/nonprofits#nonprofit-audit" className="btn">Request a nonprofit website review</TrackedLink><Link href="/services/web-design" className="btn ghost">Explore web design</Link></div>
+              </aside>
             </>:<Link href={p.service} className="btn">Explore the relevant service</Link>}
-            {faqs.length?<section className="blog-article-faq" aria-labelledby="blog-faq-title"><span className="eyebrow">Common questions</span><h2 id="blog-faq-title">Nonprofit website maintenance FAQ</h2><div className="faq-list">{faqs.map(([question,answer],index)=><details className="faq-item" key={question}><summary><span className="faq-number">{String(index+1).padStart(2,"0")}</span><span>{question}</span><span className="faq-toggle" aria-hidden="true"/></summary><div className="faq-answer"><p>{answer}</p></div></details>)}</div></section>:null}
+            {faqs.length?<section className="blog-article-faq" aria-labelledby="blog-faq-title"><span className="eyebrow">Common questions</span><h2 id="blog-faq-title">{faqTitle}</h2><div className="faq-list">{faqs.map(([question,answer],index)=><details className="faq-item" key={question}><summary><span className="faq-number">{String(index+1).padStart(2,"0")}</span><span>{question}</span><span className="faq-toggle" aria-hidden="true"/></summary><div className="faq-answer"><p>{answer}</p></div></details>)}</div></section>:null}
             <section aria-labelledby="related-insights-title" style={{marginTop:70,paddingTop:28,borderTop:"1px solid rgba(255,255,255,.07)"}}>
               <span className="eyebrow">Related insights</span>
               <h2 id="related-insights-title" style={{marginTop:16}}>Continue exploring this website topic.</h2>

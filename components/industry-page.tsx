@@ -12,7 +12,7 @@ const serviceBySlug = Object.values(services).reduce<Record<string, (typeof serv
 }, {});
 
 const industryGuides:Partial<Record<IndustryKey,readonly (readonly [string,string])[]>>={
-  nonprofits:[["Nonprofit website maintenance checklist","/blog/website-maintenance-checklist-for-nonprofits"],["Website maintenance costs and pricing","/blog/website-maintenance-costs-and-pricing"]],
+  nonprofits:[["Nonprofit website redesign cost guide","/blog/nonprofit-website-redesign-cost"],["Nonprofit website maintenance checklist","/blog/website-maintenance-checklist-for-nonprofits"]],
   associations:[["WordPress maintenance for associations","/blog/wordpress-maintenance-for-associations"],["How to choose a maintenance partner","/blog/how-to-choose-a-website-maintenance-partner"]],
   agencies:[["White-label WordPress maintenance for agencies","/blog/white-label-wordpress-maintenance-for-agencies"],["Taking over an existing WordPress website","/blog/taking-over-an-existing-wordpress-website"]],
   smallBusinesses:[["Website maintenance costs and pricing","/blog/website-maintenance-costs-and-pricing"],["What to check before a website redesign","/blog/what-to-check-before-redesigning"]],
@@ -77,7 +77,7 @@ function NonprofitPrioritySection(){
       <Reveal><article className="card nonprofit-offer-card"><span className="eyebrow">Monthly website care</span><h3>Keep critical website work moving without adding an internal web team.</h3><ul>{monthlyItems.map(item=><li key={item}>{item}</li>)}</ul><TrackedLink tracking="cta" trackingLocation="nonprofit_monthly_care" trackingLabel="Discuss monthly support" className="btn ghost" href="#rfp">Discuss monthly support</TrackedLink></article></Reveal>
     </div>
     <Reveal><aside className="nonprofit-proof"><div><span className="eyebrow">Relevant institutional work</span><h3>Art &amp; Science</h3><p>We structured and supported an information-rich platform that connects scientific, educational, event, and editorial content. The work included information architecture, content migration planning, responsive templates, metadata, and technical SEO. These patterns are directly relevant to mission-driven organizations.</p></div><Link className="text-link" href="/case-studies/art-and-science">See the case study →</Link></aside></Reveal>
-    <p className="nonprofit-guide-link">Planning internally first? Use our <Link href="/blog/website-maintenance-checklist-for-nonprofits">nonprofit website maintenance checklist</Link> to review donation paths, accessibility, security, analytics, and ongoing support needs.</p>
+    <p className="nonprofit-guide-link">Planning internally first? Use our <Link href="/blog/website-maintenance-checklist-for-nonprofits">nonprofit website maintenance checklist</Link> to review current risks, then compare <Link href="/blog/nonprofit-website-redesign-cost">nonprofit website redesign costs</Link> when the findings point to structural work.</p>
   </div></section>;
 }
 

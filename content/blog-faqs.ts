@@ -1,6 +1,28 @@
 export type BlogFaq = readonly [question: string, answer: string];
 
 export const blogFaqs: Record<string, readonly BlogFaq[]> = {
+  "nonprofit-website-redesign-cost": [
+    [
+      "How much does a nonprofit website redesign cost in 2026?",
+      "A focused refresh may cost approximately $3,000 to $10,000, a structured nonprofit redesign may fall around $10,000 to $30,000, and a complex platform can cost $30,000 to $75,000 or more. These are planning ranges rather than fixed quotes; content volume, integrations, accessibility, migration, custom development, and stakeholder requirements determine the final scope.",
+    ],
+    [
+      "How long does a nonprofit website redesign take?",
+      "A focused refresh may take four to eight weeks, while a structured redesign commonly needs about ten to twenty weeks. Complex platforms can require six months or longer. Content readiness, stakeholder approvals, integrations, migration volume, and accessibility testing often have the greatest effect on the schedule.",
+    ],
+    [
+      "What is the difference between a website refresh and a redesign?",
+      "A refresh improves selected messaging, visuals, templates, and conversion paths while preserving a healthy CMS, structure, and most content. A redesign changes information architecture, content, user journeys, templates, technology, integrations, or accessibility at a system level. An audit should determine which level is justified.",
+    ],
+    [
+      "What should a nonprofit website redesign include?",
+      "A complete scope can include discovery, analytics review, sitemap, content strategy, UX, visual design, responsive development, CMS implementation, donation and CRM integrations, accessibility, technical SEO, migration, redirects, analytics, QA, training, launch support, and post-launch maintenance.",
+    ],
+    [
+      "How can a nonprofit reduce website redesign cost?",
+      "Define goals and decision rights early, audit and consolidate content before migration, assign one internal project owner, use reusable patterns and proven integrations, separate launch requirements from later improvements, and provide feedback on schedule. Do not remove accessibility, redirect planning, analytics validation, or QA simply to lower the initial figure.",
+    ],
+  ],
   "website-maintenance-checklist-for-nonprofits": [
     [
       "What does nonprofit website maintenance include?",
