@@ -1,6 +1,28 @@
 export type BlogFaq = readonly [question: string, answer: string];
 
 export const blogFaqs: Record<string, readonly BlogFaq[]> = {
+  "website-maintenance-costs-and-pricing": [
+    [
+      "How much does WordPress maintenance cost per month?",
+      "Basic professional WordPress care commonly falls around $75 to $250 per month, managed business support around $250 to $750, and WooCommerce, custom, or mission-critical support around $750 to $2,500 or more. These are planning ranges rather than fixed quotes; risk, response expectations, integrations, QA, and included development time determine the real price.",
+    ],
+    [
+      "What should monthly WordPress maintenance include?",
+      "Monthly WordPress maintenance can include controlled core, theme, plugin, PHP, and database updates; verified backups and recovery; security and access review; staging; form or checkout QA; uptime and performance monitoring; technical SEO and analytics checks; reporting; and an agreed amount of improvement capacity.",
+    ],
+    [
+      "Is managed WordPress hosting the same as website maintenance?",
+      "No. Managed hosting usually focuses on the server, platform-level backups, caching, uptime, security, and selected update automation. Website maintenance adds application and business ownership, such as regression testing, form and checkout QA, integration diagnosis, analytics validation, fixes, reporting, and planned improvements.",
+    ],
+    [
+      "Why does WooCommerce maintenance cost more?",
+      "WooCommerce maintenance covers more revenue-sensitive systems, including products, prices, promotions, tax, shipping, payments, inventory, customer accounts, email, feeds, subscriptions, and integrations. Order volume, custom checkout rules, external systems, release frequency, and response expectations all increase the required monitoring, QA, and development capacity.",
+    ],
+    [
+      "Can a business maintain its own WordPress website?",
+      "Yes, when the website is simple and someone has the time, access, technical skill, backup and restore process, monitoring, checklist, and authority to own failures. External support becomes more valuable when the website drives important leads or revenue, changes frequently, uses custom code or integrations, or needs dependable response and reporting.",
+    ],
+  ],
   "ecommerce-website-maintenance-checklist": [
     [
       "What should ecommerce website maintenance include?",

@@ -33,6 +33,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: `${site.url}/case-studies/${study.slug}`,
       lastModified: seoContentLastModified,
     })),
-    ...posts.map((post) => ({ url: `${site.url}/blog/${post.slug}`, lastModified: post.date })),
+    ...posts.map((post) => ({
+      url: `${site.url}/blog/${post.slug}`,
+      lastModified:
+        "modifiedDate" in post && typeof post.modifiedDate === "string"
+          ? post.modifiedDate
+          : post.date,
+    })),
   ];
 }

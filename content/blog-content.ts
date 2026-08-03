@@ -2,7 +2,8 @@ export type BlogInline = string | { text: string; href: string };
 export type BlogBlock =
   | { type: "h2" | "h3"; text: string; id?: string }
   | { type: "p"; content: BlogInline[] }
-  | { type: "ul"; items: BlogInline[][] };
+  | { type: "ul"; items: BlogInline[][] }
+  | { type: "table"; caption?: string; headers: string[]; rows: string[][] };
 
 export const blogContent: Record<string, BlogBlock[]> = {
   "ecommerce-website-maintenance-checklist": [
@@ -250,10 +251,10 @@ export const blogContent: Record<string, BlogBlock[]> = {
     { type: "p", content: ["Dimaso provides ", { text: "nonprofit website design, development, and maintenance", href: "/industries/nonprofits" }, " for US and international organizations. We can begin with a focused review, identify whether the website needs a refresh, redesign, or stabilization phase, and turn the findings into a practical scope, budget range, and 30/60/90-day roadmap."] },
   ],
   "website-maintenance-costs-and-pricing": [
-    { type: "h2", text: "Website maintenance pricing starts with responsibility" },
+    { type: "h2", id: "pricing-starts-with-responsibility", text: "Website maintenance pricing starts with responsibility" },
     { type: "p", content: ["There is no useful universal price for website maintenance because the service can mean anything from occasional plugin updates to active ownership of a revenue-critical platform. A realistic estimate starts with what the website does, what can fail, and how quickly the business needs support when something changes."] },
     { type: "p", content: ["A dependable ", { text: "website maintenance service", href: "/services/website-maintenance" }, " should define the systems covered, the expected response rhythm, the QA required after changes, and how improvement work is prioritized alongside preventive care."] },
-    { type: "h2", text: "What affects monthly website maintenance cost" },
+    { type: "h2", id: "monthly-maintenance-cost-factors", text: "What affects monthly website maintenance cost" },
     { type: "h3", text: "Platform complexity, risk, and delivery capacity" },
     { type: "ul", items: [
       ["The number of websites, environments, templates, and integrations under support"],
@@ -264,10 +265,50 @@ export const blogContent: Record<string, BlogBlock[]> = {
       ["The amount of monthly development, design, QA, and reporting capacity included"],
     ] },
     { type: "p", content: ["A small brochure website with stable content should not be priced like an ecommerce platform with daily orders and several integrations. The right scope reflects operational exposure rather than counting pages alone."] },
-    { type: "h2", text: "Compare the engagement model, not only the monthly figure" },
+    { type: "h2", id: "wordpress-maintenance-cost", text: "How much does WordPress maintenance cost in 2026?" },
+    { type: "p", content: ["Professional WordPress maintenance commonly starts around $75 to $250 per month for basic care, while managed business support often falls between $250 and $750 per month. WooCommerce, custom functionality, demanding service levels, or reserved development capacity can move the budget to $750 to $2,500 or more per month. These are market planning ranges, not fixed quotes: the real cost depends on responsibility, risk, and included technical time."] },
+    { type: "p", content: ["Low-cost tools and managed hosting can automate parts of backups, updates, caching, and security, but they should not be compared directly with a service that tests forms or checkout, diagnoses regressions, restores failures, manages integrations, and delivers planned improvements. The table below separates those levels of ownership."] },
+    { type: "table", caption: "Typical monthly WordPress maintenance planning ranges in USD", headers: ["Support model", "Typical monthly range", "Usually includes", "Usually does not include"], rows: [
+      ["DIY tools or hosting only", "$20–$100", "Hosting features, automated backups, updates, caching, or monitoring", "Developer ownership, regression QA, fixes, roadmap work, or business-response commitments"],
+      ["Basic professional care", "$75–$250", "Controlled updates, backups, security checks, uptime, and a limited number of small fixes", "Substantial development, complex integrations, frequent content work, or urgent support"],
+      ["Managed business support", "$250–$750", "Staging, updates, recovery, form QA, performance, reporting, and reserved support capacity", "Large features, major redesigns, migrations, or unlimited emergency development"],
+      ["WooCommerce or custom platform", "$750–$2,500+", "Checkout and integration QA, higher-touch monitoring, technical ownership, and development capacity", "Undefined scope, unlimited project work, third-party fees, or every after-hours incident"],
+    ] },
+    { type: "p", content: ["A public plan at $99 per month and a proposal at $900 per month may both be reasonable if the first covers routine care and the second owns a revenue-sensitive store, integrations, QA, reporting, and a development backlog. Compare the responsibility transferred to the provider before comparing the number."] },
+    { type: "h2", id: "wordpress-maintenance-includes", text: "What should WordPress maintenance include?" },
+    { type: "p", content: ["A useful WordPress maintenance plan combines prevention, recovery, verification, and improvement. The exact frequency should match the website’s release rhythm and risk, but the scope should make the following responsibilities visible."] },
+    { type: "ul", items: [
+      ["Controlled WordPress core, theme, plugin, PHP, database, and server compatibility updates"],
+      ["Backups stored outside the production website, retention rules, restore access, and periodic recovery tests"],
+      ["Security monitoring, account and permission review, vulnerability response, and a documented incident path"],
+      ["Staging and regression QA for important forms, navigation, responsive layouts, checkout, tracking, and integrations"],
+      ["Uptime, error, performance, Core Web Vitals, broken link, and technical SEO monitoring"],
+      ["A clear monthly record of work completed, current risks, decisions required, and the next improvement priorities"],
+      ["An agreed amount of development, content, design, analytics, or technical SEO capacity where the business needs it"],
+    ] },
+    { type: "p", content: ["For a practical operating sequence, use the ", { text: "small business maintenance checklist", href: "/blog/small-business-website-maintenance-checklist" }, ". Teams inheriting a platform should first follow the ", { text: "WordPress website takeover process", href: "/blog/taking-over-an-existing-wordpress-website" }, " so unknown access, backups, custom code, and existing failures are documented before routine support begins."] },
+    { type: "h2", id: "hosting-vs-maintenance", text: "Managed WordPress hosting is not the same as website maintenance" },
+    { type: "p", content: ["Managed WordPress hosting primarily owns the infrastructure layer: the server environment, platform-level backups, caching, uptime, and selected security or update automation. Coverage varies by host, so the contract matters more than the word managed."] },
+    { type: "p", content: ["Website maintenance owns what happens at the application and business level. A maintenance partner can test whether a plugin update broke a lead form, whether a checkout rule still works, whether analytics records the conversion, whether an integration transferred data correctly, and what should be improved next. Many organizations need both good hosting and accountable application support."] },
+    { type: "h2", id: "woocommerce-maintenance-cost", text: "Why does WooCommerce maintenance cost more?" },
+    { type: "p", content: ["WooCommerce turns maintenance into revenue protection. Product rules, prices, tax, shipping, payments, inventory, transactional email, customer accounts, feeds, subscriptions, and external systems can fail independently even while the storefront remains online. Updates also have a wider regression surface than a brochure website."] },
+    { type: "p", content: ["The budget rises with order volume, catalog and pricing complexity, payment methods, custom checkout behavior, subscriptions, regional rules, ERP or fulfillment integrations, and response requirements. Use the ", { text: "30-point ecommerce maintenance checklist", href: "/blog/ecommerce-website-maintenance-checklist" }, " to define the tests and ownership a store actually needs before requesting proposals."] },
+    { type: "h2", id: "cost-increases", text: "What increases or lowers the monthly cost?" },
+    { type: "ul", items: [
+      ["A clean, documented, current website with few dependencies costs less to own than an inherited platform with technical debt"],
+      ["Custom themes, plugins, checkout logic, APIs, multilingual content, multisite, memberships, and ecommerce add testing and specialist time"],
+      ["More frequent releases, content requests, campaigns, integrations, and stakeholder approvals increase coordination and QA"],
+      ["Guaranteed response times, after-hours escalation, high availability, compliance, and deeper security requirements increase reserved capacity"],
+      ["Combining maintenance with development, design, accessibility, analytics, content, or technical SEO changes the service from basic care to continuous improvement"],
+      ["Good hosting, staging, monitoring, documentation, access control, and an internal decision-maker reduce avoidable support work"],
+    ] },
+    { type: "h2", id: "not-included", text: "What is often not included in a maintenance plan?" },
+    { type: "p", content: ["A proposal should state exclusions as clearly as inclusions. Common exclusions include hosting and premium licenses, cleanup of pre-existing malware or technical debt, redesigns, major features, migrations, large content projects, third-party platform fees, and after-hours emergency work. Some providers include selected items or price them separately; neither model is automatically better if the boundaries are explicit."] },
+    { type: "p", content: ["Ask whether unused hours carry forward, how larger tasks are estimated, whether emergency time is deducted from the monthly allowance, who pays software licenses, and what happens when a problem belongs to the host or another vendor. These details determine the effective price more than a long feature list."] },
+    { type: "h2", id: "compare-engagement-model", text: "Compare the engagement model, not only the monthly figure" },
     { type: "p", content: ["Some plans cover preventive checks and a limited number of small fixes. Others reserve senior development capacity and include structured QA, reporting, technical SEO, analytics, and an improvement backlog. Ask what happens when the monthly allowance is exceeded, how urgent incidents are handled, and whether unused capacity carries forward."] },
     { type: "p", content: ["A one-time cleanup can be appropriate when the website first needs stabilization. Ongoing support becomes more valuable when requests recur, the platform changes regularly, or internal teams need a technical partner who already understands the context. Our guide to ", { text: "website support versus one-time development", href: "/blog/website-support-vs-one-time-development" }, " explains that distinction in more detail."] },
-    { type: "h2", text: "What to request in a maintenance proposal" },
+    { type: "h2", id: "maintenance-proposal", text: "What to request in a maintenance proposal" },
     { type: "ul", items: [
       ["A baseline review and a clearly defined list of covered systems"],
       ["Response expectations for routine requests and urgent production issues"],
@@ -278,7 +319,7 @@ export const blogContent: Record<string, BlogBlock[]> = {
     { type: "p", content: ["Mission-driven teams can use our ", { text: "nonprofit website maintenance checklist", href: "/blog/website-maintenance-checklist-for-nonprofits" }, " to turn those responsibilities into a practical monthly and quarterly review."] },
     { type: "p", content: ["Small teams can also use the ", { text: "small business website maintenance checklist", href: "/blog/small-business-website-maintenance-checklist" }, " to test lead delivery, WordPress or CMS health, security, speed, search visibility, and analytics before comparing support plans."] },
     { type: "p", content: ["Online stores should use the dedicated ", { text: "ecommerce website maintenance checklist", href: "/blog/ecommerce-website-maintenance-checklist" }, " to cover checkout, payments, product rules, inventory, feeds, transactional email, integrations, and revenue tracking."] },
-    { type: "p", content: ["The best proposal makes ownership visible. If you want an estimate shaped around the current platform, workload, and risk, ", { text: "send Dimaso the website context", href: "/contact" }, " for a senior review."] },
+    { type: "p", content: ["The best proposal makes ownership visible. If you want an estimate shaped around the current platform, workload, and risk, ", { text: "send Dimaso the website context", href: "/contact" }, " for a senior review, or review our ", { text: "WordPress maintenance and support service", href: "/services/wordpress-support" }, "."] },
   ],
   "taking-over-an-existing-wordpress-website": [
     { type: "h2", text: "A WordPress takeover should begin with evidence" },
