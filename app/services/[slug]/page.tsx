@@ -29,7 +29,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     maintenance: "Dimaso provides ongoing website maintenance, updates, bug fixes, backups, security, performance, technical SEO, analytics, and monthly support.",
     development: "Custom web development services for WordPress, Laravel, custom CMS, ecommerce, API integrations, migrations, and business-critical web platforms.",
     design: "Dimaso designs business websites, UX/UI, responsive pages, redesigns, landing pages, and conversion-focused website experiences.",
-    wordpress: "Ongoing WordPress maintenance and support for safer updates, plugin and theme fixes, Elementor, WooCommerce, security, backups, performance, and migrations.",
+    wordpress: "WordPress maintenance and support for updates, WooCommerce, Elementor, security, backups, performance, migrations, QA, and ongoing development.",
     technicalSeo: "Technical SEO audits and implementation for crawlability, indexing, metadata, schema, internal links, Core Web Vitals, GA4, GSC, and migrations.",
     aiSupport: "AI website and workflow support for search visibility, structured content, Schema.org, llms.txt, automation, reporting, and clearer AI discovery.",
   };

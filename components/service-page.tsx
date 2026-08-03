@@ -27,7 +27,7 @@ const serviceHeroCopy:Record<ServiceKey,string>={
  maintenance:"Ongoing website care for teams that need updates, fixes, QA, backups, security, performance, and small improvements owned by one dependable partner.",
  development:"Custom web development for business rules, integrations, ecommerce, migrations, and workflows that standard website tools cannot support reliably.",
  design:"Web design that connects positioning, UX structure, responsive interfaces, conversion paths, and the technical reality of implementation.",
- wordpress:"Senior WordPress support for safer updates, WooCommerce, Elementor, fixes, performance, migrations, security, and ongoing care.",
+ wordpress:"Dimaso maintains, fixes, and improves business-critical WordPress and WooCommerce websites for US and international teams. We can take over an existing site, stabilize updates and backups, resolve plugin or theme problems, and provide dependable monthly development and QA support.",
  technicalSeo:"Technical SEO that turns crawl, indexing, metadata, schema, internal linking, and Core Web Vitals findings into implemented improvements.",
  aiSupport:"Practical AI visibility and workflow support built around clearer content, structured data, internal knowledge, and useful automation.",
 };
@@ -35,21 +35,73 @@ const serviceHeroCopy:Record<ServiceKey,string>={
 export function ServicePage({type}:{type:ServiceKey}) {
  const s=services[type];
  const faq=serviceFaqs[type];
+ const serviceSchema={"@type":"Service","@id":`${site.url}/${s.slug}#service`,name:s.label,serviceType:s.serviceType,url:`${site.url}/${s.slug}`,description:s.intro,provider:{"@id":organizationId},isPartOf:{"@id":websiteId},audience:{"@type":"BusinessAudience",audienceType:"Businesses"},areaServed:["US","International"],...(type==="wordpress"?{hasOfferCatalog:{"@type":"OfferCatalog",name:"WordPress support engagement models",itemListElement:wordpressEngagementModels.map((model)=>({"@type":"Offer",itemOffered:{"@type":"Service",name:model.title,description:model.schemaDescription}}))}}:{})};
  return <main>
- <JsonLd data={{"@context":"https://schema.org","@graph":[{"@type":"Service","@id":`${site.url}/${s.slug}#service`,name:s.label,serviceType:s.serviceType,url:`${site.url}/${s.slug}`,description:s.intro,provider:{"@id":organizationId},isPartOf:{"@id":websiteId},audience:{"@type":"BusinessAudience",audienceType:"Businesses"},areaServed:["US","International"]},{"@type":"BreadcrumbList",itemListElement:[{"@type":"ListItem",position:1,name:"Home",item:`${site.url}/`},{"@type":"ListItem",position:2,name:"Services",item:`${site.url}/services`},{"@type":"ListItem",position:3,name:s.label,item:`${site.url}/${s.slug}`}]},{"@type":"FAQPage",mainEntity:faq.map(([q,a])=>({"@type":"Question",name:q,acceptedAnswer:{"@type":"Answer",text:a}}))}]}}/>
-  <section className="grid-bg service-hero"><TechVisual/><div className="shell"><span className="eyebrow">{s.eyebrow} · US & international</span><h1>{s.title}</h1><p className="lede">{serviceHeroCopy[type]}</p><div className="hero-actions"><Link href="#rfp" className="btn">Discuss your website</Link><Link href="/case-studies" className="btn ghost">See relevant work</Link></div><p className="hero-assurance">Direct senior review · Brief optional · Practical next step</p></div></section>
-  <section className="section service-section service-cover-section ambient-code ambient-left"><div className="shell"><SectionHead eyebrow="What we cover" title={`${s.label} with senior ownership.`} copy={s.coverCopy}/><div className="maintenance-cover-grid cards-grid">{s.keywords.map((x,i)=><Reveal key={x}><div className={`card maintenance-cover-card cover-card-${i+1}`}><div className="cover-motion"><span/><span/><span/></div><span>0{i+1}</span><h3>{x}</h3></div></Reveal>)}</div></div></section>
+ <JsonLd data={{"@context":"https://schema.org","@graph":[serviceSchema,{"@type":"BreadcrumbList",itemListElement:[{"@type":"ListItem",position:1,name:"Home",item:`${site.url}/`},{"@type":"ListItem",position:2,name:"Services",item:`${site.url}/services`},{"@type":"ListItem",position:3,name:s.label,item:`${site.url}/${s.slug}`}]},{"@type":"FAQPage",mainEntity:faq.map(([q,a])=>({"@type":"Question",name:q,acceptedAnswer:{"@type":"Answer",text:a}}))}]}}/>
+  <section className="grid-bg service-hero"><TechVisual/><div className="shell"><span className="eyebrow">{s.eyebrow} · US & international</span><h1>{s.title}</h1><p className="lede">{serviceHeroCopy[type]}</p><div className="hero-actions"><Link href="#rfp" className="btn">{type==="wordpress"?"Request a WordPress support review":"Discuss your website"}</Link><Link href={type==="wordpress"?"/blog/website-maintenance-costs-and-pricing":"/case-studies"} className="btn ghost">{type==="wordpress"?"See maintenance pricing":"See relevant work"}</Link></div><p className="hero-assurance">{type==="wordpress"?"Existing websites welcome · Vendor takeovers available · Monthly or project support":"Direct senior review · Brief optional · Practical next step"}</p></div></section>
+  {type==="wordpress"?<WordPressSupportScope/>:<section className="section service-section service-cover-section ambient-code ambient-left"><div className="shell"><SectionHead eyebrow="What we cover" title={`${s.label} with senior ownership.`} copy={s.coverCopy}/><div className="maintenance-cover-grid cards-grid">{s.keywords.map((x,i)=><Reveal key={x}><div className={`card maintenance-cover-card cover-card-${i+1}`}><div className="cover-motion"><span/><span/><span/></div><span>0{i+1}</span><h3>{x}</h3></div></Reveal>)}</div></div></section>}
   <ServiceQualification type={type}/>
+  {type==="wordpress"&&<WordPressEngagementModels/>}
+  {type==="wordpress"&&<WordPressOperations/>}
   {type==="development"&&<DevelopmentSystems/>}
   {type==="design"&&<DesignClarity/>}
   {type==="maintenance"&&<MaintenanceRhythm/>}
   {type==="maintenance"&&<MaintenanceSLA/>}
   {type!=="maintenance"&&type!=="development"&&type!=="design"&&<ServiceProofSnippets type={type}/>}
-  <CTA title={`Need senior ownership for ${s.label.toLowerCase()}?`} label="Discuss the current website"/>
-  <section className="section service-section ambient-code ambient-right"><div className="shell"><SectionHead eyebrow="Relevant work" title="Outcomes shaped by context, not templates."/><div style={{marginTop:50}}><Cases limit={2} slugs={[...relevantCaseStudies[type]]}/></div><div style={{display:"flex",gap:24,flexWrap:"wrap",marginTop:36}}>{relatedIndustries[type].map(([label,href])=><Link key={href} className="text-link" href={href}>{label} →</Link>)}</div></div></section>
-  <section className="section service-section service-process-section ambient-code ambient-left"><div className="shell"><ProcessStack items={s.process} title="A process built for momentum and confidence."/></div></section>
+  {type==="wordpress"&&<RelevantWork type={type}/>}
+  <CTA title={type==="wordpress"?"Get a WordPress support recommendation based on the current platform, risks, workload, and response needs.":`Need senior ownership for ${s.label.toLowerCase()}?`} label={type==="wordpress"?"Request a WordPress support review":"Discuss the current website"}/>
+  {type!=="wordpress"&&<RelevantWork type={type}/>}
+  {type!=="wordpress"&&<section className="section service-section service-process-section ambient-code ambient-left"><div className="shell"><ProcessStack items={s.process} title="A process built for momentum and confidence."/></div></section>}
   <FAQSection eyebrow={`FAQ / ${s.label}`} title={`Questions about ${s.label.toLowerCase()}.`} copy="Practical answers about scope, collaboration, quality, and how the service works in real business conditions." items={faq}/>
  </main>;
+}
+
+const wordpressSupportScope=[
+ {title:"Controlled updates",copy:"WordPress core, PHP, themes, plugins, and database changes reviewed, staged when appropriate, released with rollback and regression QA."},
+ {title:"Backups & recovery",copy:"Backup coverage, off-site access, retention, restore ownership, and periodic recovery checks that make a production failure recoverable."},
+ {title:"Security & access",copy:"Vulnerability response, administrator access, permissions, monitoring, hardening, and a documented escalation path when risk appears."},
+ {title:"Forms & email",copy:"Contact, lead, application, donation, and transactional email paths tested beyond the visible success message."},
+ {title:"Elementor & themes",copy:"Responsive layout fixes, template maintenance, reusable page patterns, content changes, and safer page-builder workflows."},
+ {title:"WooCommerce",copy:"Products, pricing, promotions, cart, checkout, payments, shipping, tax, order email, accounts, and integration support."},
+ {title:"Performance & SEO",copy:"Core Web Vitals, caching, images, errors, crawlability, metadata, schema, internal links, GA4, and Search Console support."},
+ {title:"Reporting & roadmap",copy:"Completed work, open risks, decisions, included capacity, and next improvements organized into a useful monthly record."},
+] as const;
+
+const wordpressEngagementModels=[
+ {title:"WordPress takeover",bestFor:"Existing websites changing vendors",includes:["Access and ownership review","Backups and recovery baseline","Plugin, theme, hosting, and custom-code audit"],schemaDescription:"A structured WordPress support takeover covering access, backups, dependencies, current failures, and the first stabilization priorities."},
+ {title:"Essential care",bestFor:"Stable business websites",includes:["Controlled updates and backups","Security and uptime checks","Priority-page and form QA"],schemaDescription:"Preventive WordPress maintenance for updates, backups, security, uptime, and essential regression checks."},
+ {title:"Managed support",bestFor:"Teams with recurring requests",includes:["Maintenance and reporting","Reserved development capacity","Performance, analytics, and SEO improvements"],schemaDescription:"Ongoing WordPress maintenance plus reserved development, QA, reporting, performance, analytics, and technical SEO support."},
+ {title:"WooCommerce support",bestFor:"Revenue-sensitive online stores",includes:["Checkout and payment QA","Product, order, and integration support","Higher-touch release and incident ownership"],schemaDescription:"WooCommerce maintenance and technical support for checkout, payments, products, orders, integrations, releases, and recovery."},
+] as const;
+
+function WordPressSupportScope(){
+ return <section className="section service-section wordpress-scope-section ambient-code ambient-left"><div className="shell">
+  <SectionHead eyebrow="What is included" title="What our WordPress maintenance service can own." copy="A useful WordPress support plan combines prevention, recovery, verification, and improvement. The scope below makes the responsibilities visible instead of reducing maintenance to automatic plugin updates."/>
+  <div className="wordpress-scope-grid">{wordpressSupportScope.map((item,index)=><Reveal key={item.title}><article className="wordpress-scope-card"><span className="eyebrow">Coverage / {String(index+1).padStart(2,"0")}</span><h3>{item.title}</h3><p>{item.copy}</p></article></Reveal>)}</div>
+ </div></section>;
+}
+
+function WordPressEngagementModels(){
+ return <section className="section service-section wordpress-models-section ambient-code ambient-right"><div className="shell">
+  <SectionHead eyebrow="Engagement models" title="Choose the level of WordPress support that matches the responsibility." copy="The right model depends on platform condition, business risk, request volume, response expectations, and how much technical capacity the team needs each month. We define the boundary before work begins."/>
+  <div className="wordpress-model-grid">{wordpressEngagementModels.map((model,index)=><Reveal key={model.title}><article className="wordpress-model-card"><span className="eyebrow">Model / {String(index+1).padStart(2,"0")}</span><h3>{model.title}</h3><p><strong>Best for:</strong> {model.bestFor}</p><ul>{model.includes.map((item)=><li key={item}>{item}</li>)}</ul></article></Reveal>)}</div>
+  <div className="wordpress-pricing-note"><p>Need a budget benchmark before requesting a proposal?</p><Link className="text-link" href="/blog/website-maintenance-costs-and-pricing">Compare WordPress maintenance costs and pricing factors →</Link></div>
+ </div></section>;
+}
+
+function WordPressOperations(){
+ const firstMonth=["Confirm domain, DNS, hosting, CDN, WordPress, repository, analytics, and license ownership","Verify backup coverage, off-site access, retention, restoration, and rollback","Record the plugin, theme, PHP, database, custom-code, forms, tracking, and integration baseline","Test priority pages, mobile layouts, forms, email, checkout where relevant, and current analytics events","Separate urgent production risks, quick wins, maintenance work, and larger development priorities","Agree on approvals, request channels, response expectations, reporting, and the first support roadmap"];
+ const commerce=["Cart, checkout, payment gateways, wallets, shipping, tax, discounts, refunds, and order status","Products, variants, pricing, inventory, customer accounts, subscriptions, and transactional email","Plugin and theme compatibility, scheduled actions, caching, feeds, ERP, fulfillment, CRM, and analytics integrations","Staging, representative test orders, production smoke checks, rollback, monitoring, and revenue-risk escalation"];
+ return <section className="section service-section wordpress-operations-section ambient-code ambient-left"><div className="shell">
+  <div className="wordpress-operations-grid">
+   <article className="wordpress-operations-card"><span className="eyebrow">Taking over an existing site</span><h2>What happens in the first 30 days of WordPress support?</h2><p>We establish evidence before routine updates. The goal is to understand ownership, current failures, recovery options, and the changes that carry the most business risk.</p><ol>{firstMonth.map((item,index)=><li key={item}><span>{String(index+1).padStart(2,"0")}</span><p>{item}</p></li>)}</ol><Link className="text-link" href="/blog/taking-over-an-existing-wordpress-website">Read the complete WordPress takeover guide →</Link></article>
+   <article className="wordpress-operations-card is-commerce"><span className="eyebrow">Revenue-sensitive support</span><h2>WooCommerce maintenance and support needs deeper QA.</h2><p>A store can remain online while pricing, inventory, checkout, email, feeds, or tracking fail. Support therefore has to protect the complete path from product discovery to a measurable order.</p><ul>{commerce.map((item)=><li key={item}>{item}</li>)}</ul><Link className="text-link" href="/blog/ecommerce-website-maintenance-checklist">Use the 30-point ecommerce maintenance checklist →</Link></article>
+  </div>
+ </div></section>;
+}
+
+function RelevantWork({type}:{type:ServiceKey}){
+ return <section className="section service-section ambient-code ambient-right"><div className="shell"><SectionHead eyebrow="Relevant work" title={type==="wordpress"?"WordPress and ecommerce delivery shaped around real operational risk.":"Outcomes shaped by context, not templates."} copy={type==="wordpress"?"Med Supply Solutions is especially relevant: Dimaso worked from sitemap and product taxonomy through WordPress ecommerce development, payment flow, responsive QA, technical SEO, launch readiness, and a foundation prepared for ongoing maintenance.":undefined}/><div style={{marginTop:50}}><Cases limit={2} slugs={[...relevantCaseStudies[type]]}/></div><div style={{display:"flex",gap:24,flexWrap:"wrap",marginTop:36}}>{relatedIndustries[type].map(([label,href])=><Link key={href} className="text-link" href={href}>{label} →</Link>)}</div></div></section>;
 }
 
 function ServiceQualification({type}:{type:ServiceKey}) {
@@ -78,7 +130,7 @@ function RelatedServiceLinks({type}:{type:ServiceKey}) {
   maintenance:[["Website maintenance costs and pricing","/blog/website-maintenance-costs-and-pricing"],["Small business website maintenance checklist","/blog/small-business-website-maintenance-checklist"],["Nonprofit website maintenance checklist","/blog/website-maintenance-checklist-for-nonprofits"],["How to choose a maintenance partner","/blog/how-to-choose-a-website-maintenance-partner"]],
   development:[["When custom development is worth it","/blog/when-custom-web-development-is-worth-it"],["Website migration guide","/blog/website-migration-without-losing-seo-value"],["Post-launch website care","/services/website-maintenance"],["Ecommerce support","/industries/ecommerce"]],
   design:[["Website redesign checklist","/blog/what-to-check-before-redesigning"],["Nonprofit website redesign cost guide","/blog/nonprofit-website-redesign-cost"],["Development and implementation","/services/web-development"],["Post-launch website care","/services/website-maintenance"]],
-  wordpress:[["Taking over an existing WordPress website","/blog/taking-over-an-existing-wordpress-website"],["White-label WordPress maintenance","/blog/white-label-wordpress-maintenance-for-agencies"],["Nonprofit website maintenance checklist","/blog/website-maintenance-checklist-for-nonprofits"],["Website maintenance services","/services/website-maintenance"]],
+  wordpress:[["WordPress maintenance costs and pricing","/blog/website-maintenance-costs-and-pricing"],["Taking over an existing WordPress website","/blog/taking-over-an-existing-wordpress-website"],["WooCommerce maintenance checklist","/blog/ecommerce-website-maintenance-checklist"],["White-label WordPress maintenance","/blog/white-label-wordpress-maintenance-for-agencies"],["Website maintenance services","/services/website-maintenance"]],
   technicalSeo:[["What happens after a technical SEO audit","/blog/what-happens-after-a-technical-seo-audit"],["Website migration guide","/blog/website-migration-without-losing-seo-value"],["AI visibility support","/services/ai-website-workflow-support"],["Custom web development","/services/web-development"]],
   aiSupport:[["Technical SEO","/services/technical-seo"],["Website maintenance","/services/website-maintenance"],["Website RFP checklist","/blog/how-to-prepare-a-website-rfp"],["Nonprofit support","/industries/nonprofits"]],
  };
