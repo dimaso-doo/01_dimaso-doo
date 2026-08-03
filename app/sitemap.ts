@@ -2,6 +2,10 @@ import { MetadataRoute } from "next";
 import { caseStudies, industries, posts, services } from "@/content/data";
 import { seoContentLastModified, site } from "@/lib/site";
 
+const pageLastModified: Record<string, string> = {
+  "/services/wordpress-support": "2026-08-03",
+};
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const blogPages = Array.from(
     { length: Math.max(Math.ceil(posts.length / 9) - 1, 0) },
@@ -26,7 +30,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   return [
     ...pages.map((path) => ({ url: `${site.url}${path}`, lastModified: seoContentLastModified })),
-    ...servicePages.map((path) => ({ url: `${site.url}${path}`, lastModified: seoContentLastModified })),
+    ...servicePages.map((path) => ({
+      url: `${site.url}${path}`,
+      lastModified: pageLastModified[path] ?? seoContentLastModified,
+    })),
     ...industryPages.map((path) => ({ url: `${site.url}${path}`, lastModified: seoContentLastModified })),
     ...blogPages.map(({ path, lastModified }) => ({ url: `${site.url}${path}`, lastModified })),
     ...caseStudies.map((study) => ({
