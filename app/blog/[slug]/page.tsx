@@ -30,6 +30,7 @@ export default async function Page({params}:{params:Promise<{slug:string}>}){
   const modifiedDate="modifiedDate" in p&&typeof p.modifiedDate==="string"?p.modifiedDate:p.date;
   const tocSections=content.flatMap((block)=>block.type==="h2"&&block.id?[{id:block.id,text:block.text}]:[]);
   const isNonprofitChecklist=p.slug==="website-maintenance-checklist-for-nonprofits";
+  const titleSizeClass=p.title.length>58?"blog-title-extra-long":p.title.length>45?"blog-title-long":"";
   const url=`${site.url}/blog/${p.slug}`;
   const relatedPosts=posts
     .filter((item)=>item.slug!==p.slug)
@@ -44,7 +45,7 @@ export default async function Page({params}:{params:Promise<{slug:string}>}){
         <div className="shell blog-hero-grid">
           <div>
             <span className="eyebrow">{p.category} · Published <time dateTime={p.date}>{formatDate(p.date)}</time>{modifiedDate!==p.date?<> · Updated <time dateTime={modifiedDate}>{formatDate(modifiedDate)}</time></>:null}</span>
-            <h1>{p.title}</h1>
+            <h1 className={titleSizeClass}>{p.title}</h1>
             <p className="lede">{p.excerpt}</p>
           </div>
           <div className={`blog-hero-visual blog-card-visual-${(postIndex%6)+1}`} aria-hidden="true">
