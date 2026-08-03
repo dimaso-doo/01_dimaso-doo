@@ -31,6 +31,7 @@ export const blogContent: Record<string, BlogBlock[]> = {
       ["A transparent method for prioritizing work and approving larger changes"],
       ["A concise monthly record of completed work, risks, and next recommendations"],
     ] },
+    { type: "p", content: ["Mission-driven teams can use our ", { text: "nonprofit website maintenance checklist", href: "/blog/website-maintenance-checklist-for-nonprofits" }, " to turn those responsibilities into a practical monthly and quarterly review."] },
     { type: "p", content: ["The best proposal makes ownership visible. If you want an estimate shaped around the current platform, workload, and risk, ", { text: "send Dimaso the website context", href: "/contact" }, " for a senior review."] },
   ],
   "taking-over-an-existing-wordpress-website": [
@@ -186,6 +187,7 @@ export const blogContent: Record<string, BlogBlock[]> = {
     { type: "p", content: ["Dimaso provides ", { text: "website maintenance services", href: "/services/website-maintenance" }, " for teams that need ongoing technical ownership and a clear monthly support process."] },
     { type: "h2", text: "Ask how they protect important journeys" },
     { type: "p", content: ["Maintenance should include checks for lead forms, checkout flows, search visibility, analytics events, redirects, responsive layouts, and business-critical templates. The right partner can explain what they test and why."] },
+    { type: "p", content: ["For mission-driven organizations, our ", { text: "30-point nonprofit website maintenance checklist", href: "/blog/website-maintenance-checklist-for-nonprofits" }, " shows the donation, WordPress, accessibility, security, SEO, and reporting checks a partner should be able to own."] },
     { type: "h2", text: "Confirm communication and reporting" },
     { type: "p", content: ["A good partner makes work visible: what changed, what remains risky, what should happen next, and which decisions need client input. For teams planning larger work, maintenance can connect naturally to ", { text: "web development", href: "/services/web-development" }, " or ", { text: "technical SEO", href: "/services/technical-seo" }, "."] },
   ],
