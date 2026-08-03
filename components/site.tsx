@@ -8,7 +8,7 @@ import { createPortal } from "react-dom";
 import { ContactForm, Newsletter } from "./forms";
 import { TrackedLink } from "./tracked-link";
 
-const serviceLinks = [["All Services","/services"],["Website Maintenance","/services/website-maintenance"],["Web Development","/services/web-development"],["Web Design","/services/web-design"],["WordPress Support","/services/wordpress-support"],["Technical SEO","/services/technical-seo"],["AI Website & Workflow Support","/services/ai-website-workflow-support"]] as const;
+const serviceLinks = [["All Services","/services"],["Website Maintenance","/services/website-maintenance"],["Web Development","/services/web-development"],["Web Design","/services/web-design"],["WordPress Support","/services/wordpress-support"],["WooCommerce Support","/services/woocommerce-maintenance"],["Technical SEO","/services/technical-seo"],["AI Website & Workflow Support","/services/ai-website-workflow-support"]] as const;
 const industryLinks = [["All Industries","/industries"],["Nonprofits","/industries/nonprofits"],["Associations","/industries/associations"],["Agencies","/industries/agencies"],["Small Businesses","/industries/small-businesses"],["Education","/industries/education"],["Healthcare","/industries/healthcare"],["Ecommerce","/industries/ecommerce"]] as const;
 const links = [["Home","/"],["Case Studies","/case-studies"],["Blog","/blog"],["About","/about"],["Contact","/contact"]] as const;
 const linkedinUrl = "https://www.linkedin.com/company/dimaso.co/";
@@ -22,6 +22,7 @@ const formContextByPath:Record<string,{source:string;subject:string;defaultServi
   "/services/web-development":{source:"Web Development",subject:"New RFP Request - Web Development - dimaso.co",defaultService:"Web Development"},
   "/services/web-design":{source:"Web Design",subject:"New RFP Request - Web Design - dimaso.co",defaultService:"Web Design"},
   "/services/wordpress-support":{source:"WordPress Support",subject:"New RFP Request - WordPress Support - dimaso.co",defaultService:"WordPress Support"},
+  "/services/woocommerce-maintenance":{source:"WooCommerce Support",subject:"New RFP Request - WooCommerce Support - dimaso.co",defaultService:"WooCommerce Support"},
   "/services/technical-seo":{source:"Technical SEO",subject:"New RFP Request - Technical SEO - dimaso.co",defaultService:"Technical SEO"},
   "/services/ai-website-workflow-support":{source:"AI Website & Workflow Support",subject:"New RFP Request - AI Website & Workflow Support - dimaso.co",defaultService:"AI Website & Workflow Support"},
   "/industries/nonprofits":{source:"Nonprofit Website Support",subject:"New Nonprofit Website Audit / Support Request - dimaso.co",defaultService:"Website Maintenance"},

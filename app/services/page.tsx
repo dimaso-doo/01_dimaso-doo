@@ -7,7 +7,7 @@ import { metadata as meta, organizationId, site, websiteId } from "@/lib/site";
 
 export const metadata = meta(
   "Website Maintenance, Development & Design Services",
-  "Explore Dimaso website maintenance, web development, web design, WordPress support, technical SEO, and AI website support for US and international teams.",
+  "Explore Dimaso website maintenance, development, design, WordPress and WooCommerce support, technical SEO, and AI services for international teams.",
   "/services",
 );
 
@@ -21,6 +21,7 @@ const serviceFaq = [
 
 const engagementPaths = [
   ["Protect an active website", "Ongoing maintenance, WordPress support, QA, backups, security, performance, analytics, and a visible improvement backlog.", "/services/website-maintenance"],
+  ["Protect a WooCommerce store", "Checkout, payments, products, pricing, inventory, releases, integrations, recovery, analytics, and recurring ecommerce QA.", "/services/woocommerce-maintenance"],
   ["Build or extend a system", "Custom development, CMS workflows, ecommerce logic, migrations, integrations, APIs, and business-specific website functionality.", "/services/web-development"],
   ["Clarify and redesign the experience", "Website strategy, UX structure, responsive design, landing pages, conversion paths, and developer-ready interface systems.", "/services/web-design"],
   ["Improve discovery and measurement", "Technical SEO, crawlability, schema, internal links, Core Web Vitals, GA4, GSC, and practical AI search visibility.", "/services/technical-seo"],
@@ -38,7 +39,7 @@ export default function ServicesPage() {
       <div className="shell" style={{position:"relative",zIndex:2}}>
         <span className="eyebrow">Website services · US & international</span>
         <h1 style={{fontSize:"clamp(44px,8vw,92px)",lineHeight:1.02,maxWidth:1080,margin:"22px 0 28px",overflowWrap:"anywhere"}}>Website services for teams that need a dependable technical partner.</h1>
-        <p className="lede">Dimaso connects website maintenance, web development, web design, WordPress support, technical SEO, QA, analytics, and AI website visibility. Clients can start with one focused project or build a long-term support relationship around the full website lifecycle.</p>
+        <p className="lede">Dimaso connects website maintenance, web development, web design, WordPress and WooCommerce support, technical SEO, QA, analytics, and AI website visibility. Clients can start with one focused project or build a long-term support relationship around the full website lifecycle.</p>
         <div style={{display:"flex",gap:12,marginTop:35,flexWrap:"wrap"}}><Link href="#service-directory" className="btn">Explore services</Link><Link href="/case-studies" className="btn ghost">View case studies</Link></div>
       </div>
     </section>

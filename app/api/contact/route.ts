@@ -3,7 +3,7 @@ import nodemailer from "nodemailer";
 import { z } from "zod";
 
 export const runtime="nodejs";
-const serviceSchema=z.enum(["Website Maintenance","Web Development","Web Design","WordPress Support","Technical SEO","AI Website & Workflow Support","General Inquiry / Not Sure Yet"]);
+const serviceSchema=z.enum(["Website Maintenance","Web Development","Web Design","WordPress Support","WooCommerce Support","Technical SEO","AI Website & Workflow Support","General Inquiry / Not Sure Yet"]);
 const schema=z.object({email:z.string().trim().email(),name:z.string().max(120).optional(),company:z.string().max(160).optional(),websiteUrl:z.string().trim().max(500).optional(),services:z.array(serviceSchema).max(3).optional(),message:z.string().max(10000).optional(),source:z.string().min(2).max(120),subject:z.string().min(6).max(180),kind:z.enum(["rfp","newsletter"]),pageUrl:z.string().max(500).optional()});
 const allowedExtensions=new Set(["pdf","doc","docx","txt","zip"]);
 const maxUploadSize=10*1024*1024;
@@ -12,6 +12,7 @@ const rfpSubjectBySource:Record<string,string>={
   "Web Development":"New RFP Request - Web Development - dimaso.co",
   "Web Design":"New RFP Request - Web Design - dimaso.co",
   "WordPress Support":"New RFP Request - WordPress Support - dimaso.co",
+  "WooCommerce Support":"New RFP Request - WooCommerce Support - dimaso.co",
   "Technical SEO":"New RFP Request - Technical SEO - dimaso.co",
   "AI Website & Workflow Support":"New RFP Request - AI Website Support - dimaso.co",
   "Services Hub":"New RFP Request - Services Hub - dimaso.co",
@@ -56,7 +57,7 @@ function autoReplyText(name:string|undefined,services:string[]|undefined){
     "Best regards,",
     "Dimaso",
     "",
-    "Website Maintenance | Web Development | Web Design | WordPress | Technical SEO | AI Website Support",
+    "Website Maintenance | Web Development | Web Design | WordPress | WooCommerce | Technical SEO | AI Website Support",
     "office@dimaso.co",
     "+381 61 137 5150",
     "https://dimaso.co",

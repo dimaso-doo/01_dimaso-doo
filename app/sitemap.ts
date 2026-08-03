@@ -4,6 +4,7 @@ import { seoContentLastModified, site } from "@/lib/site";
 
 const pageLastModified: Record<string, string> = {
   "/services/wordpress-support": "2026-08-03",
+  "/services/woocommerce-maintenance": "2026-08-03",
 };
 
 export default function sitemap(): MetadataRoute.Sitemap {

@@ -120,7 +120,7 @@ export default async function Page({params}:{params:Promise<{slug:string}>}){
                 <span className="eyebrow">Protect revenue-sensitive journeys</span>
                 <h2>Turn the 30 checks into an owned ecommerce support plan.</h2>
                 <p>We can review products, pricing rules, checkout, payments, inventory, updates, recovery, performance, technical SEO, feeds, analytics, and integrations, then prioritize immediate revenue risks and the development roadmap.</p>
-                <div className="blog-conversion-actions"><TrackedLink tracking="cta" trackingLocation="ecommerce_checklist" trackingLabel="Request an ecommerce website review" href="/contact" className="btn">Request an ecommerce website review</TrackedLink><Link href="/industries/ecommerce" className="btn ghost">Explore ecommerce support</Link></div>
+                <div className="blog-conversion-actions"><TrackedLink tracking="cta" trackingLocation="ecommerce_checklist" trackingLabel="Request an ecommerce website review" href="/contact" className="btn">Request an ecommerce website review</TrackedLink><Link href="/services/woocommerce-maintenance" className="btn ghost">Explore WooCommerce support</Link></div>
               </aside>
             </>:isMaintenancePricing?<>
               <aside className="blog-proof-card" aria-label="Relevant WordPress ecommerce experience">

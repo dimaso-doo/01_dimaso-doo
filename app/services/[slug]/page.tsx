@@ -22,6 +22,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     development: "Custom Web Development Services",
     design: "Web Design & Website Redesign Services",
     wordpress: "WordPress Maintenance & Support Services",
+    woocommerce: "WooCommerce Maintenance & Support Services",
     technicalSeo: "Technical SEO Audit & Implementation Services",
     aiSupport: "AI Website & Workflow Support",
   };
@@ -30,6 +31,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     development: "Custom web development services for WordPress, Laravel, custom CMS, ecommerce, API integrations, migrations, and business-critical web platforms.",
     design: "Dimaso designs business websites, UX/UI, responsive pages, redesigns, landing pages, and conversion-focused website experiences.",
     wordpress: "WordPress maintenance and support for updates, WooCommerce, Elementor, security, backups, performance, migrations, QA, and ongoing development.",
+    woocommerce: "WooCommerce maintenance and support for checkout, payments, products, pricing, inventory, updates, security, integrations, QA, and monthly care.",
     technicalSeo: "Technical SEO audits and implementation for crawlability, indexing, metadata, schema, internal links, Core Web Vitals, GA4, GSC, and migrations.",
     aiSupport: "AI website and workflow support for search visibility, structured content, Schema.org, llms.txt, automation, reporting, and clearer AI discovery.",
   };

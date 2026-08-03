@@ -15,8 +15,8 @@ export function TrustStrip(){
  return <section className="trust-strip" aria-label="Why teams choose Dimaso"><div className="shell"><div className="trust-strip-head"><span className="eyebrow">Built for long-term confidence</span><span className="client-note">Practical proof before the technical detail</span></div><div className="trust-grid">{proof.map(([value,label])=><div className="trust-item" key={value}><strong>{value}</strong><span>{label}</span></div>)}</div></div></section>;
 }
 
-export function ServiceCards({limit=6}:{limit?:number}){
- const symbols=["↻","〈/〉","□","WP","SEO","AI"];
+export function ServiceCards({limit=7}:{limit?:number}){
+ const symbols=["↻","〈/〉","□","WP","WC","SEO","AI"];
  return <div style={{display:"grid",gridTemplateColumns:"repeat(3,minmax(0,1fr))",gap:18}} className="cards-grid service-cards">{Object.values(services).slice(0,limit).map((s,i)=><Link href={`/${s.slug}`} key={s.slug} className={`service-card service-card-${(i%3)+1}`} style={{minHeight:500,display:"flex",flexDirection:"column",color:"#fff"}}><div className="service-graphic"><div className="service-signal"/><div className="service-symbol">{symbols[i]}</div></div><span className="eyebrow">0{i+1} / {s.eyebrow}</span><h3 style={{fontSize:29,margin:"30px 0 18px"}}>{s.label}</h3><p className="muted" style={{lineHeight:1.76}}>{s.intro}</p><span className="text-link" style={{marginTop:"auto"}}>Explore service →</span></Link>)}</div>
 }
 
