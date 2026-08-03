@@ -1,6 +1,28 @@
 export type BlogFaq = readonly [question: string, answer: string];
 
 export const blogFaqs: Record<string, readonly BlogFaq[]> = {
+  "small-business-website-maintenance-checklist": [
+    [
+      "What should small business website maintenance include?",
+      "Small business website maintenance can include form and lead testing, CMS and plugin updates, backups, security monitoring, uptime, mobile and browser QA, performance, content accuracy, broken links, technical and local SEO, Search Console, GA4 conversion tracking, privacy checks, reporting, and a prioritized improvement backlog.",
+    ],
+    [
+      "How often should a small business website be maintained?",
+      "Uptime and security alerts should be monitored continuously, while critical backups and revenue paths may need weekly checks. Most businesses should run a structured monthly maintenance cycle and a deeper quarterly review of content, SEO, accessibility, analytics, access, customer journeys, and roadmap priorities.",
+    ],
+    [
+      "How much does small business website maintenance cost?",
+      "Cost depends on the platform, update frequency, development capacity, ecommerce or booking functionality, integrations, response times, security risk, reporting, and number of websites. A useful proposal defines responsibilities, included capacity, urgent support, and out-of-scope work before presenting a monthly figure.",
+    ],
+    [
+      "Can a small business maintain its own website?",
+      "Yes, when the website is stable and someone has the time, access, technical confidence, backup process, and checklist required to own it. A maintenance partner becomes more valuable when the website drives important leads or revenue, changes frequently, uses several integrations, or nobody internally can diagnose failures safely.",
+    ],
+    [
+      "What should monthly WordPress maintenance include?",
+      "Monthly WordPress maintenance should include controlled core, theme, and plugin updates, verified backups and rollback, security and access review, staging where appropriate, form and lead QA, mobile checks, performance, broken links, analytics validation, license review, reporting, and a prioritized improvement backlog.",
+    ],
+  ],
   "nonprofit-website-redesign-cost": [
     [
       "How much does a nonprofit website redesign cost in 2026?",

@@ -31,11 +31,12 @@ export default async function Page({params}:{params:Promise<{slug:string}>}){
   const tocSections=content.flatMap((block)=>block.type==="h2"&&block.id?[{id:block.id,text:block.text}]:[]);
   const isNonprofitChecklist=p.slug==="website-maintenance-checklist-for-nonprofits";
   const isNonprofitRedesignCost=p.slug==="nonprofit-website-redesign-cost";
-  const articleTopics=isNonprofitChecklist?["Nonprofit website maintenance","WordPress maintenance for nonprofit organizations","Donation form QA","Website accessibility","Technical SEO","Website analytics"]:isNonprofitRedesignCost?["Nonprofit website redesign cost","Nonprofit web design","Website redesign budget","Website accessibility","Content migration","Technical SEO"]:p.category;
-  const faqTitle=isNonprofitChecklist?"Nonprofit website maintenance FAQ":isNonprofitRedesignCost?"Nonprofit website redesign cost FAQ":`${p.category} FAQ`;
+  const isSmallBusinessChecklist=p.slug==="small-business-website-maintenance-checklist";
+  const articleTopics=isNonprofitChecklist?["Nonprofit website maintenance","WordPress maintenance for nonprofit organizations","Donation form QA","Website accessibility","Technical SEO","Website analytics"]:isNonprofitRedesignCost?["Nonprofit website redesign cost","Nonprofit web design","Website redesign budget","Website accessibility","Content migration","Technical SEO"]:isSmallBusinessChecklist?["Small business website maintenance","Website maintenance checklist","WordPress maintenance","Lead form QA","Local SEO","Website analytics"]:p.category;
+  const faqTitle=isNonprofitChecklist?"Nonprofit website maintenance FAQ":isNonprofitRedesignCost?"Nonprofit website redesign cost FAQ":isSmallBusinessChecklist?"Small business website maintenance FAQ":`${p.category} FAQ`;
   const titleSizeClass=p.title.length>58?"blog-title-extra-long":p.title.length>45?"blog-title-long":"";
   const url=`${site.url}/blog/${p.slug}`;
-  const curatedRelatedSlugs=isNonprofitRedesignCost?["website-maintenance-checklist-for-nonprofits","website-redesign-rfp-checklist","website-migration-without-losing-seo-value"]:null;
+  const curatedRelatedSlugs=isNonprofitRedesignCost?["website-maintenance-checklist-for-nonprofits","website-redesign-rfp-checklist","website-migration-without-losing-seo-value"]:isSmallBusinessChecklist?["website-maintenance-costs-and-pricing","why-ongoing-website-maintenance-matters","how-to-choose-a-website-maintenance-partner"]:null;
   const relatedPosts=curatedRelatedSlugs?curatedRelatedSlugs.map((relatedSlug)=>posts.find((item)=>item.slug===relatedSlug)).filter((item):item is (typeof posts)[number]=>Boolean(item)):posts
     .filter((item)=>item.slug!==p.slug)
     .map((item)=>({item,score:(item.service===p.service?2:0)+(item.category===p.category?1:0)}))
@@ -92,6 +93,19 @@ export default async function Page({params}:{params:Promise<{slug:string}>}){
                 <h2>Find out whether the website needs a refresh, redesign, or stabilization phase.</h2>
                 <p>We can review the current content, donation and form journeys, CMS, accessibility, integrations, technical SEO, analytics, and migration risk, then organize the findings into a practical scope, budget range, and roadmap.</p>
                 <div className="blog-conversion-actions"><TrackedLink tracking="cta" trackingLocation="nonprofit_redesign_cost" trackingLabel="Request a nonprofit website review" href="/industries/nonprofits#nonprofit-audit" className="btn">Request a nonprofit website review</TrackedLink><Link href="/services/web-design" className="btn ghost">Explore web design</Link></div>
+              </aside>
+            </>:isSmallBusinessChecklist?<>
+              <aside className="blog-proof-card" aria-label="Relevant small business website experience">
+                <span className="eyebrow">Relevant business platform work</span>
+                <h2>Portal structure, business profiles, forms, QA, and maintenance-ready patterns for Mega Baza.</h2>
+                <p>See how Dimaso supported a growing business directory with structured browsing, profile content, forms, technical support, and a foundation prepared for ongoing improvement.</p>
+                <Link className="text-link" href="/case-studies/mega-baza">View the case study →</Link>
+              </aside>
+              <aside className="blog-conversion-card" aria-label="Request small business website support">
+                <span className="eyebrow">A practical next step</span>
+                <h2>Turn the 30 checks into an owned monthly website plan.</h2>
+                <p>We can review lead delivery, WordPress or CMS health, backups, security, mobile performance, search visibility, analytics, and the current support process, then prioritize immediate risks, quick wins, and planned improvements.</p>
+                <div className="blog-conversion-actions"><TrackedLink tracking="cta" trackingLocation="small_business_checklist" trackingLabel="Request a website review" href="/contact" className="btn">Request a website review</TrackedLink><Link href="/services/website-maintenance" className="btn ghost">Explore website maintenance</Link></div>
               </aside>
             </>:<Link href={p.service} className="btn">Explore the relevant service</Link>}
             {faqs.length?<section className="blog-article-faq" aria-labelledby="blog-faq-title"><span className="eyebrow">Common questions</span><h2 id="blog-faq-title">{faqTitle}</h2><div className="faq-list">{faqs.map(([question,answer],index)=><details className="faq-item" key={question}><summary><span className="faq-number">{String(index+1).padStart(2,"0")}</span><span>{question}</span><span className="faq-toggle" aria-hidden="true"/></summary><div className="faq-answer"><p>{answer}</p></div></details>)}</div></section>:null}
