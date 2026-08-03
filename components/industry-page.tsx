@@ -18,7 +18,7 @@ const industryGuides:Partial<Record<IndustryKey,readonly (readonly [string,strin
   smallBusinesses:[["Small business website maintenance checklist","/blog/small-business-website-maintenance-checklist"],["Website maintenance costs and pricing","/blog/website-maintenance-costs-and-pricing"]],
   education:[["How to choose a maintenance partner","/blog/how-to-choose-a-website-maintenance-partner"],["Why QA matters after every update","/blog/why-qa-matters-after-every-update"]],
   healthcare:[["Taking over an existing WordPress website","/blog/taking-over-an-existing-wordpress-website"],["What happens after a technical SEO audit","/blog/what-happens-after-a-technical-seo-audit"]],
-  ecommerce:[["What happens after a technical SEO audit","/blog/what-happens-after-a-technical-seo-audit"],["Why QA matters after every update","/blog/why-qa-matters-after-every-update"]],
+  ecommerce:[["Ecommerce website maintenance checklist","/blog/ecommerce-website-maintenance-checklist"],["Why QA matters after every update","/blog/why-qa-matters-after-every-update"]],
 };
 
 export function IndustryPage({ type }: { type: IndustryKey }) {

@@ -1,6 +1,28 @@
 export type BlogFaq = readonly [question: string, answer: string];
 
 export const blogFaqs: Record<string, readonly BlogFaq[]> = {
+  "ecommerce-website-maintenance-checklist": [
+    [
+      "What should ecommerce website maintenance include?",
+      "Ecommerce maintenance can include checkout and payment testing, shipping and tax validation, products, pricing, promotions, inventory, accounts, controlled updates, backups, security, recovery, mobile QA, performance, product SEO, structured data, feeds, analytics, email, integrations, reporting, and an owned improvement backlog.",
+    ],
+    [
+      "How often should an ecommerce website be maintained?",
+      "Uptime, payments, order flow, security, stock synchronization, and critical integrations should be monitored continuously or daily. Run selected operational checks weekly, a structured maintenance and checkout cycle monthly, and deeper recovery, access, catalog, SEO, integration, and conversion reviews quarterly.",
+    ],
+    [
+      "How do you test an ecommerce checkout?",
+      "Use representative products, customer types, devices, destinations, discounts, shipping methods, tax rules, currencies, and payment gateways. Verify the cart, validation, order creation, payment status, inventory, emails, analytics events, fulfillment handoff, refunds, cancellations, and error recovery.",
+    ],
+    [
+      "What should WooCommerce maintenance include?",
+      "WooCommerce maintenance should include controlled WordPress, theme, plugin, PHP, extension, and custom-code updates; backups and rollback; scheduled actions; security and access; representative checkout QA; transactional email; performance; product SEO; analytics; licenses; reporting; and ongoing development priorities.",
+    ],
+    [
+      "How much does ecommerce website maintenance cost?",
+      "Cost depends on the platform, catalog and rule complexity, transaction volume, integrations, release frequency, response expectations, security and recovery responsibilities, reporting, and included development capacity. A proposal should define checkout coverage, escalation, QA evidence, included time, and out-of-scope work.",
+    ],
+  ],
   "small-business-website-maintenance-checklist": [
     [
       "What should small business website maintenance include?",

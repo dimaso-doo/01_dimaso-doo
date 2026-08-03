@@ -37,6 +37,7 @@ Dimaso is best suited to organizations with an active website that needs ongoing
 - AI website and workflow support: https://dimaso.co/services/ai-website-workflow-support
 
 ## Decision guides
+- Ecommerce website maintenance checklist: https://dimaso.co/blog/ecommerce-website-maintenance-checklist
 - Small business website maintenance checklist: https://dimaso.co/blog/small-business-website-maintenance-checklist
 - Nonprofit website redesign cost and planning guide: https://dimaso.co/blog/nonprofit-website-redesign-cost
 - Website maintenance costs and pricing factors: https://dimaso.co/blog/website-maintenance-costs-and-pricing

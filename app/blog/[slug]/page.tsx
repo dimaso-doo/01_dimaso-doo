@@ -32,11 +32,12 @@ export default async function Page({params}:{params:Promise<{slug:string}>}){
   const isNonprofitChecklist=p.slug==="website-maintenance-checklist-for-nonprofits";
   const isNonprofitRedesignCost=p.slug==="nonprofit-website-redesign-cost";
   const isSmallBusinessChecklist=p.slug==="small-business-website-maintenance-checklist";
-  const articleTopics=isNonprofitChecklist?["Nonprofit website maintenance","WordPress maintenance for nonprofit organizations","Donation form QA","Website accessibility","Technical SEO","Website analytics"]:isNonprofitRedesignCost?["Nonprofit website redesign cost","Nonprofit web design","Website redesign budget","Website accessibility","Content migration","Technical SEO"]:isSmallBusinessChecklist?["Small business website maintenance","Website maintenance checklist","WordPress maintenance","Lead form QA","Local SEO","Website analytics"]:p.category;
-  const faqTitle=isNonprofitChecklist?"Nonprofit website maintenance FAQ":isNonprofitRedesignCost?"Nonprofit website redesign cost FAQ":isSmallBusinessChecklist?"Small business website maintenance FAQ":`${p.category} FAQ`;
+  const isEcommerceChecklist=p.slug==="ecommerce-website-maintenance-checklist";
+  const articleTopics=isNonprofitChecklist?["Nonprofit website maintenance","WordPress maintenance for nonprofit organizations","Donation form QA","Website accessibility","Technical SEO","Website analytics"]:isNonprofitRedesignCost?["Nonprofit website redesign cost","Nonprofit web design","Website redesign budget","Website accessibility","Content migration","Technical SEO"]:isSmallBusinessChecklist?["Small business website maintenance","Website maintenance checklist","WordPress maintenance","Lead form QA","Local SEO","Website analytics"]:isEcommerceChecklist?["Ecommerce website maintenance","Ecommerce maintenance checklist","WooCommerce maintenance","Checkout QA","Product SEO","Ecommerce analytics"]:p.category;
+  const faqTitle=isNonprofitChecklist?"Nonprofit website maintenance FAQ":isNonprofitRedesignCost?"Nonprofit website redesign cost FAQ":isSmallBusinessChecklist?"Small business website maintenance FAQ":isEcommerceChecklist?"Ecommerce website maintenance FAQ":`${p.category} FAQ`;
   const titleSizeClass=p.title.length>58?"blog-title-extra-long":p.title.length>45?"blog-title-long":"";
   const url=`${site.url}/blog/${p.slug}`;
-  const curatedRelatedSlugs=isNonprofitRedesignCost?["website-maintenance-checklist-for-nonprofits","website-redesign-rfp-checklist","website-migration-without-losing-seo-value"]:isSmallBusinessChecklist?["website-maintenance-costs-and-pricing","why-ongoing-website-maintenance-matters","how-to-choose-a-website-maintenance-partner"]:null;
+  const curatedRelatedSlugs=isNonprofitRedesignCost?["website-maintenance-checklist-for-nonprofits","website-redesign-rfp-checklist","website-migration-without-losing-seo-value"]:isSmallBusinessChecklist?["website-maintenance-costs-and-pricing","why-ongoing-website-maintenance-matters","how-to-choose-a-website-maintenance-partner"]:isEcommerceChecklist?["why-qa-matters-after-every-update","website-maintenance-costs-and-pricing","what-happens-after-a-technical-seo-audit"]:null;
   const relatedPosts=curatedRelatedSlugs?curatedRelatedSlugs.map((relatedSlug)=>posts.find((item)=>item.slug===relatedSlug)).filter((item):item is (typeof posts)[number]=>Boolean(item)):posts
     .filter((item)=>item.slug!==p.slug)
     .map((item)=>({item,score:(item.service===p.service?2:0)+(item.category===p.category?1:0)}))
@@ -106,6 +107,19 @@ export default async function Page({params}:{params:Promise<{slug:string}>}){
                 <h2>Turn the 30 checks into an owned monthly website plan.</h2>
                 <p>We can review lead delivery, WordPress or CMS health, backups, security, mobile performance, search visibility, analytics, and the current support process, then prioritize immediate risks, quick wins, and planned improvements.</p>
                 <div className="blog-conversion-actions"><TrackedLink tracking="cta" trackingLocation="small_business_checklist" trackingLabel="Request a website review" href="/contact" className="btn">Request a website review</TrackedLink><Link href="/services/website-maintenance" className="btn ghost">Explore website maintenance</Link></div>
+              </aside>
+            </>:isEcommerceChecklist?<>
+              <aside className="blog-proof-card" aria-label="Relevant ecommerce website experience">
+                <span className="eyebrow">Relevant high-volume ecommerce work</span>
+                <h2>Product architecture, payment flow, responsive QA, and launch support for Med Supply Solutions.</h2>
+                <p>See how Dimaso supported a WordPress ecommerce platform from sitemap and product taxonomy through checkout, technical SEO, QA, and a maintenance-ready foundation for serious visitor and order volume.</p>
+                <Link className="text-link" href="/case-studies/med-supply-solutions">View the case study →</Link>
+              </aside>
+              <aside className="blog-conversion-card" aria-label="Request ecommerce website support">
+                <span className="eyebrow">Protect revenue-sensitive journeys</span>
+                <h2>Turn the 30 checks into an owned ecommerce support plan.</h2>
+                <p>We can review products, pricing rules, checkout, payments, inventory, updates, recovery, performance, technical SEO, feeds, analytics, and integrations, then prioritize immediate revenue risks and the development roadmap.</p>
+                <div className="blog-conversion-actions"><TrackedLink tracking="cta" trackingLocation="ecommerce_checklist" trackingLabel="Request an ecommerce website review" href="/contact" className="btn">Request an ecommerce website review</TrackedLink><Link href="/industries/ecommerce" className="btn ghost">Explore ecommerce support</Link></div>
               </aside>
             </>:<Link href={p.service} className="btn">Explore the relevant service</Link>}
             {faqs.length?<section className="blog-article-faq" aria-labelledby="blog-faq-title"><span className="eyebrow">Common questions</span><h2 id="blog-faq-title">{faqTitle}</h2><div className="faq-list">{faqs.map(([question,answer],index)=><details className="faq-item" key={question}><summary><span className="faq-number">{String(index+1).padStart(2,"0")}</span><span>{question}</span><span className="faq-toggle" aria-hidden="true"/></summary><div className="faq-answer"><p>{answer}</p></div></details>)}</div></section>:null}
