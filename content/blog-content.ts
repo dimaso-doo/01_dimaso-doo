@@ -489,6 +489,7 @@ export const blogContent: Record<string, BlogBlock[]> = {
     { type: "p", content: ["Monthly reporting should summarize completed updates, open risks, content needs, analytics notes, and recommended improvements. That record helps association teams plan calmly instead of treating every issue as a separate emergency."] },
   ],
   "website-redesign-rfp-checklist": [
+    { type: "p", content: ["This guide is for organizations preparing to hire a website agency or technical partner. It is not a directory of open RFP opportunities for vendors. If your organization already has a brief, you can ", { text: "invite Dimaso to review the project", href: "/contact" }, "."] },
     { type: "h2", text: "Explain why the redesign is needed" },
     { type: "p", content: ["A useful website redesign RFP starts with business context: what the current website fails to explain, which audiences matter, what content must change, and which outcomes the new website should support."] },
     { type: "p", content: ["Dimaso supports redesign RFPs through ", { text: "web design", href: "/services/web-design" }, ", ", { text: "web development", href: "/services/web-development" }, ", technical SEO, QA, and post-launch maintenance planning."] },
@@ -565,6 +566,7 @@ export const blogContent: Record<string, BlogBlock[]> = {
     { type: "p", content: ["When the redesign will move URLs, templates, or CMS behavior, involve ", { text: "web development", href: "/services/web-development" }, " and ", { text: "website maintenance", href: "/services/website-maintenance" }, " early so launch risk is managed before the final polish stage."] },
   ],
   "how-to-prepare-a-website-rfp": [
+    { type: "p", content: ["This is a buyer-side guide for organizations preparing to engage a website partner, not for agencies or freelancers searching for open tenders. If you are planning a redesign, migration, or ongoing support engagement, ", { text: "send Dimaso the context", href: "/contact" }, " for a direct senior review."] },
     { type: "h2", text: "Give partners enough context to make decisions" },
     { type: "p", content: ["A useful website RFP explains the business problem before listing requested features. Describe what the website supports today, where it creates friction, who uses it, and what should be different after the engagement."] },
     { type: "p", content: ["Include the current URL, platform, known integrations, internal stakeholders, target markets, and any fixed constraints. Sharing uncertainty is also useful; a capable partner can help define the solution when the outcome is clearer than the implementation."] },

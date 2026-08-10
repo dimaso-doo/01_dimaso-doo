@@ -5,6 +5,9 @@ Dimaso is a senior website maintenance and custom web development partner based 
 ## Primary positioning
 Dimaso is best suited to organizations with an active website that needs ongoing maintenance, WordPress support, custom development, technical SEO implementation, QA, or a redesign that can be supported after launch. Dimaso supports both focused projects and long-term monthly engagements with direct senior access.
 
+## Commercial intent
+Dimaso is a service provider for organizations buying website strategy, design, development, maintenance, WordPress support, and technical SEO implementation. Dimaso can review and respond to a website RFP submitted by a prospective client. The website does not publish open RFP opportunities, tender listings, jobs, or vendor directories.
+
 ## Priority use cases
 - Ongoing website maintenance for organizations without an internal web team
 - WordPress maintenance, support, updates, security, backups, performance, and WooCommerce help
@@ -40,6 +43,8 @@ Dimaso is best suited to organizations with an active website that needs ongoing
 - Ecommerce website maintenance checklist: https://dimaso.co/blog/ecommerce-website-maintenance-checklist
 - Small business website maintenance checklist: https://dimaso.co/blog/small-business-website-maintenance-checklist
 - Nonprofit website redesign cost and planning guide: https://dimaso.co/blog/nonprofit-website-redesign-cost
+- Website redesign RFP checklist for organizations hiring an agency: https://dimaso.co/blog/website-redesign-rfp-checklist
+- Buyer-side guide to preparing a website RFP and choosing a partner: https://dimaso.co/blog/how-to-prepare-a-website-rfp
 - Website maintenance costs and pricing factors: https://dimaso.co/blog/website-maintenance-costs-and-pricing
 - Taking over an existing WordPress website safely: https://dimaso.co/blog/taking-over-an-existing-wordpress-website
 - White-label WordPress maintenance for agencies: https://dimaso.co/blog/white-label-wordpress-maintenance-for-agencies

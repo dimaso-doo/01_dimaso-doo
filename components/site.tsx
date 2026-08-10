@@ -32,6 +32,12 @@ const formContextByPath:Record<string,{source:string;subject:string;defaultServi
   "/industries/education":{source:"Education Website Support",subject:"New Education Website Support Request - dimaso.co",defaultService:"Website Maintenance"},
   "/industries/healthcare":{source:"Healthcare Website Support",subject:"New Healthcare Website Support Request - dimaso.co",defaultService:"Website Maintenance"},
   "/industries/ecommerce":{source:"Ecommerce Website Support",subject:"New Ecommerce Website Support Request - dimaso.co",defaultService:"Web Development"},
+  "/blog/website-redesign-rfp-checklist":{source:"Website Redesign RFP Checklist",subject:"New Website Redesign RFP Review Request - dimaso.co",defaultService:"Web Design"},
+  "/blog/how-to-prepare-a-website-rfp":{source:"Website RFP Planning Guide",subject:"New Website Brief / RFP Review Request - dimaso.co",defaultService:"Web Design"},
+  "/blog/how-to-choose-a-website-maintenance-partner":{source:"Website Maintenance Partner Guide",subject:"New Website Maintenance Proposal Request - dimaso.co",defaultService:"Website Maintenance"},
+  "/blog/white-label-wordpress-maintenance-for-agencies":{source:"White-Label WordPress Guide",subject:"New White-Label WordPress Support Request - dimaso.co",defaultService:"WordPress Support"},
+  "/blog/nonprofit-website-redesign-cost":{source:"Nonprofit Redesign Cost Guide",subject:"New Nonprofit Website Redesign Review Request - dimaso.co",defaultService:"Web Design"},
+  "/blog/website-maintenance-costs-and-pricing":{source:"Website Maintenance Pricing Guide",subject:"New Website Maintenance Estimate Request - dimaso.co",defaultService:"Website Maintenance"},
   "/contact":{source:"Contact Page",subject:"New Contact / RFP Request - Contact Page - dimaso.co"},
 };
 

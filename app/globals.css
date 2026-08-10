@@ -815,6 +815,7 @@ button,input,textarea,select { font:inherit; }
 .blog-proof-card h2,.blog-conversion-card h2 { max-width:680px;margin:16px 0!important;font-size:clamp(27px,3vw,38px); }
 .blog-proof-card p,.blog-conversion-card p { position:relative;max-width:680px; }
 .blog-conversion-card { background:linear-gradient(145deg,oklch(74% .145 163.7 / .06),rgba(255,255,255,.018)); }
+.blog-buyer-intent-card { margin:0 0 48px;border-left:3px solid var(--green); }
 .blog-conversion-actions { position:relative;display:flex;gap:12px;flex-wrap:wrap;margin-top:8px; }
 .blog-conversion-actions .btn { margin-top:14px; }
 .blog-article-faq { margin-top:72px;padding-top:32px;border-top:1px solid rgba(255,255,255,.07); }

@@ -7,6 +7,50 @@ import { posts } from "@/content/data";
 import { blogContent, BlogInline } from "@/content/blog-content";
 import { organizationId, site, social, websiteId } from "@/lib/site";
 
+type BuyerQualifier = {
+  eyebrow:string;
+  title:string;
+  copy:string;
+  ctaLabel:string;
+  secondaryLabel:string;
+  secondaryHref:string;
+};
+
+const buyerQualifierBySlug:Record<string,BuyerQualifier>={
+  "website-redesign-rfp-checklist":{
+    eyebrow:"For organizations issuing an RFP",
+    title:"Hiring a website agency? Use the checklist, then invite Dimaso to respond.",
+    copy:"This page is for buyer teams defining a redesign and evaluating qualified partners. Dimaso does not list open tenders; we review website RFPs submitted by prospective clients.",
+    ctaLabel:"Invite Dimaso to review your RFP",
+    secondaryLabel:"Explore web design",
+    secondaryHref:"/services/web-design",
+  },
+  "how-to-prepare-a-website-rfp":{
+    eyebrow:"Buyer-side website planning",
+    title:"Preparing to hire a web partner? Start with a brief the right team can act on.",
+    copy:"Share the business problem, scope, constraints, timeline, and decision process. Dimaso can review the brief directly and recommend the right mix of design, development, SEO, and ongoing support.",
+    ctaLabel:"Send us your website brief",
+    secondaryLabel:"View website services",
+    secondaryHref:"/services",
+  },
+  "how-to-choose-a-website-maintenance-partner":{
+    eyebrow:"For teams comparing support providers",
+    title:"Need a company to take ongoing ownership of the website?",
+    copy:"Dimaso can review the platform, current risks, critical journeys, support backlog, and response needs, then propose a practical monthly maintenance model.",
+    ctaLabel:"Request a maintenance proposal",
+    secondaryLabel:"Explore website maintenance",
+    secondaryHref:"/services/website-maintenance",
+  },
+  "white-label-wordpress-maintenance-for-agencies":{
+    eyebrow:"For agencies buying delivery capacity",
+    title:"Add senior WordPress support without weakening the client relationship.",
+    copy:"Dimaso supports agencies with white-label maintenance, overflow development, release QA, reporting, and clearly defined ownership behind the scenes.",
+    ctaLabel:"Discuss white-label support",
+    secondaryLabel:"Explore agency support",
+    secondaryHref:"/industries/agencies",
+  },
+};
+
 export function generateStaticParams(){return posts.map(p=>({slug:p.slug}))}
 
 export async function generateMetadata({params}:{params:Promise<{slug:string}>}){
@@ -34,6 +78,7 @@ export default async function Page({params}:{params:Promise<{slug:string}>}){
   const isSmallBusinessChecklist=p.slug==="small-business-website-maintenance-checklist";
   const isEcommerceChecklist=p.slug==="ecommerce-website-maintenance-checklist";
   const isMaintenancePricing=p.slug==="website-maintenance-costs-and-pricing";
+  const buyerQualifier=buyerQualifierBySlug[p.slug];
   const articleTopics=isNonprofitChecklist?["Nonprofit website maintenance","WordPress maintenance for nonprofit organizations","Donation form QA","Website accessibility","Technical SEO","Website analytics"]:isNonprofitRedesignCost?["Nonprofit website redesign cost","Nonprofit web design","Website redesign budget","Website accessibility","Content migration","Technical SEO"]:isSmallBusinessChecklist?["Small business website maintenance","Website maintenance checklist","WordPress maintenance","Lead form QA","Local SEO","Website analytics"]:isEcommerceChecklist?["Ecommerce website maintenance","Ecommerce maintenance checklist","WooCommerce maintenance","Checkout QA","Product SEO","Ecommerce analytics"]:isMaintenancePricing?["Website maintenance cost","WordPress maintenance cost","WooCommerce maintenance cost","Managed WordPress support","Website support pricing"]:p.category;
   const faqTitle=isNonprofitChecklist?"Nonprofit website maintenance FAQ":isNonprofitRedesignCost?"Nonprofit website redesign cost FAQ":isSmallBusinessChecklist?"Small business website maintenance FAQ":isEcommerceChecklist?"Ecommerce website maintenance FAQ":isMaintenancePricing?"Website and WordPress maintenance pricing FAQ":`${p.category} FAQ`;
   const titleSizeClass=p.title.length>58?"blog-title-extra-long":p.title.length>45?"blog-title-long":"";
@@ -69,6 +114,12 @@ export default async function Page({params}:{params:Promise<{slug:string}>}){
             {tocSections.length?<nav className="blog-toc" aria-label="Article contents"><strong>On this page</strong>{tocSections.map((section)=><a key={section.id} href={`#${section.id}`}>{section.text}</a>)}</nav>:null}
           </aside>
           <div className="blog-article-body">
+            {buyerQualifier?<aside className="blog-conversion-card blog-buyer-intent-card" aria-label="Commercial service information">
+              <span className="eyebrow">{buyerQualifier.eyebrow}</span>
+              <h2>{buyerQualifier.title}</h2>
+              <p>{buyerQualifier.copy}</p>
+              <div className="blog-conversion-actions"><TrackedLink tracking="cta" trackingLocation={`buyer_qualifier_${p.slug}`} trackingLabel={buyerQualifier.ctaLabel} href="#rfp" className="btn">{buyerQualifier.ctaLabel}</TrackedLink><Link href={buyerQualifier.secondaryHref} className="btn ghost">{buyerQualifier.secondaryLabel}</Link></div>
+            </aside>:null}
             {content.map((block,index)=>block.type==="p"?<p key={index}>{renderInline(block.content)}</p>:block.type==="ul"?<ul key={index}>{block.items.map((item,itemIndex)=><li key={itemIndex}>{renderInline(item)}</li>)}</ul>:block.type==="table"?<div className="blog-table-wrap" key={index}><table className="blog-comparison-table">{block.caption?<caption>{block.caption}</caption>:null}<thead><tr>{block.headers.map((header)=><th key={header} scope="col">{header}</th>)}</tr></thead><tbody>{block.rows.map((row,rowIndex)=><tr key={rowIndex}>{row.map((cell,cellIndex)=><td key={cellIndex}>{cell}</td>)}</tr>)}</tbody></table></div>:block.type==="h2"?<h2 key={index} id={block.id}>{block.text}</h2>:<h3 key={index} id={block.id}>{block.text}</h3>)}
             {isNonprofitChecklist?<>
               <aside className="blog-proof-card" aria-label="Relevant nonprofit website experience">
@@ -135,7 +186,12 @@ export default async function Page({params}:{params:Promise<{slug:string}>}){
                 <p>We can review the current platform, hosting, updates, backups, security, forms or checkout, integrations, analytics, technical SEO, response needs, and improvement backlog, then recommend the right support model and scope.</p>
                 <div className="blog-conversion-actions"><TrackedLink tracking="cta" trackingLocation="maintenance_pricing_guide" trackingLabel="Request a maintenance estimate" href="/contact" className="btn">Request a maintenance estimate</TrackedLink><Link href="/services/wordpress-support" className="btn ghost">Explore WordPress support</Link></div>
               </aside>
-            </>:<Link href={p.service} className="btn">Explore the relevant service</Link>}
+            </>:<aside className="blog-conversion-card" aria-label="Discuss website services with Dimaso">
+              <span className="eyebrow">Move from research to implementation</span>
+              <h2>Need a senior website partner to own the next step?</h2>
+              <p>Share the current website, the business priority, and any known risks or deadlines. Dimaso will review the context directly and recommend a focused project or ongoing support model.</p>
+              <div className="blog-conversion-actions"><TrackedLink tracking="cta" trackingLocation={`article_conversion_${p.slug}`} trackingLabel="Discuss this website requirement" href="#rfp" className="btn">Discuss this website requirement</TrackedLink><Link href={p.service} className="btn ghost">View the relevant service</Link></div>
+            </aside>}
             {faqs.length?<section className="blog-article-faq" aria-labelledby="blog-faq-title"><span className="eyebrow">Common questions</span><h2 id="blog-faq-title">{faqTitle}</h2><div className="faq-list">{faqs.map(([question,answer],index)=><details className="faq-item" key={question}><summary><span className="faq-number">{String(index+1).padStart(2,"0")}</span><span>{question}</span><span className="faq-toggle" aria-hidden="true"/></summary><div className="faq-answer"><p>{answer}</p></div></details>)}</div></section>:null}
             <section aria-labelledby="related-insights-title" style={{marginTop:70,paddingTop:28,borderTop:"1px solid rgba(255,255,255,.07)"}}>
               <span className="eyebrow">Related insights</span>
