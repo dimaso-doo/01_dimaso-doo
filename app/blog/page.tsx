@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { Newsletter } from "@/components/forms";
 import { BlogCards, SectionHead } from "@/components/sections";
 import { JsonLd } from "@/components/site";
 import { posts } from "@/content/data";
@@ -33,7 +32,6 @@ export default function Page(){
           })}
           {totalPages>1&&<Link href="/blog/page/2" className="blog-pagination-next">Next</Link>}
         </nav>
-        <div className="card" style={{maxWidth:650,marginTop:50}}><Newsletter/></div>
       </div>
     </section>
   </main>;

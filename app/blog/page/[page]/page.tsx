@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Newsletter } from "@/components/forms";
 import { BlogCards, SectionHead } from "@/components/sections";
 import { JsonLd } from "@/components/site";
 import { posts } from "@/content/data";
@@ -50,7 +49,6 @@ export default async function Page({params}:{params:Promise<{page:string}>}){
           })}
           {nextHref&&<Link href={nextHref} className="blog-pagination-next">Next</Link>}
         </nav>
-        <div className="card" style={{maxWidth:650,marginTop:50}}><Newsletter/></div>
       </div>
     </section>
   </main>;
