@@ -156,7 +156,7 @@ export function Footer() {
         <div className="footer-info-panel">
           <div className="footer-location-grid"><div><span className="eyebrow">Serbia / Europe</span><strong>Dimaso RS</strong><small>Novi Sad, Serbia</small></div><div><span className="eyebrow">United States</span><strong>Dimaso US</strong><small>Sheridan, USA</small></div></div>
           <div className="footer-contact-list"><TrackedLink tracking="email" trackingLocation="footer" className="footer-contact-link email" href="mailto:office@dimaso.co">office@dimaso.co</TrackedLink><TrackedLink tracking="phone" trackingLocation="footer" className="footer-contact-link phone" href="tel:+381611375150">+381 61 137 5150</TrackedLink><TrackedLink tracking="linkedin" trackingLocation="footer" className="footer-contact-link linkedin" href={linkedinUrl} target="_blank" rel="noopener noreferrer">LinkedIn</TrackedLink></div>
-          <div style={{marginTop:42}}><Newsletter /></div>
+          <div className="footer-newsletter"><Newsletter /></div>
         </div>
         {!isContactPage&&<div id="rfp" className="footer-rfp-column"><div className="footer-rfp-head"><span className="eyebrow">Start a conversation</span><h2>Discuss your website with a senior specialist.</h2><p>Send a short note or attach a project brief. The people responsible for delivery review the context directly.</p></div><ContactForm {...formContext}/><p className="form-expectation">Reviewed by a senior team member · No generic sales handoff</p></div>}
       </div>
