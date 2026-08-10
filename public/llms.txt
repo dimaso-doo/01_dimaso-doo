@@ -40,6 +40,16 @@ Dimaso is a service provider for organizations buying website strategy, design, 
 - AI website and workflow support: https://dimaso.co/services/ai-website-workflow-support
 
 ## Decision guides
+- Website maintenance proposal buyer checklist: https://dimaso.co/blog/website-maintenance-proposal
+- Website support retainer versus hourly support: https://dimaso.co/blog/website-support-retainer-vs-hourly
+- WordPress maintenance plan comparison: https://dimaso.co/blog/wordpress-maintenance-plans
+- Hiring a WordPress developer for an existing website: https://dimaso.co/blog/hire-wordpress-developer-existing-website
+- WooCommerce maintenance cost and support scope: https://dimaso.co/blog/woocommerce-maintenance-cost
+- Technical SEO audit cost and deliverables: https://dimaso.co/blog/technical-seo-audit-cost
+- Website redesign agency selection guide: https://dimaso.co/blog/choose-website-redesign-agency
+- Nonprofit website support model comparison: https://dimaso.co/blog/nonprofit-website-support-options
+- White-label web development partner selection: https://dimaso.co/blog/white-label-web-development-partner
+- Website migration company selection guide: https://dimaso.co/blog/choose-website-migration-company
 - Ecommerce website maintenance checklist: https://dimaso.co/blog/ecommerce-website-maintenance-checklist
 - Small business website maintenance checklist: https://dimaso.co/blog/small-business-website-maintenance-checklist
 - Nonprofit website redesign cost and planning guide: https://dimaso.co/blog/nonprofit-website-redesign-cost
