@@ -71,7 +71,7 @@ export async function POST(req:Request){
   const submittedServices=form.getAll("services").filter((value):value is string=>typeof value==="string");
   const parsed=schema.safeParse({...fields,services:submittedServices});
   if(!parsed.success)return NextResponse.json({error:"Invalid form data"},{status:400});
-  if(parsed.data.kind==="rfp"&&(!parsed.data.name||!parsed.data.message))return NextResponse.json({error:"Missing required fields"},{status:400});
+  if(parsed.data.kind==="rfp"&&!parsed.data.message)return NextResponse.json({error:"Missing required fields"},{status:400});
   if(parsed.data.services?.includes("General Inquiry / Not Sure Yet")&&parsed.data.services.length>1)return NextResponse.json({error:"Invalid service selection"},{status:400});
   const file=form.get("file"); let attachment; let uploadName="-";
   if(file instanceof File&&file.size>0){

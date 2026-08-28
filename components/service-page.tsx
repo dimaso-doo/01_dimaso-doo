@@ -4,6 +4,7 @@ import { Cases, FAQSection, ProcessStack, Reveal, SectionHead } from "./sections
 import { CTA, JsonLd } from "./site";
 import { organizationId, site, websiteId } from "@/lib/site";
 import { TechVisual } from "./tech-visual";
+import { TrackedLink } from "./tracked-link";
 
 const relevantCaseStudies: Record<ServiceKey, readonly string[]> = {
  maintenance:["forever-living-shop","mega-baza"],
@@ -22,7 +23,7 @@ const relatedIndustries: Record<ServiceKey, readonly (readonly [string,string])[
  wordpress:[["WordPress support for nonprofits","/industries/nonprofits"],["Association WordPress support","/industries/associations"],["WooCommerce support","/industries/ecommerce"],["White-label WordPress support","/industries/agencies"]],
  woocommerce:[["Ecommerce website support","/industries/ecommerce"],["White-label WooCommerce support","/industries/agencies"],["Small business ecommerce support","/industries/small-businesses"],["WordPress support","/services/wordpress-support"]],
  technicalSeo:[["Ecommerce technical SEO","/industries/ecommerce"],["Healthcare technical SEO","/industries/healthcare"],["Education technical SEO","/industries/education"],["Nonprofit technical SEO","/industries/nonprofits"]],
- aiSupport:[["Agency AI workflow support","/industries/agencies"],["Nonprofit AI visibility","/industries/nonprofits"],["Association AI visibility","/industries/associations"],["Education AI support","/industries/education"]],
+ aiSupport:[["Agency workflow support","/industries/agencies"],["Nonprofit website support","/industries/nonprofits"],["Association website support","/industries/associations"],["Education website support","/industries/education"]],
 };
 
 const serviceHeroCopy:Record<ServiceKey,string>={
@@ -32,7 +33,7 @@ const serviceHeroCopy:Record<ServiceKey,string>={
  wordpress:"Dimaso maintains, fixes, and improves business-critical WordPress and WooCommerce websites for US and international teams. We can take over an existing site, stabilize updates and backups, resolve plugin or theme problems, and provide dependable monthly development and QA support.",
  woocommerce:"Dimaso maintains, fixes, and improves revenue-sensitive WooCommerce stores for US and international teams, with practical ownership of checkout, payments, products, pricing, inventory, releases, integrations, analytics, and recurring QA.",
  technicalSeo:"Technical SEO that turns crawl, indexing, metadata, schema, internal linking, and Core Web Vitals findings into implemented improvements.",
- aiSupport:"Practical AI visibility and workflow support built around clearer content, structured data, internal knowledge, and useful automation.",
+ aiSupport:"Practical AI and workflow support built around useful content, technical SEO foundations, structured data, internal knowledge, measurement, and automation.",
 };
 
 export function ServicePage({type}:{type:ServiceKey}) {
@@ -42,7 +43,7 @@ export function ServicePage({type}:{type:ServiceKey}) {
  const serviceSchema={"@type":"Service","@id":`${site.url}/${s.slug}#service`,name:s.label,serviceType:s.serviceType,url:`${site.url}/${s.slug}`,description:s.intro,provider:{"@id":organizationId},isPartOf:{"@id":websiteId},audience:{"@type":"BusinessAudience",audienceType:"Businesses"},areaServed:["US","International"],...(engagementModels?{hasOfferCatalog:{"@type":"OfferCatalog",name:`${s.label} engagement models`,itemListElement:engagementModels.map((model)=>({"@type":"Offer",itemOffered:{"@type":"Service",name:model.title,description:model.schemaDescription}}))}}:{})};
  return <main>
  <JsonLd data={{"@context":"https://schema.org","@graph":[serviceSchema,{"@type":"BreadcrumbList",itemListElement:[{"@type":"ListItem",position:1,name:"Home",item:`${site.url}/`},{"@type":"ListItem",position:2,name:"Services",item:`${site.url}/services`},{"@type":"ListItem",position:3,name:s.label,item:`${site.url}/${s.slug}`}]},{"@type":"FAQPage",mainEntity:faq.map(([q,a])=>({"@type":"Question",name:q,acceptedAnswer:{"@type":"Answer",text:a}}))}]}}/>
-  <section className="grid-bg service-hero"><TechVisual/><div className="shell"><span className="eyebrow">{s.eyebrow} · US & international</span><h1>{s.title}</h1><p className="lede">{serviceHeroCopy[type]}</p><div className="hero-actions"><Link href="#rfp" className="btn">{type==="wordpress"?"Request a WordPress support review":type==="woocommerce"?"Request a WooCommerce support review":"Discuss your website"}</Link><Link href={type==="wordpress"?"/blog/website-maintenance-costs-and-pricing":type==="woocommerce"?"/blog/ecommerce-website-maintenance-checklist":"/case-studies"} className="btn ghost">{type==="wordpress"?"See maintenance pricing":type==="woocommerce"?"Use the store checklist":"See relevant work"}</Link></div><p className="hero-assurance">{type==="wordpress"||type==="woocommerce"?"Existing websites welcome · Vendor takeovers available · Monthly or project support":"Direct senior review · Brief optional · Practical next step"}</p></div></section>
+  <section className="grid-bg service-hero"><TechVisual/><div className="shell"><span className="eyebrow">{s.eyebrow} · US & international</span><h1>{s.title}</h1><p className="lede">{serviceHeroCopy[type]}</p><div className="hero-actions"><TrackedLink tracking="cta" trackingLocation={`${type}_service_hero`} trackingLabel={type==="wordpress"?"Request a WordPress support review":type==="woocommerce"?"Request a WooCommerce support review":"Request a website review"} href="#rfp" className="btn">{type==="wordpress"?"Request a WordPress support review":type==="woocommerce"?"Request a WooCommerce support review":"Request a website review"}</TrackedLink><Link href={type==="wordpress"?"/blog/website-maintenance-costs-and-pricing":type==="woocommerce"?"/blog/ecommerce-website-maintenance-checklist":"/case-studies"} className="btn ghost">{type==="wordpress"?"See maintenance pricing":type==="woocommerce"?"Use the store checklist":"See relevant work"}</Link></div><p className="hero-assurance">{type==="wordpress"||type==="woocommerce"?"Existing websites welcome · Vendor takeovers available · Monthly or project support":"Direct senior review · Brief optional · Practical next step"}</p></div></section>
   {type==="wordpress"?<WordPressSupportScope/>:type==="woocommerce"?<WooCommerceSupportScope/>:<section className="section service-section service-cover-section ambient-code ambient-left"><div className="shell"><SectionHead eyebrow="What we cover" title={`${s.label} with senior ownership.`} copy={s.coverCopy}/><div className="maintenance-cover-grid cards-grid">{s.keywords.map((x,i)=><Reveal key={x}><div className={`card maintenance-cover-card cover-card-${i+1}`}><div className="cover-motion"><span/><span/><span/></div><span>0{i+1}</span><h3>{x}</h3></div></Reveal>)}</div></div></section>}
   <ServiceQualification type={type}/>
   {type==="wordpress"&&<WordPressEngagementModels/>}
@@ -135,7 +136,7 @@ function WooCommerceEngagementModels(){
  return <section className="section service-section wordpress-models-section woocommerce-models-section ambient-code ambient-right"><div className="shell">
   <SectionHead eyebrow="Engagement models" title="Match WooCommerce support to store complexity and revenue risk." copy="The right level depends on release frequency, custom code, operational integrations, order volume, response expectations, and how much recurring development the team needs."/>
   <div className="wordpress-model-grid">{woocommerceEngagementModels.map((model,index)=><Reveal key={model.title}><article className="wordpress-model-card"><span className="eyebrow">Model / {String(index+1).padStart(2,"0")}</span><h3>{model.title}</h3><p><strong>Best for:</strong> {model.bestFor}</p><ul>{model.includes.map((item)=><li key={item}>{item}</li>)}</ul></article></Reveal>)}</div>
-  <div className="wordpress-pricing-note"><p>Need to define the checks and ownership before requesting proposals?</p><Link className="text-link" href="/blog/ecommerce-website-maintenance-checklist">Use the 30-point ecommerce maintenance checklist →</Link></div>
+  <div className="wordpress-pricing-note"><p>Need to define the checks, ownership, and budget factors before requesting proposals?</p><Link className="text-link" href="/blog/ecommerce-website-maintenance-checklist">Use the 30-point ecommerce maintenance checklist →</Link><Link className="text-link" href="/blog/woocommerce-maintenance-cost">Compare WooCommerce maintenance cost and scope →</Link></div>
  </div></section>;
 }
 
@@ -162,7 +163,7 @@ function ServiceQualification({type}:{type:ServiceKey}) {
   wordpress:{eyebrow:"Who it is for",title:"WordPress support for teams that need the website to stay dependable.",points:["WordPress sites with recurring update needs","Elementor and theme maintenance","WooCommerce stores and important forms","Teams that need security, backups, and performance owned"]},
   woocommerce:{eyebrow:"Who it is for",title:"WooCommerce support for stores that cannot leave revenue paths to chance.",points:["Stores with recurring releases or operational requests","Checkout, payment, catalog, or integration risk","Custom themes, plugins, and business rules","Teams that need ecommerce QA and technical ownership"]},
   technicalSeo:{eyebrow:"Deliverables",title:"Technical SEO that turns audits into implemented fixes.",points:["Indexing and crawlability review","Metadata, schema, sitemap, and robots.txt cleanup","Internal linking and URL hygiene","Core Web Vitals, GA4, and GSC support"]},
-  aiSupport:{eyebrow:"Practical AI support",title:"AI visibility and workflow support without overcomplicating the business.",points:["AI-readable service and industry structure","Schema.org, llms.txt, and internal links","AI-assisted audits and reporting","Workflow automation and knowledge-base support"]},
+  aiSupport:{eyebrow:"Practical AI support",title:"AI and workflow support without speculative optimization promises.",points:["Useful service and industry content with first-hand evidence","Technical SEO, appropriate Schema.org, and internal links","AI-assisted audits, measurement, and reporting","Workflow automation and knowledge-base support"]},
  } satisfies Record<ServiceKey,{eyebrow:string;title:string;points:readonly string[]}>;
  const item=content[type];
  const service=services[type];
@@ -183,7 +184,7 @@ function RelatedServiceLinks({type}:{type:ServiceKey}) {
   design:[["Website redesign checklist","/blog/what-to-check-before-redesigning"],["Nonprofit website redesign cost guide","/blog/nonprofit-website-redesign-cost"],["Development and implementation","/services/web-development"],["Post-launch website care","/services/website-maintenance"]],
   wordpress:[["WordPress maintenance costs and pricing","/blog/website-maintenance-costs-and-pricing"],["Taking over an existing WordPress website","/blog/taking-over-an-existing-wordpress-website"],["WooCommerce maintenance and support","/services/woocommerce-maintenance"],["White-label WordPress maintenance","/blog/white-label-wordpress-maintenance-for-agencies"],["Website maintenance services","/services/website-maintenance"]],
   woocommerce:[["WooCommerce maintenance checklist","/blog/ecommerce-website-maintenance-checklist"],["Website maintenance costs and pricing","/blog/website-maintenance-costs-and-pricing"],["WordPress maintenance and support","/services/wordpress-support"],["Technical SEO implementation","/services/technical-seo"],["Ecommerce website support","/industries/ecommerce"]],
-  technicalSeo:[["What happens after a technical SEO audit","/blog/what-happens-after-a-technical-seo-audit"],["Website migration guide","/blog/website-migration-without-losing-seo-value"],["AI visibility support","/services/ai-website-workflow-support"],["Custom web development","/services/web-development"]],
+  technicalSeo:[["What happens after a technical SEO audit","/blog/what-happens-after-a-technical-seo-audit"],["Website migration guide","/blog/website-migration-without-losing-seo-value"],["AI website and workflow support","/services/ai-website-workflow-support"],["Custom web development","/services/web-development"]],
   aiSupport:[["Technical SEO","/services/technical-seo"],["Website maintenance","/services/website-maintenance"],["Website RFP checklist","/blog/how-to-prepare-a-website-rfp"],["Nonprofit support","/industries/nonprofits"]],
  };
  return <div style={{display:"flex",gap:24,flexWrap:"wrap",marginTop:36}}>{links[type].map(([label,href])=><Link key={href} className="text-link" href={href}>{label} →</Link>)}</div>;
@@ -233,7 +234,7 @@ function ServiceProofSnippets({type}:{type:ServiceKey}) {
    eyebrow:"Service proof",
    title:"What practical AI website support should improve.",
    copy:"AI support should make the website easier to understand, classify, cite, and operate.",
-   points:["Clear service and industry pages with AI-readable opening paragraphs","Schema.org and llms.txt describing the real business accurately","Internal links that connect services, industries, case studies, blog, and contact paths","Workflow notes and reporting that help teams keep improving the site"],
+   points:["Clear service and industry pages with useful first-hand evidence","Technical SEO and appropriate Schema.org describing the real business accurately","Internal links that connect services, industries, case studies, blog, and contact paths","Measurement, workflow notes, and reporting that help teams keep improving the site"],
   },
  } satisfies Record<ServiceKey,{eyebrow:string;title:string;copy:string;points:readonly string[]}>;
  const item=content[type];

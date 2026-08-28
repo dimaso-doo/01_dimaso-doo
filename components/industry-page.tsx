@@ -14,7 +14,7 @@ const serviceBySlug = Object.values(services).reduce<Record<string, (typeof serv
 const industryGuides:Partial<Record<IndustryKey,readonly (readonly [string,string])[]>>={
   nonprofits:[["Nonprofit website redesign cost guide","/blog/nonprofit-website-redesign-cost"],["Nonprofit website maintenance checklist","/blog/website-maintenance-checklist-for-nonprofits"]],
   associations:[["WordPress maintenance for associations","/blog/wordpress-maintenance-for-associations"],["How to choose a maintenance partner","/blog/how-to-choose-a-website-maintenance-partner"]],
-  agencies:[["White-label WordPress maintenance for agencies","/blog/white-label-wordpress-maintenance-for-agencies"],["Taking over an existing WordPress website","/blog/taking-over-an-existing-wordpress-website"]],
+  agencies:[["White-label WordPress maintenance for agencies","/blog/white-label-wordpress-maintenance-for-agencies"],["How to choose a white-label development partner","/blog/white-label-web-development-partner"],["Taking over an existing WordPress website","/blog/taking-over-an-existing-wordpress-website"]],
   smallBusinesses:[["Small business website maintenance checklist","/blog/small-business-website-maintenance-checklist"],["Website maintenance costs and pricing","/blog/website-maintenance-costs-and-pricing"]],
   education:[["How to choose a maintenance partner","/blog/how-to-choose-a-website-maintenance-partner"],["Why QA matters after every update","/blog/why-qa-matters-after-every-update"]],
   healthcare:[["Taking over an existing WordPress website","/blog/taking-over-an-existing-wordpress-website"],["What happens after a technical SEO audit","/blog/what-happens-after-a-technical-seo-audit"]],
@@ -29,17 +29,18 @@ export function IndustryPage({ type }: { type: IndustryKey }) {
   const requestLabel = type==="nonprofits"?"nonprofit":industry.label.toLowerCase();
   return <main>
     <JsonLd data={{"@context":"https://schema.org","@graph":[{"@type":"Service","@id":`${url}#service`,name:industry.title,serviceType:`Website support for ${industry.label}`,url,description:industry.intro,provider:{"@id":organizationId},isPartOf:{"@id":websiteId},areaServed:["United States","Europe","Serbia","International"],audience:{"@type":"Audience",audienceType:industry.label}},{"@type":"BreadcrumbList","@id":`${url}#breadcrumb`,itemListElement:[{"@type":"ListItem",position:1,name:"Home",item:`${site.url}/`},{"@type":"ListItem",position:2,name:"Industries",item:`${site.url}/industries`},{"@type":"ListItem",position:3,name:industry.label,item:url}]},{"@type":"FAQPage","@id":`${url}#faq`,mainEntity:faq.map(([q,a])=>({"@type":"Question",name:q,acceptedAnswer:{"@type":"Answer",text:a}}))}]}}/>
-    <section className="grid-bg" style={{padding:"140px 0 100px",position:"relative",overflow:"hidden"}}>
+    <section className="grid-bg" style={{padding:"118px 0 84px",position:"relative",overflow:"hidden"}}>
       <TechVisual/>
       <div className="shell" style={{position:"relative",zIndex:2}}>
         <span className="eyebrow">Industry support · US & international</span>
-        <h1 style={{fontSize:"clamp(48px,8vw,92px)",lineHeight:1.02,maxWidth:1050,margin:"22px 0 28px"}}>{industry.title}</h1>
+        <h1 style={{fontSize:"clamp(44px,6.6vw,78px)",lineHeight:1.02,maxWidth:1050,margin:"20px 0 24px"}}>{industry.title}</h1>
         <p className="lede">{industry.intro}</p>
-        {type==="nonprofits"?<ul className="nonprofit-hero-signals" aria-label="Nonprofit website support highlights"><li>Donation &amp; form QA</li><li>30/60/90-day action plan</li><li>Monthly WordPress care</li></ul>:null}
-        <div style={{display:"flex",gap:12,marginTop:35,flexWrap:"wrap"}}>{type==="nonprofits"?<><TrackedLink tracking="cta" trackingLocation="nonprofit_hero" trackingLabel="Request a nonprofit website audit" href="#nonprofit-audit" className="btn">Request a nonprofit website audit</TrackedLink><TrackedLink tracking="cta" trackingLocation="nonprofit_hero" trackingLabel="Discuss monthly website care" href="#rfp" className="btn ghost">Discuss monthly care</TrackedLink></>:<><TrackedLink tracking="cta" trackingLocation="industry_hero" trackingLabel="Discuss your website" href="#rfp" className="btn">Discuss your website</TrackedLink><Link href="/case-studies" className="btn ghost">View case studies</Link></>}</div>
+        {type==="nonprofits"?<ul className="nonprofit-hero-signals" aria-label="Nonprofit website support highlights"><li>Donation &amp; form QA</li><li>30/60/90-day action plan</li><li>Monthly WordPress care</li></ul>:type==="agencies"?<ul className="nonprofit-hero-signals" aria-label="White-label agency support highlights"><li>White-label delivery</li><li>Client relationship protected</li><li>WordPress, QA &amp; overflow capacity</li></ul>:null}
+        <div style={{display:"flex",gap:12,marginTop:35,flexWrap:"wrap"}}>{type==="nonprofits"?<><TrackedLink tracking="cta" trackingLocation="nonprofit_hero" trackingLabel="Request a nonprofit website audit" href="#nonprofit-audit" className="btn">Request a nonprofit website audit</TrackedLink><TrackedLink tracking="cta" trackingLocation="nonprofit_hero" trackingLabel="Discuss monthly website care" href="#rfp" className="btn ghost">Discuss monthly care</TrackedLink></>:type==="agencies"?<><TrackedLink tracking="cta" trackingLocation="agency_hero" trackingLabel="Discuss white-label capacity" href="#agency-partnership" className="btn">Discuss white-label capacity</TrackedLink><Link href="/blog/white-label-wordpress-maintenance-for-agencies" className="btn ghost">Review the support model</Link></>:<><TrackedLink tracking="cta" trackingLocation="industry_hero" trackingLabel="Discuss your website" href="#rfp" className="btn">Discuss your website</TrackedLink><Link href="/case-studies" className="btn ghost">View case studies</Link></>}</div>
       </div>
     </section>
     {type==="nonprofits"&&<NonprofitPrioritySection/>}
+    {type==="agencies"&&<AgencyPartnershipSection/>}
     <section className="section ambient-code ambient-left"><div className="shell">
       <SectionHead eyebrow="Who this is for" title={`${teamLabel} teams that need dependable website ownership.`} copy={industry.who}/>
       <CardGrid items={industry.problems} eyebrow="Problems Dimaso solves"/>
@@ -63,8 +64,21 @@ export function IndustryPage({ type }: { type: IndustryKey }) {
       <div style={{marginTop:50}}><Cases slugs={[...industry.caseSlugs]} limit={3}/></div>
     </div></section>
     <FAQSection eyebrow={`FAQ / ${industry.label}`} title={`Questions about website support for ${industry.label.toLowerCase()}.`} copy="Short answers about scope, remote collaboration, maintenance, technical SEO, and ongoing support." items={faq}/>
-    <CTA title={type==="nonprofits"?"Need a reliable partner for your nonprofit website?":`Need website support for ${industry.label.toLowerCase()}?`} label={type==="nonprofits"?"Request your website audit":"Send your RFP"}/>
+    <CTA title={type==="nonprofits"?"Need a reliable partner for your nonprofit website?":type==="agencies"?"Need dependable delivery capacity behind your agency?":`Need website support for ${industry.label.toLowerCase()}?`} label={type==="nonprofits"?"Request your website audit":type==="agencies"?"Discuss white-label capacity":"Send your RFP"}/>
   </main>;
+}
+
+function AgencyPartnershipSection(){
+  const relationshipItems=["Choose white-label or disclosed subcontracting per account","Keep commercial ownership and client communication with the agency","Define confidentiality, access, repositories, and escalation before delivery","Agree when Dimaso may join a call and when work stays fully behind the scenes"];
+  const deliveryItems=["Triage each request with scope, questions, risk, and a practical estimate","Work through the agency's project, ticket, review, and approval process","Use staging, regression QA, release notes, and production checks where appropriate","Return client-ready summaries that account and creative teams can use"];
+  return <section id="agency-partnership" className="section agency-partnership ambient-code ambient-right"><div className="shell">
+    <SectionHead eyebrow="White-label operating model" title="Protect the client relationship before delivery begins." copy="A useful agency partnership makes ownership explicit. The working agreement should define visibility, communication, access, QA, approvals, response expectations, and the boundary between Dimaso and the end client."/>
+    <div className="agency-operating-grid">
+      <Reveal><article className="card agency-operating-card"><span className="eyebrow">Relationship rules</span><h3>Decide how the partnership appears to the client.</h3><ul>{relationshipItems.map(item=><li key={item}>{item}</li>)}</ul></article></Reveal>
+      <Reveal><article className="card agency-operating-card"><span className="eyebrow">Delivery rhythm</span><h3>Make overflow capacity easy to brief and review.</h3><ul>{deliveryItems.map(item=><li key={item}>{item}</li>)}</ul></article></Reveal>
+    </div>
+    <Reveal><aside className="agency-capacity-cta"><div><span className="eyebrow">Start with one real workload</span><h3>Share the current client backlog, stack, and delivery constraint.</h3><p>Dimaso can review the context and recommend a pilot task, a defined overflow block, or an ongoing white-label support model.</p></div><TrackedLink tracking="cta" trackingLocation="agency_partnership" trackingLabel="Share the agency workload" href="#rfp" className="btn">Share the agency workload</TrackedLink></aside></Reveal>
+  </div></section>;
 }
 
 function NonprofitPrioritySection(){

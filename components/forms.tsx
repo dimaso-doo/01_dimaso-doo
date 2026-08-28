@@ -8,7 +8,7 @@ const services=["Website Maintenance","Web Development","Web Design","WordPress 
 const generalInquiry="General Inquiry / Not Sure Yet" as const;
 const serviceOptions=[...services,generalInquiry] as const;
 type ServiceOption=(typeof serviceOptions)[number];
-type ContactField="name"|"email"|"message";
+type ContactField="email"|"message";
 type ContactErrors=Partial<Record<ContactField,string>>;
 const allowedFileExtensions=["pdf","doc","docx","txt","zip"];
 const maxFileSize=10*1024*1024;
@@ -52,6 +52,7 @@ export function ContactForm({source,subject,defaultService=""}:{source:string;su
   const honeypotId=useId();
   const viewTracked=useRef(false);
   const startTracked=useRef(false);
+  const startedAt=useRef<number|null>(null);
 
   useEffect(()=>{
     const form=formRef.current;
@@ -105,11 +106,9 @@ export function ContactForm({source,subject,defaultService=""}:{source:string;su
     e.preventDefault();
     const form=e.currentTarget;
     const values=new FormData(form);
-    const name=String(values.get("name")||"").trim();
     const email=String(values.get("email")||"").trim();
     const message=String(values.get("message")||"").trim();
     const nextErrors:ContactErrors={};
-    if(!name)nextErrors.name="Name is required.";
     if(!email)nextErrors.email="Email is required.";
     else if(!validateEmail(email))nextErrors.email="Please enter a valid email address.";
     if(!message)nextErrors.message="Message is required.";
@@ -123,6 +122,8 @@ export function ContactForm({source,subject,defaultService=""}:{source:string;su
       });
       return;
     }
+    const completionSeconds=startedAt.current?Math.max(0,Math.round((Date.now()-startedAt.current)/1000)):undefined;
+    trackEvent("project_form_submit_attempt",{form_name:source==="Contact Page"?"contact":"rfp",form_source:source,selected_service:selectedService||undefined,file_attached:fileInfo!==null,completion_seconds:completionSeconds});
     setStatus("loading");
     const data=values;
     if(!selectedService)data.delete("services");
@@ -135,26 +136,25 @@ export function ContactForm({source,subject,defaultService=""}:{source:string;su
       setStatus(res.ok?"success":"error");
       if(res.ok){
         if(source==="Contact Page"){
-          trackEvent("contact_form_submit",{form_name:"contact"});
-          trackLead("contact");
+          trackEvent("contact_form_submit",{form_name:"contact",completion_seconds:completionSeconds});
+          trackLead("contact",{completion_seconds:completionSeconds});
         }else{
-          const leadParams={selected_service:selectedService||undefined,file_attached:fileInfo!==null};
+          const leadParams={selected_service:selectedService||undefined,file_attached:fileInfo!==null,completion_seconds:completionSeconds};
           trackEvent("rfp_form_submit",{form_name:"rfp",...leadParams});
           trackLead("rfp",leadParams);
         }
         form.reset();setSelectedService(initialService);setFileInfo(null);setFileError("");setFormErrors({});
+      }else{
+        trackEvent("project_form_submit_error",{form_name:source==="Contact Page"?"contact":"rfp",form_source:source,error_type:"api_response",http_status:res.status});
       }
     }catch{
       setStatus("error");
+      trackEvent("project_form_submit_error",{form_name:source==="Contact Page"?"contact":"rfp",form_source:source,error_type:"network_error"});
     }
   }
   const hasFormErrors=Object.keys(formErrors).length>0;
   const formErrorMessage=formErrors.email==="Please enter a valid email address."?"Please complete the highlighted fields and enter a valid email address.":"Please complete the highlighted required fields.";
-  return <form ref={formRef} action="/api/contact" method="post" encType="multipart/form-data" onSubmit={submit} onFocusCapture={()=>{if(startTracked.current)return;startTracked.current=true;trackEvent("project_form_start",{form_name:source==="Contact Page"?"contact":"rfp",form_source:source});}} noValidate className="form-grid form-panel" style={{display:"grid",gridTemplateColumns:"repeat(2,minmax(0,1fr))",gap:12}}>
-    <div className="form-field">
-      <label htmlFor={nameId}>Name <span>Required</span></label>
-      <input id={nameId} className="field" required name="name" placeholder="Your name" aria-invalid={formErrors.name?true:undefined} aria-describedby={formErrors.name?formStatusId:undefined} onChange={()=>clearFormError("name")}/>
-    </div>
+  return <form ref={formRef} action="/api/contact" method="post" encType="multipart/form-data" onSubmit={submit} onFocusCapture={()=>{if(startTracked.current)return;startTracked.current=true;startedAt.current=Date.now();trackEvent("project_form_start",{form_name:source==="Contact Page"?"contact":"rfp",form_source:source});}} noValidate className="form-grid form-panel" style={{display:"grid",gridTemplateColumns:"repeat(2,minmax(0,1fr))",gap:12}}>
     <div className="form-field">
       <label htmlFor={emailId}>Email <span>Required</span></label>
       <input id={emailId} className="field" required type="email" name="email" placeholder="you@company.com" aria-invalid={formErrors.email?true:undefined} aria-describedby={formErrors.email?formStatusId:undefined} onChange={()=>clearFormError("email")}/>
@@ -162,6 +162,10 @@ export function ContactForm({source,subject,defaultService=""}:{source:string;su
     <div className="form-field">
       <label htmlFor={websiteUrlId}>Current website <span>Optional</span></label>
       <input id={websiteUrlId} className="field" type="text" inputMode="url" name="websiteUrl" placeholder="https://example.com"/>
+    </div>
+    <div className="form-field">
+      <label htmlFor={nameId}>Name <span>Optional</span></label>
+      <input id={nameId} className="field" name="name" placeholder="Your name"/>
     </div>
     <div className="form-field">
       <label htmlFor={serviceId}>Main area of help <span>Optional</span></label>
@@ -174,8 +178,8 @@ export function ContactForm({source,subject,defaultService=""}:{source:string;su
       </div>
     </div>
     <div className="form-field form-field-wide">
-      <label htmlFor={messageId}>Project message <span>Required</span></label>
-      <textarea id={messageId} className="field" required name="message" placeholder="What should the website do next?" aria-invalid={formErrors.message?true:undefined} aria-describedby={formErrors.message?formStatusId:undefined} onChange={()=>clearFormError("message")} rows={4}/>
+      <label htmlFor={messageId}>Main website priority <span>Required</span></label>
+      <textarea id={messageId} className="field" required name="message" placeholder="What is the main risk, backlog, or result you need help with?" aria-invalid={formErrors.message?true:undefined} aria-describedby={formErrors.message?formStatusId:undefined} onChange={()=>clearFormError("message")} rows={3}/>
     </div>
     <div className="upload-field">
       <label htmlFor={fileId} className={`upload-dropzone ${fileInfo?"has-file":""} ${fileError?"has-error":""}`}><input id={fileId} ref={fileInput} type="file" name="file" accept=".pdf,.doc,.docx,.txt,.zip" aria-invalid={fileError?true:undefined} aria-describedby={fileError?formStatusId:undefined} onChange={updateFile}/><span className="upload-icon">{fileInfo?"✓":"↑"}</span><span><strong>{fileInfo?"Change attached file":"Attach a project brief (optional)"}</strong><small>PDF, DOC, DOCX, TXT or ZIP · up to 10MB</small></span></label>
@@ -189,7 +193,7 @@ export function ContactForm({source,subject,defaultService=""}:{source:string;su
       {!hasFormErrors&&!fileError&&status==="success"&&<small>{successText}</small>}
       {!hasFormErrors&&!fileError&&status==="error"&&<small>We could not send your request. Please check the fields or email us directly at office@dimaso.co.</small>}
     </div>
-    <button className="btn" disabled={status==="loading"} style={{gridColumn:"1 / -1"}}>{status==="loading"?"Sending...":"Start the conversation"}</button>
+    <button className="btn" disabled={status==="loading"} style={{gridColumn:"1 / -1"}}>{status==="loading"?"Sending...":"Request a senior website review"}</button>
   </form>;
 }
 

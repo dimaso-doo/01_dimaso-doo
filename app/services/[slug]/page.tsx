@@ -33,7 +33,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     wordpress: "WordPress maintenance and support for updates, WooCommerce, Elementor, security, backups, performance, migrations, QA, and ongoing development.",
     woocommerce: "WooCommerce maintenance and support for checkout, payments, products, pricing, inventory, updates, security, integrations, QA, and monthly care.",
     technicalSeo: "Technical SEO audits and implementation for crawlability, indexing, metadata, schema, internal links, Core Web Vitals, GA4, GSC, and migrations.",
-    aiSupport: "AI website and workflow support for search visibility, structured content, Schema.org, llms.txt, automation, reporting, and clearer AI discovery.",
+    aiSupport: "AI website and workflow support for useful structured content, technical SEO, Schema.org, internal knowledge, automation, measurement, and reporting.",
   };
   return meta(titles[key], descriptions[key], `/${service.slug}`);
 }

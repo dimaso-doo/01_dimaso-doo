@@ -73,6 +73,12 @@ button,input,textarea,select { font:inherit; }
 .home-hero-copy { position:relative;z-index:2; }
 .home-hero h1 { max-width:1020px;margin:18px 0 22px;font-size:clamp(48px,6.8vw,84px);line-height:.98; }
 .home-hero .lede { max-width:690px;font-size:clamp(17px,1.55vw,19px);line-height:1.6; }
+.home-paths-section { scroll-margin-top:84px;background:linear-gradient(180deg,rgba(0,216,146,.035),transparent 72%); }
+.home-path-grid { display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:48px; }
+.home-path-card { min-height:350px;display:flex;flex-direction:column;padding:30px;background:linear-gradient(145deg,rgba(255,255,255,.035),rgba(255,255,255,.012));box-shadow:inset 0 0 0 1px rgba(255,255,255,.07),0 24px 70px rgba(0,0,0,.16); }
+.home-path-card h3 { margin:28px 0 18px;font-size:clamp(26px,2.5vw,34px);line-height:1.13; }
+.home-path-card p { margin:0;color:#aeb9b2;line-height:1.72; }
+.home-path-card .text-link { margin-top:auto;padding-top:32px; }
 .hero-actions { display:flex;gap:12px;flex-wrap:wrap;margin-top:28px; }
 .hero-assurance { margin:18px 0 0;color:#7f8a83;font-size:11px;line-height:1.55;letter-spacing:.08em;text-transform:uppercase; }
 .trust-strip { padding:32px 0 38px;background:linear-gradient(180deg,rgba(255,255,255,.012),transparent);border-top:1px solid rgba(255,255,255,.035);border-bottom:1px solid rgba(255,255,255,.035); }
@@ -1025,3 +1031,18 @@ button,input,textarea,select { font:inherit; }
 .nonprofit-guide-link a{color:#00d892;text-decoration:underline;text-underline-offset:4px}
 .nonprofit-hero-signals{display:flex;gap:9px;flex-wrap:wrap;margin:25px 0 0;padding:0;list-style:none}.nonprofit-hero-signals li{padding:9px 12px;background:oklch(74% .145 163.7 / .055);box-shadow:inset 0 0 0 1px oklch(74% .145 163.7 / .16);color:#b9c7be;font-size:11px;line-height:1.25;letter-spacing:.055em;text-transform:uppercase}
 @media(max-width:800px){.nonprofit-offer-grid{grid-template-columns:1fr}.nonprofit-proof{align-items:flex-start;flex-direction:column;gap:20px}}
+@media(max-width:900px){.home-path-grid{grid-template-columns:1fr}.home-path-card{min-height:0}}
+
+/* Agency landing page: define the white-label relationship before delivery. */
+.agency-partnership{background:linear-gradient(180deg,rgba(0,216,146,.028),transparent)}
+.agency-operating-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin-top:50px}
+.agency-operating-card{height:100%}
+.agency-operating-card h3{font-size:clamp(25px,2.5vw,34px);line-height:1.2;margin:20px 0}
+.agency-operating-card ul{display:grid;gap:13px;margin:0;padding:0;list-style:none;color:#b7c1b9;line-height:1.65}
+.agency-operating-card li{position:relative;padding-left:24px}
+.agency-operating-card li::before{content:"+";position:absolute;left:0;color:var(--green)}
+.agency-capacity-cta{display:flex;align-items:flex-end;justify-content:space-between;gap:36px;margin-top:18px;padding:32px;border:1px solid oklch(74% .145 163.7 / .22);background:oklch(74% .145 163.7 / .05)}
+.agency-capacity-cta h3{margin:13px 0 12px;font-size:clamp(26px,2.8vw,38px)}
+.agency-capacity-cta p{max-width:780px;margin:0;color:#b7c1b9;line-height:1.7}
+.agency-capacity-cta .btn{flex:none}
+@media(max-width:800px){.agency-operating-grid{grid-template-columns:1fr}.agency-capacity-cta{align-items:flex-start;flex-direction:column}.agency-capacity-cta .btn{width:100%}}
