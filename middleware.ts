@@ -5,6 +5,7 @@ const legacyServicePaths: Record<string, string> = {
   "/website-maintenance": "/services/website-maintenance",
   "/web-development": "/services/web-development",
   "/web-design": "/services/web-design",
+  "/services/woocommerce-support": "/services/woocommerce-maintenance",
 };
 
 export function middleware(request: NextRequest) {
@@ -19,5 +20,10 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/website-maintenance", "/web-development", "/web-design"],
+  matcher: [
+    "/website-maintenance",
+    "/web-development",
+    "/web-design",
+    "/services/woocommerce-support",
+  ],
 };

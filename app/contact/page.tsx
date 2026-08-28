@@ -4,6 +4,7 @@ import { TrackedLink } from "@/components/tracked-link";
 import { metadata as meta,site } from "@/lib/site";
 
 const linkedinUrl="https://www.linkedin.com/company/dimaso.co/";
+const serviceOptions=["Website Maintenance","Web Development","Web Design","WordPress Support","WooCommerce Support","Technical SEO","AI Website & Workflow Support"] as const;
 
 export const metadata=meta("Contact Our Website Support Team","Discuss website maintenance, development, redesign, WordPress, technical SEO, or support needs directly with a senior Dimaso team member.","/contact");
 
@@ -13,15 +14,18 @@ const nextSteps=[
   ["Practical next step","We reply with focused questions and a recommended first step instead of routing you through a generic sales script."],
 ] as const;
 
-export default function Page(){
+export default async function Page({searchParams}:{searchParams:Promise<{service?:string|string[]}>}){
+  const query=await searchParams;
+  const requestedService=Array.isArray(query.service)?query.service[0]:query.service;
+  const defaultService=requestedService&&serviceOptions.includes(requestedService as (typeof serviceOptions)[number])?requestedService:"";
   return <main>
     <JsonLd data={{"@context":"https://schema.org","@type":"ContactPage",url:`${site.url}/contact`,name:"Contact Dimaso"}}/>
     <section className="grid-bg contact-conversion-hero">
       <div className="shell contact-page-grid">
         <div className="contact-conversion-copy">
           <span className="eyebrow">Contact · senior review</span>
-          <h1>Bring us the website problem.</h1>
-          <p className="lede">Tell us what needs to change, improve, or get unstuck. A senior Dimaso team member reviews it directly.</p>
+          <h1>Send the website and one priority.</h1>
+          <p className="lede">A short description is enough. A senior Dimaso team member reviews the website, the main risk or backlog, and the most practical next step.</p>
         </div>
         <div className="contact-supporting-copy">
           <ul className="contact-confidence-list">
@@ -36,8 +40,8 @@ export default function Page(){
           </div>
         </div>
         <div id="rfp" className="contact-rfp-column">
-          <div className="footer-rfp-head contact-rfp-head"><span className="eyebrow">Start a conversation</span><h2>Discuss your website.</h2><p>A short note is enough. Attach a brief only if you already have one.</p></div>
-          <ContactForm source="Contact Page" subject="New Contact / Project Request - Contact Page - dimaso.co"/>
+          <div className="footer-rfp-head contact-rfp-head"><span className="eyebrow">Request a senior review</span><h2>Share the current website.</h2><p>Work email and one clear priority are enough. Name, service selection, and a project brief are optional.</p></div>
+          <ContactForm source="Contact Page" subject="New Contact / Project Request - Contact Page - dimaso.co" defaultService={defaultService}/>
           <p className="form-expectation">Reviewed by a senior team member · No generic sales handoff</p>
         </div>
       </div>
