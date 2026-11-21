@@ -123,3 +123,5 @@
 @media(prefers-reduced-motion:reduce) {
   .simple-page *,.simple-header * { animation:none!important;transition:none!important; }
 }
+
+.simple-contact .form-status small { font-size:14px;line-height:1.6; }
