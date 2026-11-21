@@ -1,7 +1,7 @@
 export const productionUrl = "https://dimaso.co";
 export const organizationId = `${productionUrl}/#organization`;
 export const websiteId = `${productionUrl}/#website`;
-export const seoContentLastModified = "2026-08-10";
+export const seoContentLastModified = "2026-11-21";
 
 export const site = {
   name: "Dimaso",
@@ -9,7 +9,7 @@ export const site = {
   email: "office@dimaso.co",
   phone: "+381 61 137 5150",
   description:
-    "Senior website maintenance and custom web development partner for US and international organizations, with WordPress support, technical SEO, QA, and long-term website care.",
+    "Website design, development, and ongoing support. Based in Novi Sad, Serbia, working with clients worldwide.",
 };
 
 export const social = {

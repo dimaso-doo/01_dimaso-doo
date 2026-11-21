@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { IBM_Plex_Sans, Sora } from "next/font/google";
 import "./globals.css";
+import "./simple.css";
 import { Header, Footer } from "@/components/site";
 import { RouteTransition } from "@/components/route-transition";
 import { GoogleAnalytics } from "@/components/google-analytics";

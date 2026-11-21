@@ -155,7 +155,7 @@ export function DimasoBot() {
   }, []);
 
   useEffect(() => {
-    const target = document.querySelector("#rfp");
+    const target = document.querySelector('form[action="/api/contact"]');
     if (!target) {
       setConversionInView(false);
       return;

@@ -3,7 +3,7 @@
 import { CSSProperties, ChangeEvent, FormEvent, useEffect, useId, useRef, useState } from "react";
 import { trackEvent, trackLead } from "@/lib/ga-events";
 
-const successText="Thank you. Your request has been received. We will review the details and get back to you shortly.";
+const successText="Thank you. Your message has been sent. We’ll be in touch.";
 const services=["Website Maintenance","Web Development","Web Design","WordPress Support","WooCommerce Support","Technical SEO","AI Website & Workflow Support"] as const;
 const generalInquiry="General Inquiry / Not Sure Yet" as const;
 const serviceOptions=[...services,generalInquiry] as const;
@@ -43,10 +43,8 @@ export function ContactForm({source,subject,defaultService=""}:{source:string;su
   const fileInput=useRef<HTMLInputElement>(null);
   const formRef=useRef<HTMLFormElement>(null);
   const formStatusId=useId();
-  const nameId=useId();
   const emailId=useId();
   const websiteUrlId=useId();
-  const serviceId=useId();
   const messageId=useId();
   const fileId=useId();
   const honeypotId=useId();
@@ -156,35 +154,22 @@ export function ContactForm({source,subject,defaultService=""}:{source:string;su
   const formErrorMessage=formErrors.email==="Please enter a valid email address."?"Please complete the highlighted fields and enter a valid email address.":"Please complete the highlighted required fields.";
   return <form ref={formRef} action="/api/contact" method="post" encType="multipart/form-data" onSubmit={submit} onFocusCapture={()=>{if(startTracked.current)return;startTracked.current=true;startedAt.current=Date.now();trackEvent("project_form_start",{form_name:source==="Contact Page"?"contact":"rfp",form_source:source});}} noValidate className="form-grid form-panel" style={{display:"grid",gridTemplateColumns:"repeat(2,minmax(0,1fr))",gap:12}}>
     <div className="form-field">
-      <label htmlFor={emailId}>Email <span>Required</span></label>
-      <input id={emailId} className="field" required type="email" name="email" placeholder="you@company.com" aria-invalid={formErrors.email?true:undefined} aria-describedby={formErrors.email?formStatusId:undefined} onChange={()=>clearFormError("email")}/>
+      <label htmlFor={emailId}>Email</label>
+      <input id={emailId} className="field" required type="email" name="email" autoComplete="email" placeholder="you@company.com" aria-invalid={formErrors.email?true:undefined} aria-describedby={formErrors.email?formStatusId:undefined} onChange={()=>clearFormError("email")}/>
     </div>
     <div className="form-field">
-      <label htmlFor={websiteUrlId}>Current website <span>Optional</span></label>
-      <input id={websiteUrlId} className="field" type="text" inputMode="url" name="websiteUrl" placeholder="https://example.com"/>
+      <label htmlFor={websiteUrlId}>Website <span>Optional</span></label>
+      <input id={websiteUrlId} className="field" type="text" inputMode="url" autoComplete="url" name="websiteUrl" placeholder="https://example.com"/>
     </div>
-    <div className="form-field">
-      <label htmlFor={nameId}>Name <span>Optional</span></label>
-      <input id={nameId} className="field" name="name" placeholder="Your name"/>
-    </div>
-    <div className="form-field">
-      <label htmlFor={serviceId}>Main area of help <span>Optional</span></label>
-      <div className="select-field">
-        <select id={serviceId} className="field" name="services" value={selectedService} onChange={event=>setSelectedService(event.target.value as ServiceOption|"")}>
-          <option value="">Choose one if helpful</option>
-          {serviceOptions.map(service=><option key={service} value={service}>{service}</option>)}
-        </select>
-        <span aria-hidden="true">⌄</span>
-      </div>
-    </div>
+    {selectedService&&<input type="hidden" name="services" value={selectedService}/>}
     <div className="form-field form-field-wide">
-      <label htmlFor={messageId}>Main website priority <span>Required</span></label>
-      <textarea id={messageId} className="field" required name="message" placeholder="What is the main risk, backlog, or result you need help with?" aria-invalid={formErrors.message?true:undefined} aria-describedby={formErrors.message?formStatusId:undefined} onChange={()=>clearFormError("message")} rows={3}/>
+      <label htmlFor={messageId}>How can we help?</label>
+      <textarea id={messageId} className="field" required name="message" placeholder="A few words about your website or project…" aria-invalid={formErrors.message?true:undefined} aria-describedby={formErrors.message?formStatusId:undefined} onChange={()=>clearFormError("message")} rows={5}/>
     </div>
-    <div className="upload-field">
-      <label htmlFor={fileId} className={`upload-dropzone ${fileInfo?"has-file":""} ${fileError?"has-error":""}`}><input id={fileId} ref={fileInput} type="file" name="file" accept=".pdf,.doc,.docx,.txt,.zip" aria-invalid={fileError?true:undefined} aria-describedby={fileError?formStatusId:undefined} onChange={updateFile}/><span className="upload-icon">{fileInfo?"✓":"↑"}</span><span><strong>{fileInfo?"Change attached file":"Attach a project brief (optional)"}</strong><small>PDF, DOC, DOCX, TXT or ZIP · up to 10MB</small></span></label>
+    <details className="upload-field simple-upload"><summary>Attach a brief <span>(optional)</span></summary>
+      <label htmlFor={fileId} className={`upload-dropzone ${fileInfo?"has-file":""} ${fileError?"has-error":""}`}><input id={fileId} ref={fileInput} type="file" name="file" accept=".pdf,.doc,.docx,.txt,.zip" aria-invalid={fileError?true:undefined} aria-describedby={fileError?formStatusId:undefined} onChange={updateFile}/><span className="upload-icon">{fileInfo?"✓":"↑"}</span><span><strong>{fileInfo?"Change attached file":"Choose a file"}</strong><small>PDF, DOC, DOCX, TXT or ZIP · up to 10MB</small></span></label>
       {fileInfo&&<div key={fileInfo.nonce} className="upload-confirmation"><span><strong>File attached:</strong> {fileInfo.name}</span><small>{formatFileSize(fileInfo.size)}</small><button type="button" onClick={removeFile}>Remove</button></div>}
-    </div>
+    </details>
     <label htmlFor={honeypotId} style={hiddenLabelStyle} aria-hidden="true">Website</label>
     <input id={honeypotId} name="website" tabIndex={-1} autoComplete="off" style={{position:"absolute",left:"-9999px"}} aria-hidden="true"/>
     <div id={formStatusId} className={`form-status ${hasFormErrors||fileError||status==="error"?"is-error":status==="success"?"is-success":""}`} role={hasFormErrors||fileError||status==="error"?"alert":"status"} aria-live={hasFormErrors||fileError||status==="error"?"assertive":"polite"}>
@@ -193,7 +178,7 @@ export function ContactForm({source,subject,defaultService=""}:{source:string;su
       {!hasFormErrors&&!fileError&&status==="success"&&<small>{successText}</small>}
       {!hasFormErrors&&!fileError&&status==="error"&&<small>We could not send your request. Please check the fields or email us directly at office@dimaso.co.</small>}
     </div>
-    <button className="btn" disabled={status==="loading"} style={{gridColumn:"1 / -1"}}>{status==="loading"?"Sending...":"Request a senior website review"}</button>
+    <button className="btn" disabled={status==="loading"} style={{gridColumn:"1 / -1"}}>{status==="loading"?"Sending...":"Send message"}</button>
   </form>;
 }
 

@@ -1,56 +1,14 @@
 "use client";
-
 import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { createPortal } from "react-dom";
-import { ContactForm, Newsletter } from "./forms";
 import { TrackedLink } from "./tracked-link";
 
-const serviceLinks = [["All Services","/services"],["Website Maintenance","/services/website-maintenance"],["Web Development","/services/web-development"],["Web Design","/services/web-design"],["WordPress Support","/services/wordpress-support"],["WooCommerce Support","/services/woocommerce-maintenance"],["Technical SEO","/services/technical-seo"],["AI Website & Workflow Support","/services/ai-website-workflow-support"]] as const;
-const industryLinks = [["All Industries","/industries"],["Nonprofits","/industries/nonprofits"],["Associations","/industries/associations"],["Agencies","/industries/agencies"],["Small Businesses","/industries/small-businesses"],["Education","/industries/education"],["Healthcare","/industries/healthcare"],["Ecommerce","/industries/ecommerce"]] as const;
-const links = [["Home","/"],["Case Studies","/case-studies"],["Blog","/blog"],["About","/about"],["Contact","/contact"]] as const;
+const navLinks = [["Services", "/services"], ["Work", "/case-studies"], ["About", "/about"], ["Contact", "/contact"]] as const;
+const footerLinks = [["Services", "/services"], ["Work", "/case-studies"], ["About", "/about"], ["Industries", "/industries"], ["Blog", "/blog"]] as const;
 const linkedinUrl = "https://www.linkedin.com/company/dimaso.co/";
-const formContextByPath:Record<string,{source:string;subject:string;defaultService?:string}>={
-  "/services":{source:"Services Hub",subject:"New RFP Request - Services Hub - dimaso.co"},
-  "/industries":{source:"Industries Hub",subject:"New RFP Request - Industries Hub - dimaso.co"},
-  "/website-maintenance":{source:"Website Maintenance",subject:"New RFP Request - Website Maintenance - dimaso.co",defaultService:"Website Maintenance"},
-  "/web-development":{source:"Web Development",subject:"New RFP Request - Web Development - dimaso.co",defaultService:"Web Development"},
-  "/web-design":{source:"Web Design",subject:"New RFP Request - Web Design - dimaso.co",defaultService:"Web Design"},
-  "/services/website-maintenance":{source:"Website Maintenance",subject:"New RFP Request - Website Maintenance - dimaso.co",defaultService:"Website Maintenance"},
-  "/services/web-development":{source:"Web Development",subject:"New RFP Request - Web Development - dimaso.co",defaultService:"Web Development"},
-  "/services/web-design":{source:"Web Design",subject:"New RFP Request - Web Design - dimaso.co",defaultService:"Web Design"},
-  "/services/wordpress-support":{source:"WordPress Support",subject:"New RFP Request - WordPress Support - dimaso.co",defaultService:"WordPress Support"},
-  "/services/woocommerce-maintenance":{source:"WooCommerce Support",subject:"New RFP Request - WooCommerce Support - dimaso.co",defaultService:"WooCommerce Support"},
-  "/services/technical-seo":{source:"Technical SEO",subject:"New RFP Request - Technical SEO - dimaso.co",defaultService:"Technical SEO"},
-  "/services/ai-website-workflow-support":{source:"AI Website & Workflow Support",subject:"New RFP Request - AI Website & Workflow Support - dimaso.co",defaultService:"AI Website & Workflow Support"},
-  "/industries/nonprofits":{source:"Nonprofit Website Support",subject:"New Nonprofit Website Audit / Support Request - dimaso.co",defaultService:"Website Maintenance"},
-  "/industries/associations":{source:"Association Website Support",subject:"New Association Website Support Request - dimaso.co",defaultService:"Website Maintenance"},
-  "/industries/agencies":{source:"Agency Website Support",subject:"New Agency Website Support Request - dimaso.co",defaultService:"Web Development"},
-  "/industries/small-businesses":{source:"Small Business Website Support",subject:"New Small Business Website Support Request - dimaso.co",defaultService:"Website Maintenance"},
-  "/industries/education":{source:"Education Website Support",subject:"New Education Website Support Request - dimaso.co",defaultService:"Website Maintenance"},
-  "/industries/healthcare":{source:"Healthcare Website Support",subject:"New Healthcare Website Support Request - dimaso.co",defaultService:"Website Maintenance"},
-  "/industries/ecommerce":{source:"Ecommerce Website Support",subject:"New Ecommerce Website Support Request - dimaso.co",defaultService:"Web Development"},
-  "/blog/website-maintenance-proposal":{source:"Maintenance Proposal Buyer Guide",subject:"New Website Maintenance Proposal Request - dimaso.co",defaultService:"Website Maintenance"},
-  "/blog/website-support-retainer-vs-hourly":{source:"Support Model Buyer Guide",subject:"New Website Support Model Request - dimaso.co",defaultService:"Website Maintenance"},
-  "/blog/wordpress-maintenance-plans":{source:"WordPress Plans Buyer Guide",subject:"New WordPress Maintenance Plan Request - dimaso.co",defaultService:"WordPress Support"},
-  "/blog/hire-wordpress-developer-existing-website":{source:"WordPress Developer Buyer Guide",subject:"New WordPress Takeover Request - dimaso.co",defaultService:"WordPress Support"},
-  "/blog/woocommerce-maintenance-cost":{source:"WooCommerce Cost Buyer Guide",subject:"New WooCommerce Maintenance Estimate Request - dimaso.co",defaultService:"WooCommerce Support"},
-  "/blog/technical-seo-audit-cost":{source:"Technical SEO Cost Buyer Guide",subject:"New Technical SEO Audit Request - dimaso.co",defaultService:"Technical SEO"},
-  "/blog/choose-website-redesign-agency":{source:"Redesign Agency Buyer Guide",subject:"New Website Redesign Request - dimaso.co",defaultService:"Web Design"},
-  "/blog/nonprofit-website-support-options":{source:"Nonprofit Support Buyer Guide",subject:"New Nonprofit Website Support Request - dimaso.co",defaultService:"Website Maintenance"},
-  "/blog/white-label-web-development-partner":{source:"White-Label Development Buyer Guide",subject:"New White-Label Development Request - dimaso.co",defaultService:"Web Development"},
-  "/blog/choose-website-migration-company":{source:"Migration Company Buyer Guide",subject:"New Website Migration Review Request - dimaso.co",defaultService:"Web Development"},
-  "/blog/website-redesign-rfp-checklist":{source:"Website Redesign RFP Checklist",subject:"New Website Redesign RFP Review Request - dimaso.co",defaultService:"Web Design"},
-  "/blog/how-to-prepare-a-website-rfp":{source:"Website RFP Planning Guide",subject:"New Website Brief / RFP Review Request - dimaso.co",defaultService:"Web Design"},
-  "/blog/how-to-choose-a-website-maintenance-partner":{source:"Website Maintenance Partner Guide",subject:"New Website Maintenance Proposal Request - dimaso.co",defaultService:"Website Maintenance"},
-  "/blog/white-label-wordpress-maintenance-for-agencies":{source:"White-Label WordPress Guide",subject:"New White-Label WordPress Support Request - dimaso.co",defaultService:"WordPress Support"},
-  "/blog/nonprofit-website-redesign-cost":{source:"Nonprofit Redesign Cost Guide",subject:"New Nonprofit Website Redesign Review Request - dimaso.co",defaultService:"Web Design"},
-  "/blog/website-maintenance-costs-and-pricing":{source:"Website Maintenance Pricing Guide",subject:"New Website Maintenance Estimate Request - dimaso.co",defaultService:"Website Maintenance"},
-  "/contact":{source:"Contact Page",subject:"New Contact / RFP Request - Contact Page - dimaso.co"},
-};
-
 const logoPaths=[
   "M210.35 141.39H143.72C142.43 141.39 141.38 142.44 141.38 143.73V276.98C141.38 278.27 142.43 279.32 143.72 279.32H210.35C248.44 279.32 279.31 248.45 279.31 210.36C279.31 172.27 248.44 141.4 210.35 141.4V141.39ZM208.43 245C189.29 245 173.78 229.49 173.78 210.35C173.78 191.21 189.29 175.7 208.43 175.7C227.57 175.7 243.08 191.21 243.08 210.35C243.08 229.49 227.57 245 208.43 245Z",
   "M349.27 141.4H398C432.93 141.4 455.62 165.87 455.62 200.59V220.32C455.62 255.05 432.93 279.51 398 279.51H349.27V141.39V141.4ZM397.61 264.72C423.06 264.72 439.44 245.58 439.44 218.15V202.76C439.44 175.14 423.06 156 397.61 156H365.25V264.72H397.61Z",
@@ -94,98 +52,68 @@ export function Logo({animated=false}:{animated?:boolean}) {
   </Link>;
 }
 
+
 export function Header() {
-  const [open,setOpen]=useState(false);
-  const [openDropdown,setOpenDropdown]=useState<"services"|"industries"|null>(null);
-  const [suppressedDropdown,setSuppressedDropdown]=useState<"services"|"industries"|null>(null);
-  const [mounted,setMounted]=useState(false);
-  const pathname=usePathname();
-  const menuButton=useRef<HTMLButtonElement>(null);
-  const navRef=useRef<HTMLElement>(null);
-  const firstMobileLink=useRef<HTMLAnchorElement>(null);
-  const isActive=(href:string)=>href==="/" ? pathname==="/" : pathname===href||pathname.startsWith(`${href}/`);
-  useEffect(()=>setMounted(true),[]);
-  useEffect(()=>{setOpenDropdown(null);setSuppressedDropdown(null);},[pathname]);
-  useEffect(()=>{
-    const onPointerDown=(event:PointerEvent)=>{if(navRef.current&&!navRef.current.contains(event.target as Node))setOpenDropdown(null);};
-    const onKey=(event:KeyboardEvent)=>{if(event.key==="Escape")setOpenDropdown(null);};
-    window.addEventListener("pointerdown",onPointerDown);
-    window.addEventListener("keydown",onKey);
-    return()=>{window.removeEventListener("pointerdown",onPointerDown);window.removeEventListener("keydown",onKey);};
-  },[]);
-  useEffect(()=>{document.body.style.overflow=open?"hidden":"";return()=>{document.body.style.overflow=""}},[open]);
-  useEffect(()=>{
-    if(!open)return;
-    firstMobileLink.current?.focus();
-    const onKey=(event:KeyboardEvent)=>{if(event.key==="Escape"){setOpen(false);menuButton.current?.focus();}};
-    window.addEventListener("keydown",onKey);
-    return()=>window.removeEventListener("keydown",onKey);
-  },[open]);
-  return <header style={{position:"sticky",top:0,zIndex:10000,background:"rgba(23,23,25,.86)",backdropFilter:"blur(18px)",borderBottom:"1px solid rgba(255,255,255,.055)"}}>
-    <div style={{minHeight:84,width:"100%",padding:"10px clamp(20px,3vw,55px)",display:"flex",alignItems:"center",justifyContent:"space-between",gap:22}}>
-      <Logo animated/><nav ref={navRef} className="hide-mobile" style={{display:"flex",alignItems:"center",gap:25}}>
-        {links.slice(0,1).map(([l,h])=><Link key={h} href={h} className={`nav-link ${isActive(h)?"is-active":""}`} aria-current={isActive(h)?"page":undefined}>{l}</Link>)}
-        <NavDropdown id="services" label="Services" items={serviceLinks} active={pathname.startsWith("/services")||["/website-maintenance","/web-development","/web-design"].some((href)=>isActive(href))} open={openDropdown==="services"} suppressed={suppressedDropdown==="services"} setOpen={setOpenDropdown} setSuppressed={setSuppressedDropdown}/>
-        <NavDropdown id="industries" label="Industries" items={industryLinks} active={pathname.startsWith("/industries")} open={openDropdown==="industries"} suppressed={suppressedDropdown==="industries"} setOpen={setOpenDropdown} setSuppressed={setSuppressedDropdown}/>
-        {links.slice(1).map(([l,h])=><Link key={h} href={h} className={`nav-link ${isActive(h)?"is-active":""}`} aria-current={isActive(h)?"page":undefined}>{l}</Link>)}
-      </nav>
-      <TrackedLink tracking="cta" trackingLocation="header" trackingLabel="Request a website review" href="#rfp" className="btn hide-mobile" style={{"--btn-h":"44px"} as React.CSSProperties}>Request a website review</TrackedLink>
-      <button ref={menuButton} aria-label={open?"Close menu":"Open menu"} aria-expanded={open} onClick={()=>setOpen(!open)} className={`menu-button ${open?"is-open":""}`} style={{display:"none"}}><span/><span/><span/></button>
-    </div>
-    <div className="scroll-progress" aria-hidden="true"/>
-    {mounted&&open&&createPortal(<nav className="mobile-nav" aria-label="Mobile navigation">{links.slice(0,1).map(([l,h],i)=><Link key={h} href={h} ref={i===0?firstMobileLink:undefined} onClick={()=>setOpen(false)} className={`nav-link ${isActive(h)?"is-active":""}`} aria-current={isActive(h)?"page":undefined}>{l}</Link>)}<MobileGroup label="Services" items={serviceLinks} close={()=>setOpen(false)}/><MobileGroup label="Industries" items={industryLinks} close={()=>setOpen(false)}/>{links.slice(1).map(([l,h])=><Link key={h} href={h} onClick={()=>setOpen(false)} className={`nav-link ${isActive(h)?"is-active":""}`} aria-current={isActive(h)?"page":undefined}>{l}</Link>)}<TrackedLink tracking="cta" trackingLocation="mobile_navigation" trackingLabel="Request a website review" href="#rfp" onClick={()=>setOpen(false)} className="btn" style={{marginTop:22}}>Request a website review</TrackedLink><div className="mobile-nav-contact"><TrackedLink tracking="email" trackingLocation="header" href="mailto:office@dimaso.co">office@dimaso.co</TrackedLink><TrackedLink tracking="phone" trackingLocation="header" href="tel:+381611375150">+381 61 137 5150</TrackedLink><TrackedLink tracking="linkedin" trackingLocation="header" href={linkedinUrl} target="_blank" rel="noopener noreferrer">LinkedIn</TrackedLink></div><div className="mobile-nav-meta">Dimaso RS · Novi Sad, Serbia<br/>Dimaso US · Sheridan, USA</div></nav>,document.body)}
-  </header>;
+  const [open, setOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  const pathname = usePathname();
+  const router = useRouter();
+  const menuButton = useRef<HTMLButtonElement>(null);
+  const menu = useRef<HTMLElement>(null);
+  const isActive = (href: string) => pathname === href || pathname.startsWith(`${href}/`);
+  useEffect(() => setMounted(true), []);
+  useEffect(() => {
+    setOpen(false);
+    if (pathname !== "/contact" && window.location.hash === "#rfp") router.replace("/contact");
+  }, [pathname, router]);
+  useEffect(() => {
+    const redirect = () => { if (window.location.hash === "#rfp") router.push("/contact"); };
+    window.addEventListener("hashchange", redirect);
+    return () => window.removeEventListener("hashchange", redirect);
+  }, [router]);
+  useEffect(() => {
+    if (!open) return;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    menu.current?.querySelector<HTMLAnchorElement>("a")?.focus();
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") { setOpen(false); menuButton.current?.focus(); }
+      if (event.key === "Tab") {
+        const elements = [menuButton.current, ...Array.from(menu.current?.querySelectorAll<HTMLAnchorElement>("a") || [])].filter((item): item is HTMLButtonElement | HTMLAnchorElement => item !== null);
+        const first = elements[0], last = elements[elements.length - 1];
+        if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last?.focus(); }
+        else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus(); }
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => { document.body.style.overflow = previousOverflow; window.removeEventListener("keydown", onKey); };
+  }, [open]);
+  return <header className="simple-header"><div className="simple-header-inner">
+    <Logo animated />
+    <nav className="hide-mobile simple-nav" aria-label="Main navigation">
+      {navLinks.slice(0, 3).map(([label, href]) => <Link key={href} href={href} className={`nav-link ${isActive(href) ? "is-active" : ""}`} aria-current={isActive(href) ? "page" : undefined}>{label}</Link>)}
+      <TrackedLink tracking="cta" trackingLocation="header" trackingLabel="Contact" href="/contact" className="btn" aria-current={pathname === "/contact" ? "page" : undefined}>Contact</TrackedLink>
+    </nav>
+    <button ref={menuButton} type="button" aria-label={open ? "Close menu" : "Open menu"} aria-expanded={open} aria-controls={open ? "mobile-menu" : undefined} onClick={() => setOpen(!open)} className={`menu-button ${open ? "is-open" : ""}`} style={{display:"none"}}><span /><span /><span /></button>
+  </div>
+  {mounted && open && createPortal(<nav ref={menu} id="mobile-menu" className="mobile-nav simple-mobile-nav" aria-label="Mobile navigation">
+    {navLinks.map(([label, href]) => <Link key={href} href={href} onClick={() => setOpen(false)} className={`nav-link ${isActive(href) ? "is-active" : ""}`} aria-current={isActive(href) ? "page" : undefined}>{label}</Link>)}
+    <TrackedLink tracking="email" trackingLocation="mobile_navigation" href="mailto:office@dimaso.co" className="simple-mobile-email">office@dimaso.co</TrackedLink>
+  </nav>, document.body)}</header>;
 }
-
-function NavDropdown({id,label,items,active,open,suppressed,setOpen,setSuppressed}:{id:"services"|"industries";label:string;items:readonly (readonly [string,string])[];active:boolean;open:boolean;suppressed:boolean;setOpen:(id:"services"|"industries"|null)=>void;setSuppressed:(id:"services"|"industries"|null)=>void}) {
-  const panelId=`${id}-dropdown-panel`;
-  return <div className={`nav-dropdown ${open?"is-open":""} ${suppressed?"is-suppressed":""}`} onMouseLeave={()=>setSuppressed(null)}><button type="button" className={`nav-link nav-dropdown-trigger ${active?"is-active":""}`} aria-expanded={open} aria-controls={panelId} onClick={()=>{setSuppressed(null);setOpen(open?null:id);}}>{label}</button><div id={panelId} className="nav-dropdown-panel">{items.map(([item,href])=><Link key={href} href={href} onClick={(event)=>{event.currentTarget.blur();setOpen(null);setSuppressed(id);}}>{item}</Link>)}</div></div>;
-}
-
-function MobileGroup({label,items,close}:{label:string;items:readonly (readonly [string,string])[];close:()=>void}) {
-  return <details className="mobile-nav-group"><summary>{label}</summary><div>{items.map(([item,href])=><Link key={href} href={href} onClick={close}>{item}</Link>)}</div></details>;
-}
-
 export function Footer() {
-  const pathname=usePathname();
-  const isContactPage=pathname==="/contact";
-  const formContext=formContextByPath[pathname]||{source:"Home/Footer",subject:"New RFP Request - Home/Footer - dimaso.co"};
-  return <footer className="section site-footer">
-    <div className="shell">
-      <div style={{display:"grid",gridTemplateColumns:"minmax(0,1fr) minmax(0,1.3fr)",gap:60}} className={`footer-grid ${isContactPage?"footer-grid-contact":""}`}>
-        <div className="footer-info-panel">
-          <div className="footer-location-grid"><div><span className="eyebrow">Serbia / Europe</span><strong>Dimaso RS</strong><small>Novi Sad, Serbia</small></div><div><span className="eyebrow">United States</span><strong>Dimaso US</strong><small>Sheridan, USA</small></div></div>
-          <div className="footer-contact-list"><TrackedLink tracking="email" trackingLocation="footer" className="footer-contact-link email" href="mailto:office@dimaso.co">office@dimaso.co</TrackedLink><TrackedLink tracking="phone" trackingLocation="footer" className="footer-contact-link phone" href="tel:+381611375150">+381 61 137 5150</TrackedLink><TrackedLink tracking="linkedin" trackingLocation="footer" className="footer-contact-link linkedin" href={linkedinUrl} target="_blank" rel="noopener noreferrer">LinkedIn</TrackedLink></div>
-          <div className="footer-newsletter"><Newsletter /></div>
-        </div>
-        {!isContactPage&&<div id="rfp" className="footer-rfp-column"><div className="footer-rfp-head"><span className="eyebrow">Request a senior review</span><h2>Send the website and one priority.</h2><p>Work email and a short description are enough. Name, service selection, and a project brief are optional.</p></div><ContactForm {...formContext}/><p className="form-expectation">Reviewed by a senior team member · No generic sales handoff</p></div>}
-      </div>
-      <div className="footer-directory"><div><Logo/><p className="lede" style={{fontSize:16,marginTop:20}}>A senior technical partner for websites that need to stay reliable, evolve, and perform.</p></div><FooterLinkColumns/></div>
-      <div className="rule" style={{margin:"40px 0 25px"}}/><div className="footer-bottom"><span>© {new Date().getFullYear()} Dimaso. All rights reserved.</span><div className="footer-legal-row"><span>Websites maintained, developed, and improved with care since 2008.</span><nav aria-label="Legal links"><Link href="/privacy-policy">Privacy Policy</Link><Link href="/terms-and-conditions">Terms and Conditions</Link></nav></div></div>
+  const pathname = usePathname();
+  const showCTA = !["/contact", "/privacy-policy", "/terms-and-conditions"].includes(pathname);
+  return <footer className="site-footer simple-footer"><div className="shell">
+    {showCTA && <div className="simple-footer-cta"><h2>Have a project in mind?</h2><TrackedLink tracking="cta" trackingLocation="footer" trackingLabel="Talk to us" href="/contact" className="btn">Talk to us</TrackedLink></div>}
+    <div className="simple-footer-main"><Logo /><TrackedLink tracking="email" trackingLocation="footer" href="mailto:office@dimaso.co" className="simple-footer-email">office@dimaso.co</TrackedLink>
+      <nav aria-label="Footer navigation">{footerLinks.map(([label, href]) => <Link key={href} href={href}>{label}</Link>)}<TrackedLink tracking="linkedin" trackingLocation="footer" href={linkedinUrl} target="_blank" rel="noopener noreferrer">LinkedIn</TrackedLink></nav>
     </div>
-  </footer>;
+    <div className="simple-footer-bottom"><span>© {new Date().getFullYear()} Dimaso</span><nav aria-label="Legal links"><Link href="/privacy-policy">Privacy</Link><Link href="/terms-and-conditions">Terms</Link></nav></div>
+  </div></footer>;
 }
-
-function FooterLinkColumns() {
-  const companyLinks = [["Home","/"],["Case Studies","/case-studies"],["Blog","/blog"],["About","/about"],["Contact","/contact"],["Discuss your website","#rfp"]] as const;
-  return <nav className="footer-link-columns" aria-label="Footer navigation"><FooterColumn title="Services" links={serviceLinks}/><FooterColumn title="Industries" links={industryLinks}/><FooterColumn title="Company" links={companyLinks}/></nav>;
+export function CTA({title="Have a project in mind?",label="Talk to us"}:{title?:string;label?:string}) {
+  return <div className="simple-inline-cta"><h2>{title}</h2><TrackedLink tracking="cta" trackingLocation="section_cta" trackingLabel={label} href="/contact" className="btn">{label}</TrackedLink></div>;
 }
-
-function FooterColumn({title,links}:{title:string;links:readonly (readonly [string,string])[]}) {
-  return <div><span className="eyebrow">{title}</span>{links.map(([label,href])=><Link key={href} href={href}>{label}</Link>)}</div>;
-}
-
-export function CTA({title="Need a partner who can own the technical detail?",label="Request a website review"}:{title?:string,label?:string}) {
-  return <section className="inner-cta">
-    <div className="tech-orbit inner-cta-orbit one"/>
-    <div className="tech-orbit two inner-cta-orbit two"/>
-    <span className="hero-plus p1">+</span><span className="hero-plus p2">+</span><span className="hero-plus p3">+</span>
-    <div className="shell inner-cta-content"><div><span className="eyebrow">Next step / Dimaso</span><h2>{title}</h2></div><TrackedLink tracking="cta" trackingLocation="section_cta" trackingLabel={label} href="#rfp" className="btn">{label}</TrackedLink></div>
-  </section>;
-}
-
-export function FeatureCTA() {
-  return <section className="feature-cta"><div className="tech-orbit" style={{inset:"auto -120px -290px auto",width:620,height:620}}/><div className="tech-orbit two" style={{inset:"auto -10px -180px auto",width:400,height:400}}/><span className="hero-plus p1">+</span><span className="hero-plus p2">+</span><span className="hero-plus p3">+</span><div className="shell" style={{position:"relative",zIndex:1}}><span className="eyebrow">Website operations / growth</span><h2 style={{fontSize:"clamp(42px,6.4vw,76px)",lineHeight:.98,maxWidth:880,margin:"20px 0 34px"}}>Your website should be a dependable business system.</h2><TrackedLink tracking="cta" trackingLocation="home_feature" trackingLabel="Request a website review" href="#rfp" className="btn">Request a website review</TrackedLink></div></section>;
-}
-
-export function JsonLd({data}:{data:object}) { return <script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(data)}}/>; }
+export function FeatureCTA() { return null; }
+export function JsonLd({data}:{data:object}) { return <script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(data).replace(/</g,"\\u003c")}} />; }
