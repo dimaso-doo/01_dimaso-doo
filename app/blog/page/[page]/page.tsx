@@ -33,7 +33,7 @@ export default async function Page({params}:{params:Promise<{page:string}>}){
     <section className="grid-bg" style={{padding:"130px 0 90px"}}>
       <div className="shell">
         <span className="eyebrow">Insights · Page {current}</span>
-        <h1 style={{fontSize:"clamp(52px,9vw,100px)",margin:"20px 0"}}>More website maintenance, design, and development insights.</h1>
+        <h1 style={{fontSize:"clamp(36px,9vw,100px)",overflowWrap:"anywhere",margin:"20px 0"}}>More website maintenance, design, and development insights.</h1>
         <p className="lede">Clear thinking about maintenance, development, design, QA, and technical SEO.</p>
       </div>
     </section>
@@ -53,3 +53,4 @@ export default async function Page({params}:{params:Promise<{page:string}>}){
     </section>
   </main>;
 }
+

@@ -3,12 +3,12 @@
 import { ChangeEvent, FormEvent, ReactNode, useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import { trackEvent, trackLead } from "@/lib/ga-events";
+import { maxUploadSize as maxFileSize, uploadLimitLabel } from "@/lib/upload-limits";
 
 type BotIntent = "general" | "info" | "offer" | "rfp" | "contact";
 type Message = { id: string; role: "bot" | "user" | "system"; text: string; pending?: boolean };
 
 const acceptedFiles = [".pdf", ".doc", ".docx", ".xls", ".xlsx", ".txt", ".zip"];
-const maxFileSize = 10 * 1024 * 1024;
 const starterMessage = "Hi, I’m Dimaso AI bot. I’m here to help visitors navigate the site, understand Dimaso services, and answer questions.";
 
 function formatFileSize(size: number) {
@@ -110,7 +110,7 @@ function MarkdownMessage({ text }: { text: string }) {
   return <>{blocks}</>;
 }
 
-export function DimasoBot() {
+export function DimasoBot({ allowAttachments = true }: { allowAttachments?: boolean }) {
   const pathname = usePathname();
   const [mounted, setMounted] = useState(false);
   const [visible, setVisible] = useState(false);
@@ -200,7 +200,7 @@ export function DimasoBot() {
     if (file.size > maxFileSize) {
       event.currentTarget.value = "";
       setFileInfo(null);
-      setError("Please attach a file smaller than 10MB.");
+      setError(`Please attach a file up to ${uploadLimitLabel}, or send a download link through our contact form.`);
       return;
     }
     setFileInfo({ name: file.name, size: file.size });
@@ -232,23 +232,26 @@ export function DimasoBot() {
     setMessages((current) => [...current, { id: thinkingId, role: "bot", text: "Thinking", pending: true }]);
     try {
       const res = await fetch("/api/dimasobot", { method: "POST", body: data });
-      if (!res.ok) throw new Error("Request failed");
-      const payload = await res.json() as { reply?: string };
+      if (!res.ok) {
+        const failure = await res.json().catch(() => null) as { error?: string } | null;
+        throw new Error(res.status === 413 ? `Please attach a file up to ${uploadLimitLabel}.` : failure?.error || "Please try again or use our contact form.");
+      }
+      const payload = await res.json() as { reply?: string; saved?: boolean };
       const waitMs = Math.max(0, 950 - (Date.now() - startedAt));
       if (waitMs) await new Promise((resolve) => window.setTimeout(resolve, waitMs));
-      setMessages((current) => current.map((message) => message.id === thinkingId ? newMessage("bot", payload.reply || "Thanks. I saved the conversation for the Dimaso team.") : message));
-      setSaved(true);
+      setMessages((current) => current.map((message) => message.id === thinkingId ? newMessage("bot", payload.reply || "Please use our [contact form](/contact) to reach the Dimaso team.") : message));
+      setSaved(payload.saved === true);
       setError("");
       const hasContact=Boolean(contact.email||contact.phone);
       const hasAttachment=Boolean(file);
       trackEvent("dimasobot_message",{intent:nextIntent,contact_provided:hasContact,file_attached:hasAttachment});
-      if(!leadTracked.current&&(hasContact||hasAttachment)){
+      if(payload.saved===true&&!leadTracked.current&&(hasContact||hasAttachment)){
         trackLead("dimasobot",{intent:nextIntent,contact_provided:hasContact,file_attached:hasAttachment});
         leadTracked.current=true;
       }
-    } catch {
+    } catch (error) {
       setMessages((current) => current.map((message) => message.id === thinkingId ? newMessage("bot", "I could not save that message right now. You can continue the conversation, and we will try again on the next message.") : message));
-      setError("The conversation was not saved. Please try again.");
+      setError(error instanceof Error ? error.message : "The conversation was not saved. Please use our contact form.");
     } finally {
       setSending(false);
     }
@@ -305,17 +308,18 @@ export function DimasoBot() {
             }
           }} rows={1} placeholder="Write a message..."/>
           <div className="dimasobot-compose-actions">
-            <label className="dimasobot-attach" aria-label="Add attachment">
+            {allowAttachments ? <label className="dimasobot-attach" aria-label="Add attachment">
               <input ref={fileInput} name="file" type="file" accept={acceptedFiles.join(",")} onChange={updateFile}/>
               <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M8.8 12.6 14.9 6.5a3.2 3.2 0 0 1 4.5 4.5l-7.7 7.7a5 5 0 0 1-7.1-7.1l8.2-8.2" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"/></svg>
-            </label>
+            </label> : <a className="dimasobot-attach" href="/contact" aria-label="Send a brief through our contact form" title="Send a brief through our contact form"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M8.8 12.6 14.9 6.5a3.2 3.2 0 0 1 4.5 4.5l-7.7 7.7a5 5 0 0 1-7.1-7.1l8.2-8.2" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"/></svg></a>}
             <button className="dimasobot-send" type="submit" disabled={sending || (!draft.trim() && !fileInfo)} aria-label="Send message"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="m4 11.2 15.4-7.1-7.1 15.4-2-6.3L4 11.2Z" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"/></svg></button>
           </div>
         </div>
         <div className="dimasobot-meta" aria-live="polite">
-          {error ? <small className="dimasobot-error">{error}</small> : saved ? <small>Conversation saved for the Dimaso team. AI-generated content may be inaccurate.</small> : sending ? <small>DimasoBot is thinking...</small> : <small>{intent === "general" ? "Spam protection enabled; AI-generated content may be inaccurate." : "This chat is saved with the relevant page and visitor context."}</small>}
+          {error ? <small className="dimasobot-error">{error} <a href="/contact">Contact form</a></small> : saved ? <small>Conversation saved for the Dimaso team. AI-generated content may be inaccurate.</small> : sending ? <small>DimasoBot is thinking...</small> : <small>For a reply from our team, use our <a href="/contact">contact form</a>. AI-generated content may be inaccurate.</small>}
         </div>
       </form>
     </section>}
   </div>;
 }
+

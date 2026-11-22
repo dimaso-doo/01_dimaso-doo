@@ -4,7 +4,8 @@ import path from "path";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { detectDimasoBotIntent, detectLeadCapture, extractContact, generateDimasoBotReply, visitorIpMetadata } from "@/lib/dimasobot/rag";
-import { appendDimasoBotRecord } from "@/lib/dimasobot/storage";
+import { appendDimasoBotRecord, hasPersistentDimasoBotStorage } from "@/lib/dimasobot/storage";
+import { maxUploadSize, uploadLimitLabel } from "@/lib/upload-limits";
 
 export const runtime = "nodejs";
 
@@ -24,7 +25,6 @@ const schema = z.object({
 });
 
 const allowedExtensions = new Set(["pdf", "doc", "docx", "xls", "xlsx", "txt", "zip"]);
-const maxUploadSize = 10 * 1024 * 1024;
 const dataDir = path.join(process.cwd(), "data");
 const uploadsDir = path.join(dataDir, "dimasobot-uploads");
 
@@ -53,13 +53,16 @@ export async function POST(req: Request) {
 
     if (file instanceof File && file.size > 0) {
       const { extension, fileName } = safeUploadName(file.name);
-      if (file.size > maxUploadSize || !allowedExtensions.has(extension)) return NextResponse.json({ error: "Invalid upload" }, { status: 400 });
+      if (file.size > maxUploadSize) return NextResponse.json({ error: `Please attach a file up to ${uploadLimitLabel}.` }, { status: 413 });
+      if (!allowedExtensions.has(extension)) return NextResponse.json({ error: "Invalid upload" }, { status: 400 });
+      if (process.env.VERCEL) return NextResponse.json({ error: "Please send your brief through the contact form at /contact so it reaches our team." }, { status: 503 });
 
       try {
         await mkdir(uploadsDir, { recursive: true });
         await writeFile(path.join(uploadsDir, fileName), Buffer.from(await file.arrayBuffer()));
       } catch (error) {
         console.error("DimasoBot upload persistence failed", error);
+        return NextResponse.json({ error: "Unable to save the attachment. Please use the contact form at /contact." }, { status: 503 });
       }
       upload = { originalName: file.name, storedName: fileName, size: file.size, type: file.type || "application/octet-stream" };
     }
@@ -71,7 +74,8 @@ export async function POST(req: Request) {
     const leadCapture = detectLeadCapture(fullConversationText, { name: data.name, company: data.company, email, phone });
     const detectedIntent = detectDimasoBotIntent(data.message, Boolean(upload));
     const intent = data.intent === "contact" && detectedIntent !== "contact" ? detectedIntent : data.intent;
-    const rag = await generateDimasoBotReply({ message: data.message, intent, hasContact: Boolean(email || phone), hasFile: Boolean(upload), leadCapture });
+    const canSave = !process.env.VERCEL || hasPersistentDimasoBotStorage();
+    const rag = await generateDimasoBotReply({ message: data.message, intent, hasContact: Boolean(email || phone), hasFile: Boolean(upload), leadCapture, canSave });
     const visitorMeta = {
       visitorId: data.visitorId || "",
       pageUrl: data.pageUrl || "",
@@ -117,13 +121,20 @@ export async function POST(req: Request) {
       visitor: visitorMeta,
     };
 
-    await appendDimasoBotRecord("conversations", lead);
-    await appendDimasoBotRecord("messages", messagePair);
-    await appendDimasoBotRecord("memory", { createdAt, intent, userMessage: data.message, botReply: rag.reply, model: lead.model, sources: lead.sources });
-    await appendDimasoBotRecord("leads", lead);
-    console.info("DimasoBot lead saved", { id: lead.id, status: lead.status, intent: lead.intent, pageUrl: lead.pageUrl, visitorId: visitorMeta.visitorId, ipHash: visitorMeta.ipHash });
-    return NextResponse.json({ ok: true, id: lead.id, reply: rag.reply, sources: lead.sources });
+    const conversationSaved = canSave && await appendDimasoBotRecord("conversations", lead);
+    const messagesSaved = canSave && await appendDimasoBotRecord("messages", messagePair);
+    const leadSaved = canSave && await appendDimasoBotRecord("leads", lead);
+    const saved = Boolean(conversationSaved && messagesSaved && leadSaved);
+    if (saved) console.info("DimasoBot lead saved", { id: lead.id, status: lead.status, intent: lead.intent });
+    const needsHandoff = Boolean(email || phone) || intent === "contact" || intent === "rfp" || /saved|sačuv|sacuv/i.test(rag.reply);
+    const reply = !saved && needsHandoff
+      ? /[а-яђћчшжљњ]|\b(hvala|kontakt|ponuda|sajt|moze|može|aplikacij)/i.test(data.message)
+        ? "Razgovor nije sačuvan za tim. Za odgovor ili slanje briefa koristite [kontakt formu](/contact)."
+        : "This conversation has not been saved for our team. To request a reply or send a brief, please use our [contact form](/contact)."
+      : rag.reply;
+    return NextResponse.json({ ok: true, id: lead.id, reply, sources: lead.sources, saved });
   } catch {
     return NextResponse.json({ error: "Unable to save lead" }, { status: 500 });
   }
 }
+

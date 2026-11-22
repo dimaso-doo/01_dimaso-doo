@@ -20,23 +20,31 @@ async function kvCommand<T>(parts: string[]) {
     cache: "no-store",
   });
   if (!response.ok) throw new Error(`KV command failed: ${response.status}`);
-  return await response.json() as { result: T };
+  const payload = await response.json() as { result: T; error?: string };
+  if (payload.error) throw new Error("KV command was rejected");
+  return payload;
 }
 
 export async function appendDimasoBotRecord(list: "leads" | "conversations" | "messages" | "memory", record: StoredRecord) {
   const line = `${JSON.stringify(record)}\n`;
 
   try {
-    await kvCommand<number>(["lpush", `dimasobot:${list}`, JSON.stringify(record)]);
+    const result = await kvCommand<number>(["lpush", `dimasobot:${list}`, JSON.stringify(record)]);
+    if (result && typeof result.result === "number") return true;
   } catch (error) {
     console.error(`DimasoBot KV write failed for ${list}`, error);
   }
 
+  // Vercel's application directory is read-only and cannot store durable records.
+  if (process.env.VERCEL) return false;
+
   try {
     await mkdir(dataDir, { recursive: true });
     await appendFile(path.join(dataDir, `dimasobot-${list}.jsonl`), line, "utf8");
+    return true;
   } catch (error) {
     console.error(`DimasoBot local write failed for ${list}`, error);
+    return false;
   }
 }
 
@@ -64,3 +72,4 @@ export async function readDimasoBotRecords<T>(list: "leads" | "conversations" | 
 export function hasPersistentDimasoBotStorage() {
   return Boolean(kvConfig());
 }
+

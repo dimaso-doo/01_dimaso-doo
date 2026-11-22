@@ -2,6 +2,7 @@
 
 import { CSSProperties, ChangeEvent, FormEvent, useEffect, useId, useRef, useState } from "react";
 import { trackEvent, trackLead } from "@/lib/ga-events";
+import { maxUploadSize as maxFileSize, uploadLimitLabel } from "@/lib/upload-limits";
 
 const successText="Thank you. Your message has been sent. We’ll be in touch.";
 const services=["Website Maintenance","Web Development","Web Design","AI Applications","WordPress Support","WooCommerce Support","Technical SEO","AI Website & Workflow Support"] as const;
@@ -11,7 +12,6 @@ type ServiceOption=(typeof serviceOptions)[number];
 type ContactField="email"|"message";
 type ContactErrors=Partial<Record<ContactField,string>>;
 const allowedFileExtensions=["pdf","doc","docx","txt","zip"];
-const maxFileSize=10*1024*1024;
 const hiddenLabelStyle:CSSProperties={
   position:"absolute",
   width:1,
@@ -88,7 +88,7 @@ export function ContactForm({source,subject,defaultService=""}:{source:string;su
     if(file.size>maxFileSize){
       event.currentTarget.value="";
       setFileInfo(null);
-      setFileError("Please attach a file smaller than 10MB.");
+      setFileError(`Please attach a file up to ${uploadLimitLabel}. For larger briefs, include a download link in your message.`);
       return;
     }
     setFileInfo({name:file.name,size:file.size,nonce:Date.now()});
@@ -131,6 +131,7 @@ export function ContactForm({source,subject,defaultService=""}:{source:string;su
     if(typeof window!=="undefined")data.set("pageUrl",window.location.href);
     try{
       const res=await fetch("/api/contact",{method:"POST",body:data});
+      if(res.status===413)setFileError(`Please attach a file up to ${uploadLimitLabel}, or include a download link in your message.`);
       setStatus(res.ok?"success":"error");
       if(res.ok){
         if(source==="Contact Page"){
@@ -167,7 +168,7 @@ export function ContactForm({source,subject,defaultService=""}:{source:string;su
       <textarea id={messageId} className="field" required name="message" placeholder="A few words about your website or project…" aria-invalid={formErrors.message?true:undefined} aria-describedby={formErrors.message?formStatusId:undefined} onChange={()=>clearFormError("message")} rows={5}/>
     </div>
     <details className="upload-field simple-upload"><summary>Attach a brief <span>(optional)</span></summary>
-      <label htmlFor={fileId} className={`upload-dropzone ${fileInfo?"has-file":""} ${fileError?"has-error":""}`}><input id={fileId} ref={fileInput} type="file" name="file" accept=".pdf,.doc,.docx,.txt,.zip" aria-invalid={fileError?true:undefined} aria-describedby={fileError?formStatusId:undefined} onChange={updateFile}/><span className="upload-icon">{fileInfo?"✓":"↑"}</span><span><strong>{fileInfo?"Change attached file":"Choose a file"}</strong><small>PDF, DOC, DOCX, TXT or ZIP · up to 10MB</small></span></label>
+      <label htmlFor={fileId} className={`upload-dropzone ${fileInfo?"has-file":""} ${fileError?"has-error":""}`}><input id={fileId} ref={fileInput} type="file" name="file" accept=".pdf,.doc,.docx,.txt,.zip" aria-invalid={fileError?true:undefined} aria-describedby={fileError?formStatusId:undefined} onChange={updateFile}/><span className="upload-icon">{fileInfo?"✓":"↑"}</span><span><strong>{fileInfo?"Change attached file":"Choose a file"}</strong><small>PDF, DOC, DOCX, TXT or ZIP · up to {uploadLimitLabel}</small></span></label>
       {fileInfo&&<div key={fileInfo.nonce} className="upload-confirmation"><span><strong>File attached:</strong> {fileInfo.name}</span><small>{formatFileSize(fileInfo.size)}</small><button type="button" onClick={removeFile}>Remove</button></div>}
     </details>
     <label htmlFor={honeypotId} style={hiddenLabelStyle} aria-hidden="true">Website</label>
@@ -215,3 +216,4 @@ export function Newsletter() {
   }
   return <form action="/api/contact" method="post" onSubmit={submit} noValidate className="newsletter-form"><label htmlFor={emailId} style={{display:"block",fontSize:13,color:"#b7c1b9",marginBottom:10}}>Get practical website support, development, and technical SEO insights.</label><div className="newsletter-row"><span className="newsletter-email-field"><input id={emailId} required type="email" name="email" className="field" placeholder="Email address" aria-label="Email address" aria-invalid={emailError?true:undefined} aria-describedby={emailError?statusId:undefined} onChange={()=>emailError&&setEmailError("")}/></span><button className="btn newsletter-submit" disabled={status==="loading"}>{status==="loading"?"Sending...":"Subscribe"}</button></div><label htmlFor={honeypotId} style={hiddenLabelStyle} aria-hidden="true">Website</label><input id={honeypotId} name="website" tabIndex={-1} autoComplete="off" style={{position:"absolute",left:"-9999px"}} aria-hidden="true"/><div id={statusId} className={`form-status newsletter-status ${emailError||status==="error"?"is-error":status==="success"?"is-success":""}`} role={emailError||status==="error"?"alert":"status"} aria-live={emailError||status==="error"?"assertive":"polite"}>{emailError&&<small>{emailError==="Email is required."?"Enter your email address to subscribe.":"Enter a valid email address to subscribe."}</small>}{!emailError&&status==="success"&&<small>You are subscribed.</small>}{!emailError&&status==="error"&&<small>Please try again or email office@dimaso.co.</small>}</div></form>;
 }
+

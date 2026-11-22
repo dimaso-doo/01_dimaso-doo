@@ -3,6 +3,7 @@ import { readFile } from "fs/promises";
 import path from "path";
 import { retrieveDimasoKnowledge, type DimasoKnowledgeSource } from "@/lib/dimasobot/embeddings";
 import { buildDimasoKnowledgeChunks } from "@/lib/dimasobot/knowledge";
+import { services } from "@/content/data";
 
 export type DimasoBotIntent = "general" | "info" | "offer" | "rfp" | "contact";
 export type LeadCapture = {
@@ -129,7 +130,10 @@ function isSaaSPerformanceQuestion(text: string) {
     && /\b(wordpress|website|site|help|support|fix|improve|can dimaso|hard to update|breaking layouts?|technical partner)\b/i.test(text);
 }
 
-function leadAsk(language: string, leadCapture: LeadCapture) {
+function leadAsk(language: string, leadCapture: LeadCapture, canSave = true) {
+  if (!canSave) return language === "sr-latn" || language === "sr-cyrl"
+    ? "Za odgovor Dimaso tima pošaljite upit preko [kontakt forme](/contact)."
+    : "For a reply from the Dimaso team, use our [contact form](/contact).";
   if (leadCapture.isComplete) {
     return language === "sr-latn" || language === "sr-cyrl"
       ? "Imam dovoljno za Dimaso tim. Ako želite, dodajte još URL, okviran rok ili 2-3 stranice/funkcije koje su vam važne."
@@ -272,6 +276,7 @@ export async function generateDimasoBotReply(input: {
   hasContact: boolean;
   hasFile: boolean;
   leadCapture: LeadCapture;
+  canSave?: boolean;
 }) {
   const queryTokens = tokenize(input.message);
   const language = detectedLanguage(input.message);
@@ -279,6 +284,19 @@ export async function generateDimasoBotReply(input: {
   const memory = await recentMemory(queryTokens);
   const sources = ([...ranked, ...memory].length ? [...ranked, ...memory] : coreKnowledge.slice(0, 4)).slice(0, 6);
   const primary = sources[0];
+
+  // Answer service questions before broad pricing, WordPress, or lead guards.
+  if (!isIdentityQuestion(input.message) && /\bai\b|artificial intelligence|chatbots?|veštačk|vestack|вештачк|asistent/i.test(input.message)) {
+    const service = services.aiApplications;
+    const aiSource = { title: service.title, url: `/${service.slug}`, text: service.coverCopy };
+    return {
+      reply: language === "sr-latn" || language === "sr-cyrl"
+        ? "Da. Razvijamo AI aplikacije, asistente i četbotove, pretragu dokumenata, automatizacije i integracije sa poslovnim alatima. Radimo od prototipa do testiranja, objave i održavanja. Pogledajte [AI Applications](/services/ai-applications)."
+        : "Yes. We build custom AI applications, assistants, chatbots, document search, workflow automation, and integrations with business tools. We handle prototyping, development, testing, launch, and ongoing support. See [AI Applications](/services/ai-applications).",
+      sources: [aiSource, ...sources.filter(source => source.url !== aiSource.url)].slice(0, 6),
+      model: "ai-applications-guard",
+    };
+  }
 
   if (isIdentityQuestion(input.message)) {
     return {
@@ -292,8 +310,8 @@ export async function generateDimasoBotReply(input: {
   if (isWebsitePriceQuestion(input.message)) {
     return {
       reply: language === "sr-latn" || language === "sr-cyrl"
-        ? `Cena za novi sajt zavisi od obima: broj stranica, dizajn, da li je WordPress/CMS, sadržaj, domen/hosting, SEO i eventualne integracije. Ako krećete od nule, Dimaso može da pomogne oko strukture, dizajna, izrade, domena/hostinga i osnovnog SEO-a. ${leadAsk(language, input.leadCapture)}`
-        : `The price for a new website depends on scope: number of pages, design, WordPress/CMS, content, domain/hosting, SEO, and integrations. If you are starting from zero, Dimaso can help with structure, design, build, domain/hosting, and basic SEO. ${leadAsk(language, input.leadCapture)}`,
+        ? `Cena za novi sajt zavisi od obima: broj stranica, dizajn, da li je WordPress/CMS, sadržaj, domen/hosting, SEO i eventualne integracije. Ako krećete od nule, Dimaso može da pomogne oko strukture, dizajna, izrade, domena/hostinga i osnovnog SEO-a. ${leadAsk(language, input.leadCapture, input.canSave !== false)}`
+        : `The price for a new website depends on scope: number of pages, design, WordPress/CMS, content, domain/hosting, SEO, and integrations. If you are starting from zero, Dimaso can help with structure, design, build, domain/hosting, and basic SEO. ${leadAsk(language, input.leadCapture, input.canSave !== false)}`,
       sources,
       model: "pricing-guard",
     };
@@ -309,7 +327,7 @@ export async function generateDimasoBotReply(input: {
     };
   }
 
-  if (input.leadCapture.isComplete && input.hasContact) {
+  if (input.leadCapture.isComplete && input.hasContact && input.canSave !== false) {
     return {
       reply: language === "sr-latn" || language === "sr-cyrl"
         ? "Sačuvao sam razgovor i kontakt podatke za Dimaso tim. Ako želite, dodajte još URL sajta i šta vam je najhitnije: forme, performance, SEO, redizajn, održavanje ili development."
@@ -322,8 +340,8 @@ export async function generateDimasoBotReply(input: {
   if (isNonprofitMaintenanceQuestion(input.message)) {
     return {
       reply: language === "sr-latn" || language === "sr-cyrl"
-        ? `Za nonprofit WordPress sajt preporuka je mesečna podrška sa fokusom na stabilnost: update-i, backup, sigurnost, QA donation/contact formi, accessibility osnove, technical SEO cleanup i kratak mesečni izveštaj. ${leadAsk(language, input.leadCapture)}`
-        : `For a nonprofit WordPress site, I would recommend monthly support focused on reliability: updates, backups, security, donation/contact form QA, accessibility basics, technical SEO cleanup, and a short monthly report. ${leadAsk(language, input.leadCapture)}`,
+        ? `Za nonprofit WordPress sajt preporuka je mesečna podrška sa fokusom na stabilnost: update-i, backup, sigurnost, QA donation/contact formi, accessibility osnove, technical SEO cleanup i kratak mesečni izveštaj. ${leadAsk(language, input.leadCapture, input.canSave !== false)}`
+        : `For a nonprofit WordPress site, I would recommend monthly support focused on reliability: updates, backups, security, donation/contact form QA, accessibility basics, technical SEO cleanup, and a short monthly report. ${leadAsk(language, input.leadCapture, input.canSave !== false)}`,
       sources,
       model: "nonprofit-maintenance-guard",
     };
@@ -332,8 +350,8 @@ export async function generateDimasoBotReply(input: {
   if (isEcommerceSupportQuestion(input.message)) {
     return {
       reply: language === "sr-latn" || language === "sr-cyrl"
-        ? `Da. Za WooCommerce/ecommerce problem Dimaso može da proveri checkout, plaćanja, tracking/analytics, product page performance, plugin konflikte i SEO osnovu za kategorije/proizvode. ${leadAsk(language, input.leadCapture)}`
-        : `Yes. For a WooCommerce/ecommerce issue, Dimaso can review checkout, payments, tracking/analytics, product-page performance, plugin conflicts, and SEO foundations for products/categories. ${leadAsk(language, input.leadCapture)}`,
+        ? `Da. Za WooCommerce/ecommerce problem Dimaso može da proveri checkout, plaćanja, tracking/analytics, product page performance, plugin konflikte i SEO osnovu za kategorije/proizvode. ${leadAsk(language, input.leadCapture, input.canSave !== false)}`
+        : `Yes. For a WooCommerce/ecommerce issue, Dimaso can review checkout, payments, tracking/analytics, product-page performance, plugin conflicts, and SEO foundations for products/categories. ${leadAsk(language, input.leadCapture, input.canSave !== false)}`,
       sources,
       model: "ecommerce-support-guard",
     };
@@ -342,8 +360,8 @@ export async function generateDimasoBotReply(input: {
   if (isSaaSPerformanceQuestion(input.message)) {
     return {
       reply: language === "sr-latn" || language === "sr-cyrl"
-        ? `Da. Za SaaS/marketing sajt Dimaso može da proveri Core Web Vitals, brzinu landing stranica, sigurniji workflow za izmene, forme/tracking i tehnički SEO. ${leadAsk(language, input.leadCapture)}`
-        : `Yes. For a SaaS marketing site, Dimaso can review Core Web Vitals, landing-page speed, safer publishing workflows, forms/tracking, and technical SEO. ${leadAsk(language, input.leadCapture)}`,
+        ? `Da. Za SaaS/marketing sajt Dimaso može da proveri Core Web Vitals, brzinu landing stranica, sigurniji workflow za izmene, forme/tracking i tehnički SEO. ${leadAsk(language, input.leadCapture, input.canSave !== false)}`
+        : `Yes. For a SaaS marketing site, Dimaso can review Core Web Vitals, landing-page speed, safer publishing workflows, forms/tracking, and technical SEO. ${leadAsk(language, input.leadCapture, input.canSave !== false)}`,
       sources,
       model: "saas-performance-guard",
     };
@@ -352,8 +370,8 @@ export async function generateDimasoBotReply(input: {
   if (isSupportRecommendationQuestion(input.message)) {
     return {
       reply: language === "sr-latn" || language === "sr-cyrl"
-        ? `Za WordPress sajt sa održavanjem i povremenim developmentom, preporučio bih mesečnu podršku: update-i, backup, sigurnost, QA formi, sitni bug fixes, plus poseban backlog za veće development zadatke. To je bolji model od jednokratnih intervencija jer Dimaso vremenom zna sistem i može brže da reaguje. ${leadAsk(language, input.leadCapture)}`
-        : `For a WordPress site that needs maintenance plus occasional development, I would recommend monthly support: updates, backups, security, form QA, small fixes, and a separate backlog for larger development tasks. That is usually better than one-off fixes because Dimaso builds context and can respond faster. ${leadAsk(language, input.leadCapture)}`,
+        ? `Za WordPress sajt sa održavanjem i povremenim developmentom, preporučio bih mesečnu podršku: update-i, backup, sigurnost, QA formi, sitni bug fixes, plus poseban backlog za veće development zadatke. To je bolji model od jednokratnih intervencija jer Dimaso vremenom zna sistem i može brže da reaguje. ${leadAsk(language, input.leadCapture, input.canSave !== false)}`
+        : `For a WordPress site that needs maintenance plus occasional development, I would recommend monthly support: updates, backups, security, form QA, small fixes, and a separate backlog for larger development tasks. That is usually better than one-off fixes because Dimaso builds context and can respond faster. ${leadAsk(language, input.leadCapture, input.canSave !== false)}`,
       sources,
       model: "support-recommendation-guard",
     };
@@ -362,8 +380,8 @@ export async function generateDimasoBotReply(input: {
   if (isProjectContextMessage(input.message)) {
     return {
       reply: language === "sr-latn" || language === "sr-cyrl"
-        ? `To zvuči kao dobar fit za mesečnu WordPress podršku: redovni update-i, QA formi/trackinga, sitni fixes, sigurniji workflow za izmene i prioritetni backlog za veće zadatke. ${leadAsk(language, input.leadCapture)}`
-        : `That sounds like a good fit for monthly WordPress support: regular updates, form/tracking QA, small fixes, safer page-editing workflows, and a prioritized backlog for larger tasks. ${leadAsk(language, input.leadCapture)}`,
+        ? `To zvuči kao dobar fit za mesečnu WordPress podršku: redovni update-i, QA formi/trackinga, sitni fixes, sigurniji workflow za izmene i prioritetni backlog za veće zadatke. ${leadAsk(language, input.leadCapture, input.canSave !== false)}`
+        : `That sounds like a good fit for monthly WordPress support: regular updates, form/tracking QA, small fixes, safer page-editing workflows, and a prioritized backlog for larger tasks. ${leadAsk(language, input.leadCapture, input.canSave !== false)}`,
       sources,
       model: "project-context-guard",
     };
@@ -444,3 +462,4 @@ export async function generateDimasoBotReply(input: {
     sources,
   };
 }
+

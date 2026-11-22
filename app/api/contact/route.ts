@@ -1,12 +1,12 @@
 import { NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 import { z } from "zod";
+import { maxUploadSize, uploadLimitLabel } from "@/lib/upload-limits";
 
 export const runtime="nodejs";
 const serviceSchema=z.enum(["Website Maintenance","Web Development","Web Design","AI Applications","WordPress Support","WooCommerce Support","Technical SEO","AI Website & Workflow Support","General Inquiry / Not Sure Yet"]);
 const schema=z.object({email:z.string().trim().email(),name:z.string().max(120).optional(),company:z.string().max(160).optional(),websiteUrl:z.string().trim().max(500).optional(),services:z.array(serviceSchema).max(3).optional(),message:z.string().max(10000).optional(),source:z.string().min(2).max(120),subject:z.string().min(6).max(180),kind:z.enum(["rfp","newsletter"]),pageUrl:z.string().max(500).optional()});
 const allowedExtensions=new Set(["pdf","doc","docx","txt","zip"]);
-const maxUploadSize=10*1024*1024;
 const rfpSubjectBySource:Record<string,string>={
   "Website Maintenance":"New RFP Request - Website Maintenance - dimaso.co",
   "Web Development":"New RFP Request - Web Development - dimaso.co",
@@ -76,7 +76,8 @@ export async function POST(req:Request){
   const file=form.get("file"); let attachment; let uploadName="-";
   if(file instanceof File&&file.size>0){
    const extension=file.name.split(".").pop()?.toLowerCase()||"";
-   if(file.size>maxUploadSize||!allowedExtensions.has(extension))return NextResponse.json({error:"Invalid upload"},{status:400});
+   if(file.size>maxUploadSize)return NextResponse.json({error:`Please attach a file up to ${uploadLimitLabel}.`},{status:413});
+   if(!allowedExtensions.has(extension))return NextResponse.json({error:"Invalid upload"},{status:400});
    attachment={filename:file.name,content:Buffer.from(await file.arrayBuffer())};
    uploadName=`${file.name} (${formatUploadSize(file.size)})`;
   }
@@ -88,3 +89,4 @@ export async function POST(req:Request){
   return NextResponse.json({ok:true});
  }catch{return NextResponse.json({error:"Unable to send"},{status:500})}
 }
+
