@@ -15,8 +15,8 @@ export function TrustStrip(){
  return <section className="trust-strip" aria-label="Why teams choose Dimaso"><div className="shell"><div className="trust-strip-head"><span className="eyebrow">Built for long-term confidence</span><span className="client-note">Practical proof before the technical detail</span></div><div className="trust-grid">{proof.map(([value,label])=><div className="trust-item" key={value}><strong>{value}</strong><span>{label}</span></div>)}</div></div></section>;
 }
 
-export function ServiceCards({limit=7}:{limit?:number}) {
-  return <div className="simple-service-grid">{Object.values(services).slice(0,limit).map(service => <Link key={service.slug} href={`/${service.slug}`} className="simple-service-card">
+export function ServiceCards({limit=Object.keys(services).length}:{limit?:number}) {
+  return <div className={`simple-service-grid ${limit===4?"simple-service-grid-featured":""}`}>{Object.values(services).slice(0,limit).map(service => <Link key={service.slug} href={`/${service.slug}`} className="simple-service-card">
     <h3>{service.label}</h3><p>{service.intro}</p><span className="text-link">Learn more</span>
   </Link>)}</div>;
 }

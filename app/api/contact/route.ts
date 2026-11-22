@@ -3,7 +3,7 @@ import nodemailer from "nodemailer";
 import { z } from "zod";
 
 export const runtime="nodejs";
-const serviceSchema=z.enum(["Website Maintenance","Web Development","Web Design","WordPress Support","WooCommerce Support","Technical SEO","AI Website & Workflow Support","General Inquiry / Not Sure Yet"]);
+const serviceSchema=z.enum(["Website Maintenance","Web Development","Web Design","AI Applications","WordPress Support","WooCommerce Support","Technical SEO","AI Website & Workflow Support","General Inquiry / Not Sure Yet"]);
 const schema=z.object({email:z.string().trim().email(),name:z.string().max(120).optional(),company:z.string().max(160).optional(),websiteUrl:z.string().trim().max(500).optional(),services:z.array(serviceSchema).max(3).optional(),message:z.string().max(10000).optional(),source:z.string().min(2).max(120),subject:z.string().min(6).max(180),kind:z.enum(["rfp","newsletter"]),pageUrl:z.string().max(500).optional()});
 const allowedExtensions=new Set(["pdf","doc","docx","txt","zip"]);
 const maxUploadSize=10*1024*1024;

@@ -125,3 +125,11 @@
 }
 
 .simple-contact .form-status small { font-size:14px;line-height:1.6; }
+
+/* Four featured services on the homepage. */
+@media(min-width:1101px) {
+  .simple-service-grid-featured { grid-template-columns:repeat(4,minmax(0,1fr)); }
+}
+@media(min-width:701px) and (max-width:1100px) {
+  .simple-service-grid-featured { grid-template-columns:repeat(2,minmax(0,1fr)); }
+}

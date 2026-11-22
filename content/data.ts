@@ -1,4 +1,4 @@
-export type ServiceKey = "maintenance" | "development" | "design" | "wordpress" | "woocommerce" | "technicalSeo" | "aiSupport";
+export type ServiceKey = "maintenance" | "development" | "design" | "wordpress" | "woocommerce" | "technicalSeo" | "aiSupport" | "aiApplications";
 
 export const services = {
   maintenance: {
@@ -46,6 +46,42 @@ export const services = {
     process: ["Research & content structure", "UX direction", "Interface system & prototypes", "Responsive delivery & refinement"],
     subject: "New RFP Request - Web Design - dimaso.co",
   },
+  aiApplications: {
+    "slug": "services/ai-applications",
+    "serviceType": "AI Application Development",
+    "label": "AI Applications",
+    "eyebrow": "AI development",
+    "title": "AI Application Development",
+    "intro": "Custom AI apps, assistants, and business tools.",
+    "coverCopy": "We design and build AI applications around a clear business need, from a focused prototype to a working product.",
+    "proofCopy": "Start with one useful task, connect the right tools and data, and test how the application works in practice.",
+    "commonRequests": [
+        "Build an AI-powered web application",
+        "Create a custom assistant or chatbot",
+        "Search documents and internal knowledge",
+        "Connect AI features to existing business tools"
+    ],
+    "keywords": [
+        "AI application development",
+        "Custom AI assistants",
+        "AI chatbots",
+        "Knowledge-base search",
+        "API integrations",
+        "Workflow automation"
+    ],
+    "problems": [
+        "An AI product idea needs a working prototype",
+        "Teams repeat tasks across disconnected tools",
+        "Useful information is difficult to find"
+    ],
+    "process": [
+        "Define the use case",
+        "Build a prototype",
+        "Develop and test",
+        "Launch and support"
+    ],
+    "subject": "New AI Application Development Request - dimaso.co"
+},
   wordpress: {
     slug: "services/wordpress-support",
     serviceType: "WordPress Support Services",
@@ -121,6 +157,7 @@ export const homeFaq = [
 ] as const;
 
 export const serviceFaqs: Record<ServiceKey, readonly (readonly [string, string])[]> = {
+  aiApplications: [["Can we start with an idea?","Yes. We can define the scope and build a focused prototype before expanding the application."],["Can you connect it to our existing tools?","Yes. We can integrate the application with your website, data, and business tools where suitable APIs are available."],["Do you provide support after launch?","Yes. We can maintain the application, test changes, and add new features."]],
   maintenance: [
     ["What is included in web maintenance?", "A maintenance engagement can include WordPress and plugin updates, backups, uptime checks, security review, performance monitoring, bug fixes, content support, QA, reporting, and prioritized technical improvements."],
     ["Do you test the website after updates?", "Yes. Updates are paired with QA across critical pages, forms, checkout flows, responsive layouts, and business-critical journeys so small technical changes do not quietly create regressions."],

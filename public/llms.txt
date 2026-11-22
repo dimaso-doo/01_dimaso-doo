@@ -17,6 +17,7 @@ Dimaso is a service provider for organizations buying website strategy, design, 
 - White-label WordPress support and web development capacity for marketing, design, and digital agencies
 
 ## Core services
+- AI application development: custom AI apps, assistants, chatbots, knowledge tools, and integrations
 - Website maintenance
 - WordPress maintenance and support
 - Custom web development
@@ -31,6 +32,7 @@ Dimaso is a service provider for organizations buying website strategy, design, 
 - AI website visibility and workflow support
 
 ## Service source pages
+- AI applications: https://dimaso.co/services/ai-applications
 - All website services: https://dimaso.co/services
 - Website maintenance: https://dimaso.co/services/website-maintenance
 - Web development: https://dimaso.co/services/web-development
@@ -81,6 +83,7 @@ Dimaso is a service provider for organizations buying website strategy, design, 
 - Med Supply Solutions: WordPress medical ecommerce, information architecture, payment flow, technical SEO, and launch QA: https://dimaso.co/case-studies/med-supply-solutions
 
 ## Key pages
+- https://dimaso.co/services/ai-applications
 - https://dimaso.co/
 - https://dimaso.co/services
 - https://dimaso.co/industries

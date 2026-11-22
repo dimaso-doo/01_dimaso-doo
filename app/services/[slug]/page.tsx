@@ -18,6 +18,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!entry) return {};
   const [key, service] = entry;
   const titles: Record<ServiceKey, string> = {
+    aiApplications: "AI Application Development",
     maintenance: "Website Maintenance Services",
     development: "Custom Web Development Services",
     design: "Web Design & Website Redesign Services",
@@ -27,6 +28,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     aiSupport: "AI Website & Workflow Support",
   };
   const descriptions: Record<ServiceKey, string> = {
+    aiApplications: "Custom AI applications, assistants, chatbots, knowledge tools, and integrations. Dimaso handles design, development, testing, and ongoing support.",
     maintenance: "Dimaso provides ongoing website maintenance, updates, bug fixes, backups, security, performance, technical SEO, analytics, and monthly support.",
     development: "Custom web development services for WordPress, Laravel, custom CMS, ecommerce, API integrations, migrations, and business-critical web platforms.",
     design: "Dimaso designs business websites, UX/UI, responsive pages, redesigns, landing pages, and conversion-focused website experiences.",

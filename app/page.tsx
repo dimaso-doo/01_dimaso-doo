@@ -7,7 +7,7 @@ import { TrackedLink } from "@/components/tracked-link";
 
 export default function Home() {
   return <main className="simple-page">
-    <JsonLd data={{"@context":"https://schema.org","@graph":[organizationSchema,{"@type":"ProfessionalService","@id":`${site.url}/#professionalservice`,name:site.name,url:site.url,email:site.email,telephone:site.phone,address:organizationSchema.address,areaServed:organizationSchema.areaServed,serviceType:["Website Maintenance","Web Development","Web Design"],provider:{"@id":organizationId}},{"@type":"WebSite","@id":websiteId,url:site.url,name:site.name,publisher:{"@id":organizationId}}]}} />
+    <JsonLd data={{"@context":"https://schema.org","@graph":[organizationSchema,{"@type":"ProfessionalService","@id":`${site.url}/#professionalservice`,name:site.name,url:site.url,email:site.email,telephone:site.phone,address:organizationSchema.address,areaServed:organizationSchema.areaServed,serviceType:["Website Maintenance","Web Development","Web Design","AI Application Development"],provider:{"@id":organizationId}},{"@type":"WebSite","@id":websiteId,url:site.url,name:site.name,publisher:{"@id":organizationId}}]}} />
     <section className="grid-bg simple-hero"><div className="shell">
       <h1>Website design, <br />development &amp; support.</h1>
       <p className="lede">We build new websites and keep existing ones fast, secure, and easy to use.</p>
@@ -15,7 +15,7 @@ export default function Home() {
       <p className="simple-proof">Since 2008 · Based in Serbia · Working worldwide</p>
     </div></section>
     <section id="support-paths" className="simple-section"><div id="services" className="shell">
-      <SectionHead eyebrow="Services" title="One team for your website." /><ServiceCards limit={3} />
+      <SectionHead eyebrow="Services" title="One team for your website." /><ServiceCards limit={4} />
       <div className="simple-link-row"><Link className="text-link" href="/services">All services</Link><span className="simple-audiences">Support for <Link href="/industries/agencies">agencies</Link>, <Link href="/industries/nonprofits">nonprofits</Link>, and <Link href="/industries/ecommerce">online stores</Link>.</span></div>
     </div></section>
     <section className="simple-section"><div className="shell"><SectionHead eyebrow="Selected work" title="See what we’ve built." /><Cases limit={2} /><Link className="text-link simple-section-link" href="/case-studies">View all work</Link></div></section>
