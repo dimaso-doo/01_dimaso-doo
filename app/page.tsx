@@ -18,7 +18,7 @@ export default function Home() {
       <Image className="studio-photo" src="/hero/studio.jpg" alt="" fill sizes="100vw" priority />
       <div className="shell">
         <h1>Web design, development &amp; ongoing support.</h1>
-        <p className="lede">We build websites and AI applications. From the first prototype to release, our team uses AI to write code and test changes.</p>
+        <p className="lede">We build websites and AI applications. AI helps us prototype and write code. Our developers review changes and our QA team tests critical journeys before release.</p>
         <div className="hero-actions">
           <TrackedLink tracking="cta" trackingLocation="home_hero" trackingLabel="Talk to us" href="/contact" className="btn">Talk to us</TrackedLink>
           <Link href="/case-studies" className="btn ghost">View our work</Link>
@@ -30,7 +30,7 @@ export default function Home() {
       <div className="shell">
         <h2>Selected work</h2>
         <Cases slugs={["forever-living-shop", "one-llama-travels"]} />
-        <Link className="text-link simple-section-link" href="/case-studies">View all work</Link>
+        <div className="simple-link-row"><Link className="text-link" href="/case-studies">View all work</Link><Link className="text-link" href="/case-studies/art-and-science">Editorial websites: Art &amp; Science</Link></div>
       </div>
     </section>
     <section id="support-paths" className="simple-section">

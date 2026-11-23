@@ -4,6 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CountUpMetric } from "@/components/count-up-metric";
 import { JsonLd } from "@/components/site";
+import { testimonials } from "@/content/testimonials";
 import { caseStudies } from "@/content/data";
 import { organizationId, site, websiteId } from "@/lib/site";
 
@@ -37,6 +38,7 @@ export default async function CaseStudyPage({ params }: Props) {
   const study = caseStudies.find((item) => item.slug === slug);
   if (!study) notFound();
   const isForeverLiving = study.slug === "forever-living-shop";
+  const clientVideo = isForeverLiving ? testimonials.find(item => item.name === study.name && item.youtubeId) : undefined;
   const screenshot = `/case-studies/screenshots/${study.slug}.jpg`;
   const visualClass = `case-study-visual case-study-visual-wide ${isForeverLiving ? "case-study-visual-display" : ""}`;
   const relatedStudies = caseStudies
@@ -54,12 +56,20 @@ export default async function CaseStudyPage({ params }: Props) {
           <span className="eyebrow">{study.category}</span>
           <h1>{study.name}</h1>
           <p className="lede">{study.summary}</p>
-          <div className="case-study-actions"><a className="btn ghost" href={study.website} target="_blank" rel="noopener noreferrer">Visit website</a></div>
+          <div className="case-study-actions">{clientVideo && <a className="btn" href="#client-reference">Watch client reference</a>}<a className="btn ghost" href={study.website} target="_blank" rel="noopener noreferrer">{isForeverLiving ? "Forever Living global site" : "Visit website"}</a></div>
           <Link className="text-link case-study-service-link" href={study.href}>{study.cta} →</Link>
         </div>
         <div className="case-study-hero-media"><Image src={study.image} alt={study.imageAlt} width={1200} height={700} priority sizes="(max-width: 900px) calc(100vw - 28px), 560px"/><span>{study.services}</span></div>
       </div>
     </section>
+    {clientVideo && <section id="client-reference" className="simple-section"><div className="shell">
+      <h2>Client reference</h2>
+      <div className="client-videos"><figure>
+        <iframe title={`Testimonial from ${clientVideo.person}`} src={`https://www.youtube-nocookie.com/embed/${clientVideo.youtubeId}`} loading="lazy" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen />
+        <figcaption><strong>{clientVideo.person}</strong><span>Forever Living, Balkan region</span></figcaption>
+        <a className="text-link" href={`https://www.youtube.com/watch?v=${clientVideo.youtubeId}`}>Watch on YouTube</a>
+      </figure><div><h3>Regional project scope</h3><p>WordPress and WooCommerce for Serbia and Montenegro. Dimaso handled member pricing, checkout testing and ongoing maintenance.</p><a className="text-link" href="#project-visuals">See the regional storefront</a></div></div>
+    </div></section>}
     {study.metrics.length > 0 && <section className="section">
       <div className="shell case-study-stats">
         {study.metrics.map(([value,label])=><div className="case-stat" key={label}><CountUpMetric value={value}/><span>{label}</span></div>)}
@@ -80,7 +90,7 @@ export default async function CaseStudyPage({ params }: Props) {
         </aside>
       </div>
     </section>
-    <section className="section case-study-visuals-section">
+    <section id="project-visuals" className="section case-study-visuals-section">
       <div className="shell">
         <div className={`case-study-visuals-head ${isForeverLiving ? "case-study-visuals-head-display" : ""}`}>
           <span className="eyebrow">Project visuals</span>
