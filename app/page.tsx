@@ -1,10 +1,15 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Cases, ServiceCards } from "@/components/sections";
+import { posts } from "@/content/data";
 import { testimonials } from "@/content/testimonials";
 import { JsonLd } from "@/components/site";
 import { organizationId, organizationSchema, site, websiteId } from "@/lib/site";
 import { TrackedLink } from "@/components/tracked-link";
+
+const featuredPosts = posts.filter(post =>
+  ["what-to-check-before-redesigning", "why-qa-matters-after-every-update"].includes(post.slug)
+);
 
 export default function Home() {
   return <main className="simple-page">
@@ -16,7 +21,7 @@ export default function Home() {
         <p className="lede">We build websites and AI applications. From the first prototype to release, our team uses AI to write code and test changes.</p>
         <div className="hero-actions">
           <TrackedLink tracking="cta" trackingLocation="home_hero" trackingLabel="Talk to us" href="/contact" className="btn">Talk to us</TrackedLink>
-          <Link href="#work" className="btn ghost">View our work</Link>
+          <Link href="/case-studies" className="btn ghost">View our work</Link>
         </div>
         <p className="simple-proof">Since 2008 · Based in Serbia · Working worldwide</p>
       </div>
@@ -57,6 +62,21 @@ export default function Home() {
             </figure>
           ))}
         </div>
+      </div>
+    </section>
+    <section className="simple-section" aria-labelledby="home-blog">
+      <div className="shell">
+        <h2 id="home-blog">From the blog</h2>
+        <div className="simple-work-grid">
+          {featuredPosts.map(post => (
+            <Link key={post.slug} className="simple-service-card" href={`/blog/${post.slug}`}>
+              <h3>{post.title}</h3>
+              <p>{post.excerpt}</p>
+              <span className="text-link">Read article</span>
+            </Link>
+          ))}
+        </div>
+        <Link className="text-link simple-section-link" href="/blog">View all articles</Link>
       </div>
     </section>
   </main>;

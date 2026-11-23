@@ -6,7 +6,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { createPortal } from "react-dom";
 import { TrackedLink } from "./tracked-link";
 
-const navLinks = [["Services", "/services"], ["Work", "/case-studies"], ["About", "/about"], ["Contact", "/contact"]] as const;
+const navLinks = [["Services", "/services"], ["Work", "/case-studies"], ["About", "/about"], ["Blog", "/blog"], ["Contact", "/contact"]] as const;
 const footerLinks = [["Services", "/services"], ["Work", "/case-studies"], ["About", "/about"], ["Industries", "/industries"], ["Blog", "/blog"]] as const;
 const linkedinUrl = "https://www.linkedin.com/company/dimaso.co/";
 const logoPaths=[
@@ -91,7 +91,7 @@ export function Header() {
   return <header className="simple-header"><div className="simple-header-inner">
     <Logo animated />
     <nav className="hide-mobile simple-nav" aria-label="Main navigation">
-      {navLinks.slice(0, 3).map(([label, href]) => <Link key={href} href={href} className={`nav-link ${isActive(href) ? "is-active" : ""}`} aria-current={isActive(href) ? "page" : undefined}>{label}</Link>)}
+      {navLinks.filter(([, href]) => href !== "/contact").map(([label, href]) => <Link key={href} href={href} className={`nav-link ${isActive(href) ? "is-active" : ""}`} aria-current={isActive(href) ? "page" : undefined}>{label}</Link>)}
       <TrackedLink tracking="cta" trackingLocation="header" trackingLabel="Contact" href="/contact" className="btn" aria-current={pathname === "/contact" ? "page" : undefined}>Contact</TrackedLink>
     </nav>
     <button ref={menuButton} type="button" aria-label={open ? "Close menu" : "Open menu"} aria-expanded={open} aria-controls={open ? "mobile-menu" : undefined} onClick={() => setOpen(!open)} className={`menu-button ${open ? "is-open" : ""}`} style={{display:"none"}}><span /><span /><span /></button>
