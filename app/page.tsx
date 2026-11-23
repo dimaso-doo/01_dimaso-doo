@@ -8,10 +8,10 @@ import { TrackedLink } from "@/components/tracked-link";
 export default function Home() {
   return <main className="simple-page">
     <JsonLd data={{"@context":"https://schema.org","@graph":[organizationSchema,{"@type":"ProfessionalService","@id":`${site.url}/#professionalservice`,name:site.name,url:site.url,email:site.email,telephone:site.phone,address:organizationSchema.address,areaServed:organizationSchema.areaServed,serviceType:["Website Maintenance","Web Development","Web Design","AI Application Development"],provider:{"@id":organizationId}},{"@type":"WebSite","@id":websiteId,url:site.url,name:site.name,publisher:{"@id":organizationId}}]}} />
-    <section className="grid-bg simple-hero">
+    <section className="simple-hero home-hero">
       <div className="shell">
         <h1>Web design, development &amp; ongoing support.</h1>
-        <p className="lede">We build websites and AI applications, and keep them running after launch.</p>
+        <p className="lede">We build websites and AI applications. From the first prototype to release, our team uses AI to write code and test changes.</p>
         <div className="hero-actions">
           <TrackedLink tracking="cta" trackingLocation="home_hero" trackingLabel="Talk to us" href="/contact" className="btn">Talk to us</TrackedLink>
           <Link href="#work" className="btn ghost">View our work</Link>
