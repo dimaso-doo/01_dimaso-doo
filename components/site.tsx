@@ -103,9 +103,9 @@ export function Header() {
 }
 export function Footer() {
   const pathname = usePathname();
-  const showCTA = !["/contact", "/privacy-policy", "/terms-and-conditions"].includes(pathname);
+  const showCTA = pathname === "/";
   return <footer className="site-footer simple-footer"><div className="shell">
-    {showCTA && <div className="simple-footer-cta"><h2>Have a project in mind?</h2><TrackedLink tracking="cta" trackingLocation="footer" trackingLabel="Talk to us" href="/contact" className="btn">Talk to us</TrackedLink></div>}
+    {showCTA && <div className="simple-footer-cta"><h2>Need a new website or help with an existing one?</h2><TrackedLink tracking="cta" trackingLocation="footer" trackingLabel="Talk to us" href="/contact" className="btn">Talk to us</TrackedLink></div>}
     <div className="simple-footer-main"><Logo /><TrackedLink tracking="email" trackingLocation="footer" href="mailto:office@dimaso.co" className="simple-footer-email">office@dimaso.co</TrackedLink>
       <nav aria-label="Footer navigation">{footerLinks.map(([label, href]) => <Link key={href} href={href}>{label}</Link>)}<TrackedLink tracking="linkedin" trackingLocation="footer" href={linkedinUrl} target="_blank" rel="noopener noreferrer">LinkedIn</TrackedLink></nav>
     </div>
