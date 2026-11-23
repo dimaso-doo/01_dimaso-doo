@@ -59,7 +59,7 @@ function autoReplyText(name:string|undefined,services:string[]|undefined){
     "",
     "Website Maintenance | Web Development | Web Design | WordPress | WooCommerce | Technical SEO | AI Website Support",
     "office@dimaso.co",
-    "+381 61 137 5150",
+    "+381 60 159 31 87",
     "https://dimaso.co",
   ].join("\n");
 }

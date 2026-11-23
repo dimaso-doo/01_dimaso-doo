@@ -7,7 +7,7 @@ export const site = {
   name: "Dimaso",
   url: productionUrl,
   email: "office@dimaso.co",
-  phone: "+381 61 137 5150",
+  phone: "+381 60 159 31 87",
   description:
     "Website design, development, and ongoing support. Based in Novi Sad, Serbia, working with clients worldwide.",
 };
