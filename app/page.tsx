@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { Cases, ServiceCards } from "@/components/sections";
 import { testimonials } from "@/content/testimonials";
@@ -9,6 +10,7 @@ export default function Home() {
   return <main className="simple-page">
     <JsonLd data={{"@context":"https://schema.org","@graph":[organizationSchema,{"@type":"ProfessionalService","@id":`${site.url}/#professionalservice`,name:site.name,url:site.url,email:site.email,telephone:site.phone,address:organizationSchema.address,areaServed:organizationSchema.areaServed,serviceType:["Website Maintenance","Web Development","Web Design","AI Application Development"],provider:{"@id":organizationId}},{"@type":"WebSite","@id":websiteId,url:site.url,name:site.name,publisher:{"@id":organizationId}}]}} />
     <section className="simple-hero home-hero">
+      <Image className="studio-photo" src="/hero/studio.jpg" alt="" fill sizes="100vw" priority />
       <div className="shell">
         <h1>Web design, development &amp; ongoing support.</h1>
         <p className="lede">We build websites and AI applications. From the first prototype to release, our team uses AI to write code and test changes.</p>

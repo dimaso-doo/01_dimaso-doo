@@ -145,24 +145,26 @@
   .client-videos { grid-template-columns: 1fr; }
 }
 
-/* Keep the contour detail on the right so the hero copy stays readable. */
 .home-hero {
   isolation: isolate;
   overflow: hidden;
-  background: radial-gradient(ellipse at 90% 35%, rgba(24, 137, 103, .21), transparent 55%), var(--ink);
+  position: relative;
+  background: #121412;
 }
-.home-hero::before {
+.home-hero .studio-photo { object-fit: cover; object-position: 60% 52%; }
+.home-hero::after {
   content: "";
   position: absolute;
-  z-index: 0;
-  inset: -28% -15% -30% 35%;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(8,12,11,.83), rgba(8,12,11,.55) 42%, transparent 75%);
   pointer-events: none;
-  transform: rotate(-15deg);
-  background: repeating-radial-gradient(ellipse at 62% 115%, transparent 0 16px, rgba(83, 220, 168, .32) 17px, transparent 18px 24px);
-  mask-image: radial-gradient(ellipse at 64% 52%, #000 6%, transparent 67%);
 }
 .home-hero > .shell { position: relative; z-index: 1; }
 .home-hero h1 { max-width: 19ch; }
 @media (max-width: 700px) {
-  .home-hero::before { left: 16%; right: -62%; opacity: .62; }
+  .home-hero { padding-top: 135px; }
+  .home-hero .studio-photo { object-position: 78% center; }
+  .home-hero::after {
+    background: linear-gradient(180deg, rgba(8,12,11,.12), rgba(8,12,11,.72) 33%, rgba(8,12,11,.94) 100%);
+  }
 }
